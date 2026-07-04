@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"io"
 	"log/slog"
 	"net/http/httptest"
@@ -37,6 +38,53 @@ func (authServiceFake) SendVerificationForUser(context.Context, int) error { ret
 
 func (authServiceFake) Me(context.Context, int) (*user.User, error) {
 	return nil, nil
+}
+
+type verificationAuthFake struct {
+	authServiceFake
+	token string
+	err   error
+}
+
+func (f *verificationAuthFake) VerifyEmail(_ context.Context, token string) error {
+	f.token = token
+	return f.err
+}
+
+func TestVerifyEmailLinkRedirectsToStorefront(t *testing.T) {
+	tests := []struct {
+		name       string
+		requestURL string
+		verifyErr  error
+		location   string
+		token      string
+	}{
+		{name: "success", requestURL: "/api/auth/verify-email?token=one-time-token", location: "https://shop.example.com/?verification=success", token: "one-time-token"},
+		{name: "invalid token", requestURL: "/api/auth/verify-email?token=bad", verifyErr: errors.New("invalid token"), location: "https://shop.example.com/login?verification=invalid", token: "bad"},
+		{name: "missing token", requestURL: "/api/auth/verify-email", location: "https://shop.example.com/login?verification=invalid"},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			service := &verificationAuthFake{err: test.verifyErr}
+			app := fiber.New()
+			app.Get("/api/auth/verify-email", NewAuthHandler(service, slog.New(slog.NewTextHandler(io.Discard, nil)), "https://shop.example.com").VerifyEmailLink)
+			response, err := app.Test(httptest.NewRequest("GET", test.requestURL, nil))
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer func() { _ = response.Body.Close() }()
+			if response.StatusCode != fiber.StatusSeeOther || response.Header.Get("Location") != test.location {
+				t.Fatalf("status/location = %d %q", response.StatusCode, response.Header.Get("Location"))
+			}
+			if response.Header.Get("Cache-Control") != "no-store" || response.Header.Get("Referrer-Policy") != "no-referrer" {
+				t.Fatalf("security headers = %+v", response.Header)
+			}
+			if service.token != test.token {
+				t.Fatalf("token = %q, want %q", service.token, test.token)
+			}
+		})
+	}
 }
 
 func TestRegisterResponseCompatibility(t *testing.T) {

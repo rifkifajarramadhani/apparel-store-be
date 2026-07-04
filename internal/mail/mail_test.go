@@ -108,11 +108,28 @@ func TestMailerReturnsRenderAndTransportErrors(t *testing.T) {
 }
 
 func TestWelcomeRendersTextAndHTML(t *testing.T) {
-	content, err := (Welcome{Username: "Rifki", Email: "rifki@example.com"}).Content()
+	content, err := (Welcome{Username: "Rifki", Email: "rifki@example.com", StorefrontURL: "https://shop.example.com"}).Content()
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !strings.Contains(content.Text, "Rifki") || !strings.Contains(content.HTML, "Rifki") {
 		t.Fatalf("welcome content did not include username: %+v", content)
+	}
+	if !strings.Contains(content.Text, "https://shop.example.com") || !strings.Contains(content.HTML, "Start shopping") || !strings.Contains(content.HTML, "AXIS") {
+		t.Fatalf("welcome content did not include branded storefront CTA: %+v", content)
+	}
+}
+
+func TestEmailVerificationRendersBrandedLink(t *testing.T) {
+	verificationURL := "https://api.example.com/api/auth/verify-email?token=secret"
+	content, err := (EmailVerification{Username: "Rifki", Email: "rifki@example.com", VerificationURL: verificationURL}).Content()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(content.Text, verificationURL) || !strings.Contains(content.HTML, verificationURL) || !strings.Contains(content.HTML, "AXIS") {
+		t.Fatalf("verification content did not include branded CTA: %+v", content)
+	}
+	if strings.Contains(content.Text, "POST /api/auth/verify-email") || strings.Contains(content.HTML, "POST /api/auth/verify-email") {
+		t.Fatal("verification content still exposes raw-token instructions")
 	}
 }

@@ -3,7 +3,8 @@ package mail
 import (
 	"bytes"
 	_ "embed"
-	"text/template"
+	"html/template"
+	texttemplate "text/template"
 )
 
 //go:embed templates/email_verification.txt.tmpl
@@ -13,9 +14,9 @@ var emailVerificationTextTemplate string
 var emailVerificationHTMLTemplate string
 
 type EmailVerification struct {
-	Username string
-	Email    string
-	Token    string
+	Username        string
+	Email           string
+	VerificationURL string
 }
 
 func (m EmailVerification) Envelope() Envelope {
@@ -27,14 +28,14 @@ func (m EmailVerification) Envelope() Envelope {
 
 func (m EmailVerification) Content() (Content, error) {
 	data := struct {
-		Username string
-		Token    string
-	}{Username: m.Username, Token: m.Token}
-	text, err := renderVerificationTemplate("email-verification.txt", emailVerificationTextTemplate, data)
+		Username        string
+		VerificationURL string
+	}{Username: m.Username, VerificationURL: m.VerificationURL}
+	text, err := renderVerificationTextTemplate("email-verification.txt", emailVerificationTextTemplate, data)
 	if err != nil {
 		return Content{}, err
 	}
-	html, err := renderVerificationTemplate("email-verification.html", emailVerificationHTMLTemplate, data)
+	html, err := renderVerificationHTMLTemplate("email-verification.html", emailVerificationHTMLTemplate, data)
 	if err != nil {
 		return Content{}, err
 	}
@@ -43,7 +44,19 @@ func (m EmailVerification) Content() (Content, error) {
 
 func (EmailVerification) Attachments() []Attachment { return nil }
 
-func renderVerificationTemplate(name, source string, data any) (string, error) {
+func renderVerificationTextTemplate(name, source string, data any) (string, error) {
+	tmpl, err := texttemplate.New(name).Parse(source)
+	if err != nil {
+		return "", err
+	}
+	var output bytes.Buffer
+	if err := tmpl.Execute(&output, data); err != nil {
+		return "", err
+	}
+	return output.String(), nil
+}
+
+func renderVerificationHTMLTemplate(name, source string, data any) (string, error) {
 	tmpl, err := template.New(name).Parse(source)
 	if err != nil {
 		return "", err

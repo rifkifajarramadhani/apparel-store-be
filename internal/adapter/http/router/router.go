@@ -11,7 +11,7 @@ import (
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/http/middleware"
 )
 
-func Setup(app *fiber.App, users handler.UserService, auth handler.AuthService, catalogService handler.CatalogService, orders handler.OrderService, tokens middleware.AccessTokenValidator, logger *slog.Logger) {
+func Setup(app *fiber.App, users handler.UserService, auth handler.AuthService, catalogService handler.CatalogService, orders handler.OrderService, tokens middleware.AccessTokenValidator, logger *slog.Logger, storefrontURL ...string) {
 	app.Use(func(c fiber.Ctx) error {
 		requestID := c.Get("X-Request-ID")
 		if requestID == "" {
@@ -33,12 +33,13 @@ func Setup(app *fiber.App, users handler.UserService, auth handler.AuthService, 
 			return c.Status(fiber.StatusTooManyRequests).JSON(fiber.Map{"error": "too many requests"})
 		},
 	}))
-	authHandler := handler.NewAuthHandler(auth, logger)
+	authHandler := handler.NewAuthHandler(auth, logger, storefrontURL...)
 	authGroup.Post("/register", authHandler.Register)
 	authGroup.Post("/login", authHandler.Login)
 	authGroup.Post("/refresh", authHandler.Refresh)
 	authGroup.Post("/logout", authHandler.Logout)
 	authGroup.Post("/verify-email", authHandler.VerifyEmail)
+	authGroup.Get("/verify-email", authHandler.VerifyEmailLink)
 	authGroup.Post("/resend-verification", authHandler.ResendVerification)
 
 	// Public catalog reads (no auth) — the storefront browses signed-out.

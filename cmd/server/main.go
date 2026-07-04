@@ -76,7 +76,7 @@ func run() error {
 		ExposeHeaders:    []string{"X-Total-Count"},
 		AllowCredentials: false,
 	}))
-	router.Setup(app, services.Users, services.Auth, services.Catalog, services.Orders, services.Tokens, appLogger.Logger)
+	router.Setup(app, services.Users, services.Auth, services.Catalog, services.Orders, services.Tokens, appLogger.Logger, cfg.App.StorefrontURL)
 	app.Get("/health/live", func(c fiber.Ctx) error {
 		return c.JSON(fiber.Map{"status": "ok"})
 	})

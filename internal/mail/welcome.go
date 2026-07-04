@@ -3,7 +3,8 @@ package mail
 import (
 	"bytes"
 	_ "embed"
-	"text/template"
+	"html/template"
+	texttemplate "text/template"
 )
 
 //go:embed templates/welcome.txt.tmpl
@@ -13,8 +14,9 @@ var welcomeTextTemplate string
 var welcomeHTMLTemplate string
 
 type Welcome struct {
-	Username string
-	Email    string
+	Username      string
+	Email         string
+	StorefrontURL string
 }
 
 func (m Welcome) Envelope() Envelope {
@@ -26,14 +28,15 @@ func (m Welcome) Envelope() Envelope {
 
 func (m Welcome) Content() (Content, error) {
 	data := struct {
-		Username string
-	}{Username: m.Username}
+		Username      string
+		StorefrontURL string
+	}{Username: m.Username, StorefrontURL: m.StorefrontURL}
 
-	text, err := renderTemplate("welcome.txt", welcomeTextTemplate, data)
+	text, err := renderTextTemplate("welcome.txt", welcomeTextTemplate, data)
 	if err != nil {
 		return Content{}, err
 	}
-	html, err := renderTemplate("welcome.html", welcomeHTMLTemplate, data)
+	html, err := renderHTMLTemplate("welcome.html", welcomeHTMLTemplate, data)
 	if err != nil {
 		return Content{}, err
 	}
@@ -42,7 +45,19 @@ func (m Welcome) Content() (Content, error) {
 
 func (Welcome) Attachments() []Attachment { return nil }
 
-func renderTemplate(name, source string, data any) (string, error) {
+func renderTextTemplate(name, source string, data any) (string, error) {
+	tmpl, err := texttemplate.New(name).Parse(source)
+	if err != nil {
+		return "", err
+	}
+	var output bytes.Buffer
+	if err := tmpl.Execute(&output, data); err != nil {
+		return "", err
+	}
+	return output.String(), nil
+}
+
+func renderHTMLTemplate(name, source string, data any) (string, error) {
 	tmpl, err := template.New(name).Parse(source)
 	if err != nil {
 		return "", err

@@ -209,8 +209,22 @@ func TestNormalizeAuthConfigDefaults(t *testing.T) {
 		t.Fatal(err)
 	}
 	if app.Environment != "development" || auth.Issuer == "" || auth.Audience == "" ||
-		auth.VerificationTTLHours != 24 || auth.AccessTTLMinutes != 15 || auth.RefreshTTLHours != 168 {
+		auth.VerificationTTLHours != 24 || auth.AccessTTLMinutes != 15 || auth.RefreshTTLHours != 168 ||
+		app.PublicURL != "http://localhost:8080" || app.StorefrontURL != "http://localhost:3000" {
 		t.Fatalf("unexpected defaults: app=%+v auth=%+v", app, auth)
+	}
+}
+
+func TestNormalizeAuthConfigRejectsUnsafeAppURLs(t *testing.T) {
+	tests := []AppConfig{
+		{PublicURL: "javascript:alert(1)"},
+		{StorefrontURL: "https://user:pass@example.com"},
+		{StorefrontURL: "https://example.com/?redirect=elsewhere"},
+	}
+	for _, app := range tests {
+		if err := normalizeAuthConfig(&app, &AuthConfig{}); err == nil {
+			t.Fatalf("expected URL rejection for %+v", app)
+		}
 	}
 }
 

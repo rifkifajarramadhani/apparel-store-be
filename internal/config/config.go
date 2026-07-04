@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	stdmail "net/mail"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -25,8 +26,10 @@ const (
 )
 
 type AppConfig struct {
-	Port        string `mapstructure:"port"`
-	Environment string `mapstructure:"environment"`
+	Port          string `mapstructure:"port"`
+	Environment   string `mapstructure:"environment"`
+	PublicURL     string `mapstructure:"public_url"`
+	StorefrontURL string `mapstructure:"storefront_url"`
 	// CORSOrigins is a comma-separated allowlist of browser origins.
 	CORSOrigins string `mapstructure:"cors_origins"`
 }
@@ -164,7 +167,7 @@ func loadDotEnv(filename string) error {
 }
 
 var configKeys = []string{
-	"app.port", "app.environment", "app.cors_origins",
+	"app.port", "app.environment", "app.public_url", "app.storefront_url", "app.cors_origins",
 	"database.host", "database.port", "database.user", "database.password", "database.name",
 	"auth.jwt_access_secret", "auth.jwt_refresh_secret", "auth.access_ttl_minutes", "auth.refresh_ttl_hours",
 	"auth.issuer", "auth.audience", "auth.verification_ttl_hours", "auth.bootstrap_admin_email",
@@ -210,6 +213,15 @@ func normalizeAuthConfig(app *AppConfig, auth *AuthConfig) error {
 	if app.CORSOrigins == "" {
 		app.CORSOrigins = "http://localhost:3000"
 	}
+	var err error
+	app.PublicURL, err = normalizeAbsoluteHTTPURL(app.PublicURL, "http://localhost:8080", "app public URL")
+	if err != nil {
+		return err
+	}
+	app.StorefrontURL, err = normalizeAbsoluteHTTPURL(app.StorefrontURL, "http://localhost:3000", "storefront URL")
+	if err != nil {
+		return err
+	}
 	auth.Issuer = strings.TrimSpace(auth.Issuer)
 	if auth.Issuer == "" {
 		auth.Issuer = "golang-clean-architecture"
@@ -251,6 +263,18 @@ func normalizeAuthConfig(app *AppConfig, auth *AuthConfig) error {
 		}
 	}
 	return nil
+}
+
+func normalizeAbsoluteHTTPURL(value, fallback, name string) (string, error) {
+	value = strings.TrimSpace(value)
+	if value == "" {
+		value = fallback
+	}
+	parsed, err := url.Parse(value)
+	if err != nil || (parsed.Scheme != "http" && parsed.Scheme != "https") || parsed.Host == "" || parsed.User != nil || parsed.RawQuery != "" || parsed.Fragment != "" {
+		return "", fmt.Errorf("%s must be an absolute HTTP(S) URL without credentials, query, or fragment", name)
+	}
+	return strings.TrimRight(parsed.String(), "/"), nil
 }
 
 func isProduction(environment string) bool {

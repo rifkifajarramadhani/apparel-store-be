@@ -1,3 +1,25 @@
-<p>Hello {{.Username}},</p>
-<p>Verify your email by sending this token to <code>POST /api/auth/verify-email</code>:</p>
-<p><code>{{.Token}}</code></p>
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Confirm your email</title></head>
+  <body style="margin:0;background:#f5f5f5;color:#111111;font-family:Arial,Helvetica,sans-serif;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f5f5f5;">
+      <tr><td align="center" style="padding:32px 16px;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:600px;background:#ffffff;">
+          <tr><td style="padding:30px 32px 24px;border-bottom:1px solid #e5e5e5;font-size:26px;font-weight:800;letter-spacing:-1px;">AXIS</td></tr>
+          <tr><td style="padding:48px 32px 24px;">
+            <div style="font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#707072;">Account verification</div>
+            <h1 style="margin:10px 0 18px;font-size:42px;line-height:0.95;letter-spacing:-1.5px;text-transform:uppercase;">Confirm your email</h1>
+            <p style="margin:0;font-size:16px;line-height:1.5;color:#39393b;">Hi {{.Username}}, verify your email to finish creating your AXIS account.</p>
+          </td></tr>
+          <tr><td style="padding:0 32px 32px;">
+            <a href="{{.VerificationURL}}" style="display:inline-block;padding:15px 30px;border-radius:9999px;background:#111111;color:#ffffff;font-size:16px;font-weight:700;text-decoration:none;">Verify email</a>
+          </td></tr>
+          <tr><td style="padding:0 32px 48px;">
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f5f5f5;border-radius:18px;"><tr><td style="padding:20px 22px;font-size:14px;line-height:1.5;color:#4b4b4d;">This secure link expires soon and can only be used once. If you didn’t create an AXIS account, you can safely ignore this email.</td></tr></table>
+          </td></tr>
+          <tr><td style="padding:24px 32px;border-top:1px solid #e5e5e5;font-size:12px;line-height:1.5;color:#707072;">AXIS — Engineered for every move.</td></tr>
+        </table>
+      </td></tr>
+    </table>
+  </body>
+</html>

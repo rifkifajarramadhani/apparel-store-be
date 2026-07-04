@@ -50,8 +50,8 @@ func WireHTTPServices(cfg *config.Config, db *gorm.DB, logger *slog.Logger, disp
 		repository,
 		tokens,
 		hasher,
-		jobs.NewVerificationNotifier(mailer, logger),
-		jobs.NewWelcomeNotifier(mailer, logger),
+		jobs.NewVerificationNotifier(mailer, logger, cfg.App.PublicURL),
+		jobs.NewWelcomeNotifier(mailer, logger, cfg.App.StorefrontURL),
 		time.Duration(cfg.Auth.VerificationTTLHours)*time.Hour,
 		cfg.Auth.BootstrapAdminEmail,
 	)

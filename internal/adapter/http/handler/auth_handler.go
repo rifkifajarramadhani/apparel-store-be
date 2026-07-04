@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"log/slog"
+	"net/url"
 
 	"github.com/gofiber/fiber/v3"
 	dto "github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/http/dto/auth"
@@ -23,12 +24,31 @@ type AuthService interface {
 }
 
 type AuthHandler struct {
-	auth   AuthService
-	logger *slog.Logger
+	auth          AuthService
+	logger        *slog.Logger
+	storefrontURL string
 }
 
-func NewAuthHandler(service AuthService, logger *slog.Logger) *AuthHandler {
-	return &AuthHandler{auth: service, logger: logger}
+func NewAuthHandler(service AuthService, logger *slog.Logger, storefrontURL ...string) *AuthHandler {
+	baseURL := "http://localhost:3000"
+	if len(storefrontURL) > 0 {
+		baseURL = storefrontURL[0]
+	}
+	return &AuthHandler{auth: service, logger: logger, storefrontURL: baseURL}
+}
+
+func (h *AuthHandler) VerifyEmailLink(c fiber.Ctx) error {
+	token := c.Query("token")
+	destination := h.storefrontURL + "/?verification=success"
+	if token == "" || h.auth.VerifyEmail(c.Context(), token) != nil {
+		destination = h.storefrontURL + "/login?verification=invalid"
+	}
+	c.Set(fiber.HeaderCacheControl, "no-store")
+	c.Set("Referrer-Policy", "no-referrer")
+	if _, err := url.ParseRequestURI(destination); err != nil {
+		return err
+	}
+	return c.Redirect().Status(fiber.StatusSeeOther).To(destination)
 }
 
 func (h *AuthHandler) Register(c fiber.Ctx) error {

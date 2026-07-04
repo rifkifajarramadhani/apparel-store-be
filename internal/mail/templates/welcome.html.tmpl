@@ -1,7 +1,22 @@
 <!doctype html>
 <html lang="en">
-  <body>
-    <h1>Welcome, {{.Username}}!</h1>
-    <p>Your account is ready.</p>
+  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Welcome to AXIS</title></head>
+  <body style="margin:0;background:#f5f5f5;color:#111111;font-family:Arial,Helvetica,sans-serif;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f5f5f5;">
+      <tr><td align="center" style="padding:32px 16px;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:600px;background:#ffffff;">
+          <tr><td style="padding:30px 32px 24px;border-bottom:1px solid #e5e5e5;font-size:26px;font-weight:800;letter-spacing:-1px;">AXIS</td></tr>
+          <tr><td style="padding:48px 32px 24px;">
+            <div style="font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#007d48;">Account ready</div>
+            <h1 style="margin:10px 0 18px;font-size:42px;line-height:0.95;letter-spacing:-1.5px;text-transform:uppercase;">Welcome to AXIS</h1>
+            <p style="margin:0;font-size:16px;line-height:1.5;color:#39393b;">Hi {{.Username}}, your email is verified and your account is ready. Discover the latest styles built for every move.</p>
+          </td></tr>
+          <tr><td style="padding:0 32px 48px;">
+            <a href="{{.StorefrontURL}}" style="display:inline-block;padding:15px 30px;border-radius:9999px;background:#111111;color:#ffffff;font-size:16px;font-weight:700;text-decoration:none;">Start shopping</a>
+          </td></tr>
+          <tr><td style="padding:24px 32px;border-top:1px solid #e5e5e5;font-size:12px;line-height:1.5;color:#707072;">AXIS — Engineered for every move.</td></tr>
+        </table>
+      </td></tr>
+    </table>
   </body>
 </html>
