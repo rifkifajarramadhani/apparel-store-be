@@ -20,7 +20,7 @@ func seedPublicID(prefix, value string) string {
 // the normalized schema and is safe to rerun on a clean development database.
 func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.SeedProduct, colourways []catalog.SeedColourway, skus []catalog.SeedSKU, categories []catalog.SeedCategory, collections []catalog.SeedCollection, scales []catalog.SeedSizeScale) error {
 	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		for _, table := range []string{"sku_assets", "product_assets", "inventory_balances", "prices", "skus", "product_collections", "product_categories", "products", "assets", "colourways", "sizes", "size_scales", "collections", "categories", "brands", "inventory_locations"} {
+		for _, table := range []string{"assets", "prices", "skus", "product_collections", "product_categories", "products", "colourways", "sizes", "size_scales", "collections", "categories", "brands"} {
 			if err := tx.Exec("DELETE FROM " + table).Error; err != nil {
 				return err
 			}
@@ -131,24 +131,12 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 				return err
 			}
 		}
-		if err := tx.Exec("INSERT INTO inventory_locations(public_id,code,name) VALUES('IL000000000000000000000001','default','Default')").Error; err != nil {
-			return err
-		}
-		var locationID uint64
-		if err := tx.Raw("SELECT id FROM inventory_locations WHERE code='default'").Scan(&locationID).Error; err != nil {
-			return err
-		}
-		skuIDs := map[string]uint64{}
 		for _, sku := range skus {
-			if err := tx.Exec("INSERT INTO skus(public_id,sku_code,product_id,colourway_id,size_id) VALUES(?,?,?,?,?)", seedPublicID("SK", sku.ID), sku.ID, productIDs[sku.ProductID], colourIDs[sku.ColourwayID], sizeIDs[sku.SizeScale+":"+sku.Size]).Error; err != nil {
+			if err := tx.Exec("INSERT INTO skus(public_id,sku_code,product_id,colourway_id,size_id,on_hand) VALUES(?,?,?,?,?,?)", seedPublicID("SK", sku.ID), sku.ID, productIDs[sku.ProductID], colourIDs[sku.ColourwayID], sizeIDs[sku.SizeScale+":"+sku.Size], sku.StockQty).Error; err != nil {
 				return err
 			}
 			var skuID uint64
 			if err := tx.Raw("SELECT id FROM skus WHERE sku_code=?", sku.ID).Scan(&skuID).Error; err != nil {
-				return err
-			}
-			skuIDs[sku.ID] = skuID
-			if err := tx.Exec("INSERT INTO inventory_balances(sku_id,location_id,on_hand,reserved) VALUES(?,?,?,0)", skuID, locationID, sku.StockQty).Error; err != nil {
 				return err
 			}
 			if sku.Price > 0 {
@@ -162,22 +150,8 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 				if imageURL == "" {
 					continue
 				}
-				if err := tx.Exec("INSERT IGNORE INTO assets(public_id,media_type,url,alt_text) VALUES(?,'image',?,?)", seedPublicID("AS", imageURL), imageURL, colour.Name).Error; err != nil {
+				if err := tx.Exec("INSERT IGNORE INTO assets(public_id,product_id,media_type,storage_provider,cdn_url,alt_text,role,sort_order) VALUES(?,?,'image','external',?,?,'product_image',?)", seedPublicID("AS", imageURL), productIDs[colour.ProductID], imageURL, colour.Name, order).Error; err != nil {
 					return err
-				}
-				assetID, err := seedRowID(tx, "assets", "url", imageURL)
-				if err != nil {
-					return err
-				}
-				if err := tx.Exec("INSERT IGNORE INTO product_assets(product_id,asset_id,role,sort_order) VALUES(?,?,'product_image',?)", productIDs[colour.ProductID], assetID, order).Error; err != nil {
-					return err
-				}
-				for _, sku := range skus {
-					if sku.ColourwayID == colour.ID {
-						if err := tx.Exec("INSERT IGNORE INTO sku_assets(sku_id,asset_id,role,sort_order) VALUES(?,?,'product_image',?)", skuIDs[sku.ID], assetID, order).Error; err != nil {
-							return err
-						}
-					}
 				}
 			}
 		}

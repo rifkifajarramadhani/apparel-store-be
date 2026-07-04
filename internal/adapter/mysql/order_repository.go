@@ -37,11 +37,9 @@ func (r *OrderRepository) Create(ctx context.Context, userID int, lines []order.
 			err := tx.Raw(`SELECT s.id,s.public_id,p.id product_ref_id,p.public_id product_public_id,p.name product_name,sz.name size_name,
 				COALESCE((SELECT sp.amount FROM prices sp WHERE sp.sku_id=s.id AND sp.currency='IDR' AND sp.archived_at IS NULL AND sp.valid_from<=? AND (sp.valid_to IS NULL OR sp.valid_to>?) ORDER BY sp.valid_from DESC LIMIT 1),
 				(SELECT pp.amount FROM prices pp WHERE pp.product_id=s.product_id AND pp.currency='IDR' AND pp.archived_at IS NULL AND pp.valid_from<=? AND (pp.valid_to IS NULL OR pp.valid_to>?) ORDER BY pp.valid_from DESC LIMIT 1),0) amount,
-				ib.on_hand,ib.reserved
+				s.on_hand,s.reserved
 				FROM skus s JOIN products p ON p.id=s.product_id AND p.archived_at IS NULL
 				JOIN sizes sz ON sz.id=s.size_id AND sz.archived_at IS NULL
-				JOIN inventory_balances ib ON ib.sku_id=s.id
-				JOIN inventory_locations il ON il.id=ib.location_id AND il.code='default' AND il.archived_at IS NULL
 				WHERE s.public_id=? AND s.archived_at IS NULL FOR UPDATE`, now, now, now, now, line.SkuID).Take(&sku).Error
 			if err != nil {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -52,7 +50,7 @@ func (r *OrderRepository) Create(ctx context.Context, userID int, lines []order.
 			if sku.OnHand-sku.Reserved < line.Qty {
 				return order.ErrOutOfStock
 			}
-			if err := tx.Exec("UPDATE inventory_balances SET on_hand=on_hand-? WHERE sku_id=? AND location_id=(SELECT id FROM inventory_locations WHERE code='default')", line.Qty, sku.ID).Error; err != nil {
+			if err := tx.Exec("UPDATE skus SET on_hand=on_hand-? WHERE id=?", line.Qty, sku.ID).Error; err != nil {
 				return err
 			}
 			items = append(items, orderItemModel{

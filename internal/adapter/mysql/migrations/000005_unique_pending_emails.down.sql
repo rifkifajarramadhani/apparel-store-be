@@ -1,3 +1,3 @@
 ALTER TABLE users
-  DROP INDEX ux_users_pending_email,
+  DROP INDEX pending_email_unique,
   DROP COLUMN pending_email_unique;

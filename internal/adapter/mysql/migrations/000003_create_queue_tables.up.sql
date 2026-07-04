@@ -17,9 +17,9 @@ CREATE TABLE queue_jobs (
   expires_at DATETIME(6) NULL,
   created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   updated_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-  INDEX idx_queue_jobs_reserve (queue, status, available_at),
-  INDEX idx_queue_jobs_lease (status, leased_until),
-  INDEX idx_queue_jobs_expiry (status, expires_at)
+  INDEX (queue, status, available_at),
+  INDEX (status, leased_until),
+  INDEX (status, expires_at)
 );
 
 CREATE TABLE queue_locks (
@@ -27,8 +27,8 @@ CREATE TABLE queue_locks (
   job_id VARCHAR(255) NOT NULL,
   expires_at DATETIME(6) NULL,
   created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-  INDEX idx_queue_locks_job_id (job_id),
-  INDEX idx_queue_locks_expires_at (expires_at)
+  INDEX (job_id),
+  INDEX (expires_at)
 );
 
 CREATE TABLE queue_stats (

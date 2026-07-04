@@ -35,7 +35,7 @@ func (f *repositoryFake) SetInventory(_ context.Context, in InventoryAdjustment)
 
 func TestSetInventoryRejectsOverReservation(t *testing.T) {
 	svc := NewService(&repositoryFake{})
-	err := svc.SetInventory(context.Background(), InventoryAdjustment{SkuID: "sku", LocationID: "location", OnHand: 2, Reserved: 3})
+	err := svc.SetInventory(context.Background(), InventoryAdjustment{SkuID: "sku", OnHand: 2, Reserved: 3})
 	if !errors.Is(err, ErrInvalidInput) {
 		t.Fatalf("expected invalid input, got %v", err)
 	}

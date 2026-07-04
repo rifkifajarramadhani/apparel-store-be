@@ -120,10 +120,9 @@ type SkuQuery struct {
 }
 
 type InventoryAdjustment struct {
-	SkuID      string `json:"skuId"`
-	LocationID string `json:"locationId"`
-	OnHand     int    `json:"onHand"`
-	Reserved   int    `json:"reserved"`
+	SkuID    string `json:"skuId"`
+	OnHand   int    `json:"onHand"`
+	Reserved int    `json:"reserved"`
 }
 
 type Repository interface {
@@ -204,8 +203,8 @@ func (s *Service) ListColourways(ctx context.Context) ([]Colourway, error) {
 func (s *Service) ListSizes(ctx context.Context) ([]Size, error) { return s.repo.ListSizes(ctx) }
 
 func (s *Service) SetInventory(ctx context.Context, in InventoryAdjustment) error {
-	if in.SkuID == "" || in.LocationID == "" || in.OnHand < 0 || in.Reserved < 0 || in.Reserved > in.OnHand {
-		return fmt.Errorf("%w: inventory requires valid ids and 0 <= reserved <= onHand", ErrInvalidInput)
+	if in.SkuID == "" || in.OnHand < 0 || in.Reserved < 0 || in.Reserved > in.OnHand {
+		return fmt.Errorf("%w: inventory requires a valid sku id and 0 <= reserved <= onHand", ErrInvalidInput)
 	}
 	return s.repo.SetInventory(ctx, in)
 }
