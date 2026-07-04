@@ -73,7 +73,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD:?DATABASE_PASSWORD must be set in .env}
       MYSQL_ROOT_HOST: "%"
-      MYSQL_DATABASE: db_name
+      MYSQL_DATABASE: apparel_store
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:

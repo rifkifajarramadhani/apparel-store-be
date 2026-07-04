@@ -2,7 +2,7 @@
 export
 
 DATABASE_USER ?= root
-DATABASE_NAME ?= db_name
+DATABASE_NAME ?= apparel_store
 export MYSQL_URL ?= mysql://$(DATABASE_USER):$(DATABASE_PASSWORD)@tcp(db:3306)/$(DATABASE_NAME)
 
 MIGRATIONS := internal/adapter/mysql/migrations

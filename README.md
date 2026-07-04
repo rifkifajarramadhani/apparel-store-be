@@ -68,7 +68,7 @@ Default values in this project:
 - DB port: `3306`
 - DB user: `root`
 - DB password: configured with `DATABASE_PASSWORD`
-- DB name: `db_name`
+- DB name: `apparel_store`
 - JWT access secret: configured with `AUTH_JWT_ACCESS_SECRET`
 - JWT refresh secret: configured with `AUTH_JWT_REFRESH_SECRET`
 - Access token TTL: `15` minutes
@@ -120,7 +120,7 @@ make migrate args=up
 Alternative without `make`:
 
 ```bash
-docker compose exec server sh -c 'migrate -database "mysql://root:${DATABASE_PASSWORD}@tcp(db:3306)/db_name" -path internal/adapter/mysql/migrations up'
+docker compose exec server sh -c 'migrate -database "mysql://root:${DATABASE_PASSWORD}@tcp(db:3306)/apparel_store" -path internal/adapter/mysql/migrations up'
 ```
 
 ### 3) Check logs
