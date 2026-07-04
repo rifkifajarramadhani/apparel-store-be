@@ -6,20 +6,25 @@ import (
 
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/jobs"
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/jwt"
+	mysqladapter "github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/mysql"
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/password"
 	queueadapter "github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/queue"
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/auth"
+	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/catalog"
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/config"
 	appmail "github.com/rifkifajarramadhani/golang-clean-architecture/internal/mail"
+	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/order"
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/queue"
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/user"
 	"gorm.io/gorm"
 )
 
 type HTTPServices struct {
-	Users  *user.Service
-	Auth   *auth.Service
-	Tokens *jwt.Service
+	Users   *user.Service
+	Auth    *auth.Service
+	Catalog *catalog.Service
+	Orders  *order.Service
+	Tokens  *jwt.Service
 }
 
 func WireHTTPServices(cfg *config.Config, db *gorm.DB, logger *slog.Logger, dispatcher queue.Dispatcher) HTTPServices {
@@ -50,5 +55,10 @@ func WireHTTPServices(cfg *config.Config, db *gorm.DB, logger *slog.Logger, disp
 		time.Duration(cfg.Auth.VerificationTTLHours)*time.Hour,
 		cfg.Auth.BootstrapAdminEmail,
 	)
-	return HTTPServices{Users: users, Auth: authService, Tokens: tokens}
+	catalogService := catalog.NewService(mysqladapter.NewCatalogRepository(db))
+	orderService := order.NewService(mysqladapter.NewOrderRepository(db))
+	return HTTPServices{
+		Users: users, Auth: authService, Catalog: catalogService,
+		Orders: orderService, Tokens: tokens,
+	}
 }

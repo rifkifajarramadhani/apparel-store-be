@@ -27,6 +27,8 @@ const (
 type AppConfig struct {
 	Port        string `mapstructure:"port"`
 	Environment string `mapstructure:"environment"`
+	// CORSOrigins is a comma-separated allowlist of browser origins.
+	CORSOrigins string `mapstructure:"cors_origins"`
 }
 
 type DatabaseConfig struct {
@@ -162,7 +164,7 @@ func loadDotEnv(filename string) error {
 }
 
 var configKeys = []string{
-	"app.port", "app.environment",
+	"app.port", "app.environment", "app.cors_origins",
 	"database.host", "database.port", "database.user", "database.password", "database.name",
 	"auth.jwt_access_secret", "auth.jwt_refresh_secret", "auth.access_ttl_minutes", "auth.refresh_ttl_hours",
 	"auth.issuer", "auth.audience", "auth.verification_ttl_hours", "auth.bootstrap_admin_email",
@@ -203,6 +205,10 @@ func normalizeAuthConfig(app *AppConfig, auth *AuthConfig) error {
 	app.Environment = strings.ToLower(strings.TrimSpace(app.Environment))
 	if app.Environment == "" {
 		app.Environment = "development"
+	}
+	app.CORSOrigins = strings.TrimSpace(app.CORSOrigins)
+	if app.CORSOrigins == "" {
+		app.CORSOrigins = "http://localhost:3000"
 	}
 	auth.Issuer = strings.TrimSpace(auth.Issuer)
 	if auth.Issuer == "" {

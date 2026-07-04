@@ -7,10 +7,12 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
 	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/cors"
 	"github.com/gofiber/fiber/v3/middleware/helmet"
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/http/router"
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/logging"
@@ -67,7 +69,14 @@ func run() error {
 		},
 	})
 	app.Use(helmet.New())
-	router.Setup(app, services.Users, services.Auth, services.Tokens, appLogger.Logger)
+	app.Use(cors.New(cors.Config{
+		AllowOrigins:     strings.Split(cfg.App.CORSOrigins, ","),
+		AllowMethods:     []string{fiber.MethodGet, fiber.MethodPost, fiber.MethodPut, fiber.MethodPatch, fiber.MethodDelete, fiber.MethodOptions},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
+		ExposeHeaders:    []string{"X-Total-Count"},
+		AllowCredentials: false,
+	}))
+	router.Setup(app, services.Users, services.Auth, services.Catalog, services.Orders, services.Tokens, appLogger.Logger)
 	app.Get("/health/live", func(c fiber.Ctx) error {
 		return c.JSON(fiber.Map{"status": "ok"})
 	})

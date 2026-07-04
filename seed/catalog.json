@@ -1,0 +1,5862 @@
+{
+  "products": [
+    {
+      "id": "AX-1001",
+      "slug": "sportswear-tech-fleece-hoodie",
+      "name": "Sportswear Tech Fleece Hoodie",
+      "subtitle": "Men's Full-Zip Hoodie",
+      "brand": "AXIS",
+      "gender": "men",
+      "type": "Hoodie",
+      "categoryId": "men-hoodies",
+      "categorySlug": "men-hoodies",
+      "collectionIds": [
+        "tech-fleece"
+      ],
+      "sizeScale": "apparel-alpha",
+      "basePrice": 1590000,
+      "minPrice": 1590000,
+      "maxPrice": 1590000,
+      "badges": [
+        "Just In"
+      ],
+      "colorwayCount": 4,
+      "colorFamilies": [
+        "Black",
+        "Grey",
+        "Blue",
+        "Green"
+      ],
+      "swatches": [
+        {
+          "styleColor": "AX1001-010",
+          "hex": "#111111"
+        },
+        {
+          "styleColor": "AX1001-070",
+          "hex": "#9CA3AF"
+        },
+        {
+          "styleColor": "AX1001-410",
+          "hex": "#1E293B"
+        },
+        {
+          "styleColor": "AX1001-320",
+          "hex": "#4D7C0F"
+        }
+      ],
+      "thumbnailUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Sportswear%20Tech%20Fleece%20Hoodie",
+      "hoverImageUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+      "defaultColorwayId": "AX1001-010",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "description": "Sportswear Tech Fleece Hoodie (Men's Full-Zip Hoodie). Part of the AXIS range — engineered for everyday performance and comfort.",
+      "publishedAt": "2026-05-04"
+    },
+    {
+      "id": "AX-1002",
+      "slug": "club-fleece-pullover",
+      "name": "Club Fleece Pullover",
+      "subtitle": "Men's Hoodie",
+      "brand": "AXIS",
+      "gender": "men",
+      "type": "Hoodie",
+      "categoryId": "men-hoodies",
+      "categorySlug": "men-hoodies",
+      "collectionIds": [
+        "essentials"
+      ],
+      "sizeScale": "apparel-alpha",
+      "basePrice": 899000,
+      "minPrice": 899000,
+      "maxPrice": 899000,
+      "badges": [],
+      "colorwayCount": 3,
+      "colorFamilies": [
+        "Black",
+        "Grey",
+        "Neutral"
+      ],
+      "swatches": [
+        {
+          "styleColor": "AX1002-010",
+          "hex": "#111111"
+        },
+        {
+          "styleColor": "AX1002-070",
+          "hex": "#9CA3AF"
+        },
+        {
+          "styleColor": "AX1002-200",
+          "hex": "#D6C7A1"
+        }
+      ],
+      "thumbnailUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Club%20Fleece%20Pullover",
+      "hoverImageUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+      "defaultColorwayId": "AX1002-010",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "description": "Club Fleece Pullover (Men's Hoodie). Part of the AXIS range — engineered for everyday performance and comfort.",
+      "publishedAt": "2026-02-08"
+    },
+    {
+      "id": "AX-1003",
+      "slug": "dri-fit-training-tee",
+      "name": "Dri-FIT Training Tee",
+      "subtitle": "Men's Short-Sleeve Top",
+      "brand": "AXIS",
+      "gender": "men",
+      "type": "T-Shirt",
+      "categoryId": "men-tees",
+      "categorySlug": "men-tees",
+      "collectionIds": [
+        "pro-training"
+      ],
+      "sizeScale": "apparel-alpha",
+      "basePrice": 449000,
+      "minPrice": 449000,
+      "maxPrice": 449000,
+      "badges": [
+        "Just In"
+      ],
+      "colorwayCount": 4,
+      "colorFamilies": [
+        "Black",
+        "White",
+        "Blue",
+        "Red"
+      ],
+      "swatches": [
+        {
+          "styleColor": "AX1003-010",
+          "hex": "#111111"
+        },
+        {
+          "styleColor": "AX1003-100",
+          "hex": "#F5F5F5"
+        },
+        {
+          "styleColor": "AX1003-430",
+          "hex": "#2563EB"
+        },
+        {
+          "styleColor": "AX1003-600",
+          "hex": "#DC2626"
+        }
+      ],
+      "thumbnailUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Dri-FIT%20Training%20Tee",
+      "hoverImageUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+      "defaultColorwayId": "AX1003-010",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "description": "Dri-FIT Training Tee (Men's Short-Sleeve Top). Part of the AXIS range — engineered for everyday performance and comfort.",
+      "publishedAt": "2026-04-19"
+    },
+    {
+      "id": "AX-1004",
+      "slug": "heritage-graphic-tee",
+      "name": "Heritage Graphic Tee",
+      "subtitle": "Men's T-Shirt",
+      "brand": "AXIS",
+      "gender": "men",
+      "type": "T-Shirt",
+      "categoryId": "men-tees",
+      "categorySlug": "men-tees",
+      "collectionIds": [
+        "heritage"
+      ],
+      "sizeScale": "apparel-alpha",
+      "basePrice": 499000,
+      "minPrice": 399000,
+      "maxPrice": 499000,
+      "badges": [
+        "Just In",
+        "Sale"
+      ],
+      "colorwayCount": 3,
+      "colorFamilies": [
+        "White",
+        "Black",
+        "Green"
+      ],
+      "swatches": [
+        {
+          "styleColor": "AX1004-100",
+          "hex": "#F5F5F5"
+        },
+        {
+          "styleColor": "AX1004-010",
+          "hex": "#111111"
+        },
+        {
+          "styleColor": "AX1004-320",
+          "hex": "#4D7C0F"
+        }
+      ],
+      "thumbnailUrl": "https://placehold.co/800x800/F5F5F5/ffffff/png?text=Heritage%20Graphic%20Tee",
+      "hoverImageUrl": "https://placehold.co/800x800/F5F5F5/ffffff/png?text=White%202",
+      "defaultColorwayId": "AX1004-100",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "description": "Heritage Graphic Tee (Men's T-Shirt). Part of the AXIS range — engineered for everyday performance and comfort.",
+      "publishedAt": "2026-06-13"
+    },
+    {
+      "id": "AX-1005",
+      "slug": "tech-fleece-jogger",
+      "name": "Tech Fleece Jogger",
+      "subtitle": "Men's Trousers",
+      "brand": "AXIS",
+      "gender": "men",
+      "type": "Trousers",
+      "categoryId": "men-pants",
+      "categorySlug": "men-pants",
+      "collectionIds": [
+        "tech-fleece"
+      ],
+      "sizeScale": "apparel-alpha",
+      "basePrice": 1290000,
+      "minPrice": 1290000,
+      "maxPrice": 1290000,
+      "badges": [],
+      "colorwayCount": 3,
+      "colorFamilies": [
+        "Black",
+        "Grey",
+        "Blue"
+      ],
+      "swatches": [
+        {
+          "styleColor": "AX1005-010",
+          "hex": "#111111"
+        },
+        {
+          "styleColor": "AX1005-070",
+          "hex": "#9CA3AF"
+        },
+        {
+          "styleColor": "AX1005-410",
+          "hex": "#1E293B"
+        }
+      ],
+      "thumbnailUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Tech%20Fleece%20Jogger",
+      "hoverImageUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+      "defaultColorwayId": "AX1005-010",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "description": "Tech Fleece Jogger (Men's Trousers). Part of the AXIS range — engineered for everyday performance and comfort.",
+      "publishedAt": "2026-03-10"
+    },
+    {
+      "id": "AX-1006",
+      "slug": "pro-training-tights",
+      "name": "Pro Training Tights",
+      "subtitle": "Men's Tights",
+      "brand": "AXIS",
+      "gender": "men",
+      "type": "Tights",
+      "categoryId": "men-pants",
+      "categorySlug": "men-pants",
+      "collectionIds": [
+        "pro-training"
+      ],
+      "sizeScale": "apparel-alpha",
+      "basePrice": 649000,
+      "minPrice": 649000,
+      "maxPrice": 649000,
+      "badges": [
+        "Just In"
+      ],
+      "colorwayCount": 2,
+      "colorFamilies": [
+        "Black",
+        "Grey"
+      ],
+      "swatches": [
+        {
+          "styleColor": "AX1006-010",
+          "hex": "#111111"
+        },
+        {
+          "styleColor": "AX1006-070",
+          "hex": "#9CA3AF"
+        }
+      ],
+      "thumbnailUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Pro%20Training%20Tights",
+      "hoverImageUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+      "defaultColorwayId": "AX1006-010",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "description": "Pro Training Tights (Men's Tights). Part of the AXIS range — engineered for everyday performance and comfort.",
+      "publishedAt": "2026-04-24"
+    },
+    {
+      "id": "AX-1007",
+      "slug": "pegasus-trail-runner",
+      "name": "Pegasus Trail Runner",
+      "subtitle": "Men's Road Running Shoes",
+      "brand": "AXIS",
+      "gender": "men",
+      "type": "Shoes",
+      "categoryId": "men-shoes",
+      "categorySlug": "men-shoes",
+      "collectionIds": [
+        "pro-training"
+      ],
+      "sizeScale": "shoe-eu",
+      "basePrice": 1990000,
+      "minPrice": 1990000,
+      "maxPrice": 1990000,
+      "badges": [
+        "Just In"
+      ],
+      "colorwayCount": 4,
+      "colorFamilies": [
+        "Black",
+        "White",
+        "Blue",
+        "Orange"
+      ],
+      "swatches": [
+        {
+          "styleColor": "AX1007-010",
+          "hex": "#111111"
+        },
+        {
+          "styleColor": "AX1007-100",
+          "hex": "#F5F5F5"
+        },
+        {
+          "styleColor": "AX1007-430",
+          "hex": "#2563EB"
+        },
+        {
+          "styleColor": "AX1007-800",
+          "hex": "#EA580C"
+        }
+      ],
+      "thumbnailUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Pegasus%20Trail%20Runner",
+      "hoverImageUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+      "defaultColorwayId": "AX1007-010",
+      "sizes": [
+        "38",
+        "39",
+        "40",
+        "41",
+        "42",
+        "43",
+        "44",
+        "45"
+      ],
+      "description": "Pegasus Trail Runner (Men's Road Running Shoes). Part of the AXIS range — engineered for everyday performance and comfort.",
+      "publishedAt": "2026-05-05"
+    },
+    {
+      "id": "AX-1008",
+      "slug": "windrunner-jacket",
+      "name": "Windrunner Jacket",
+      "subtitle": "Women's Full-Zip Jacket",
+      "brand": "AXIS",
+      "gender": "women",
+      "type": "Jacket",
+      "categoryId": "women-hoodies",
+      "categorySlug": "women-hoodies",
+      "collectionIds": [
+        "windrunner"
+      ],
+      "sizeScale": "apparel-alpha",
+      "basePrice": 1490000,
+      "minPrice": 1490000,
+      "maxPrice": 1490000,
+      "badges": [
+        "Just In"
+      ],
+      "colorwayCount": 4,
+      "colorFamilies": [
+        "Black",
+        "Pink",
+        "Neutral",
+        "Purple"
+      ],
+      "swatches": [
+        {
+          "styleColor": "AX1008-010",
+          "hex": "#111111"
+        },
+        {
+          "styleColor": "AX1008-650",
+          "hex": "#EC4899"
+        },
+        {
+          "styleColor": "AX1008-200",
+          "hex": "#D6C7A1"
+        },
+        {
+          "styleColor": "AX1008-500",
+          "hex": "#7C3AED"
+        }
+      ],
+      "thumbnailUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Windrunner%20Jacket",
+      "hoverImageUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+      "defaultColorwayId": "AX1008-010",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "description": "Windrunner Jacket (Women's Full-Zip Jacket). Part of the AXIS range — engineered for everyday performance and comfort.",
+      "publishedAt": "2026-04-18"
+    },
+    {
+      "id": "AX-1009",
+      "slug": "sportswear-essential-crew",
+      "name": "Sportswear Essential Crew",
+      "subtitle": "Women's Sweatshirt",
+      "brand": "AXIS",
+      "gender": "women",
+      "type": "Sweatshirt",
+      "categoryId": "women-hoodies",
+      "categorySlug": "women-hoodies",
+      "collectionIds": [
+        "essentials"
+      ],
+      "sizeScale": "apparel-alpha",
+      "basePrice": 849000,
+      "minPrice": 849000,
+      "maxPrice": 849000,
+      "badges": [
+        "Just In"
+      ],
+      "colorwayCount": 3,
+      "colorFamilies": [
+        "Grey",
+        "Pink",
+        "White"
+      ],
+      "swatches": [
+        {
+          "styleColor": "AX1009-070",
+          "hex": "#9CA3AF"
+        },
+        {
+          "styleColor": "AX1009-650",
+          "hex": "#EC4899"
+        },
+        {
+          "styleColor": "AX1009-100",
+          "hex": "#F5F5F5"
+        }
+      ],
+      "thumbnailUrl": "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Sportswear%20Essential%20Crew",
+      "hoverImageUrl": "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Grey%202",
+      "defaultColorwayId": "AX1009-070",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "description": "Sportswear Essential Crew (Women's Sweatshirt). Part of the AXIS range — engineered for everyday performance and comfort.",
+      "publishedAt": "2026-04-30"
+    },
+    {
+      "id": "AX-1010",
+      "slug": "dri-fit-ribbed-tank",
+      "name": "Dri-FIT Ribbed Tank",
+      "subtitle": "Women's Training Top",
+      "brand": "AXIS",
+      "gender": "women",
+      "type": "Tank",
+      "categoryId": "women-tees",
+      "categorySlug": "women-tees",
+      "collectionIds": [
+        "pro-training"
+      ],
+      "sizeScale": "apparel-alpha",
+      "basePrice": 399000,
+      "minPrice": 319000,
+      "maxPrice": 399000,
+      "badges": [
+        "Sale"
+      ],
+      "colorwayCount": 3,
+      "colorFamilies": [
+        "Black",
+        "White",
+        "Pink"
+      ],
+      "swatches": [
+        {
+          "styleColor": "AX1010-010",
+          "hex": "#111111"
+        },
+        {
+          "styleColor": "AX1010-100",
+          "hex": "#F5F5F5"
+        },
+        {
+          "styleColor": "AX1010-650",
+          "hex": "#EC4899"
+        }
+      ],
+      "thumbnailUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Dri-FIT%20Ribbed%20Tank",
+      "hoverImageUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+      "defaultColorwayId": "AX1010-010",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "description": "Dri-FIT Ribbed Tank (Women's Training Top). Part of the AXIS range — engineered for everyday performance and comfort.",
+      "publishedAt": "2026-03-01"
+    },
+    {
+      "id": "AX-1011",
+      "slug": "heritage-boxy-tee",
+      "name": "Heritage Boxy Tee",
+      "subtitle": "Women's T-Shirt",
+      "brand": "AXIS",
+      "gender": "women",
+      "type": "T-Shirt",
+      "categoryId": "women-tees",
+      "categorySlug": "women-tees",
+      "collectionIds": [
+        "heritage"
+      ],
+      "sizeScale": "apparel-alpha",
+      "basePrice": 459000,
+      "minPrice": 459000,
+      "maxPrice": 459000,
+      "badges": [
+        "Just In"
+      ],
+      "colorwayCount": 3,
+      "colorFamilies": [
+        "White",
+        "Neutral",
+        "Purple"
+      ],
+      "swatches": [
+        {
+          "styleColor": "AX1011-100",
+          "hex": "#F5F5F5"
+        },
+        {
+          "styleColor": "AX1011-200",
+          "hex": "#D6C7A1"
+        },
+        {
+          "styleColor": "AX1011-500",
+          "hex": "#7C3AED"
+        }
+      ],
+      "thumbnailUrl": "https://placehold.co/800x800/F5F5F5/ffffff/png?text=Heritage%20Boxy%20Tee",
+      "hoverImageUrl": "https://placehold.co/800x800/F5F5F5/ffffff/png?text=White%202",
+      "defaultColorwayId": "AX1011-100",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "description": "Heritage Boxy Tee (Women's T-Shirt). Part of the AXIS range — engineered for everyday performance and comfort.",
+      "publishedAt": "2026-05-22"
+    },
+    {
+      "id": "AX-1012",
+      "slug": "universa-high-waist-legging",
+      "name": "Universa High-Waist Legging",
+      "subtitle": "Women's Leggings",
+      "brand": "AXIS",
+      "gender": "women",
+      "type": "Leggings",
+      "categoryId": "women-leggings",
+      "categorySlug": "women-leggings",
+      "collectionIds": [
+        "pro-training"
+      ],
+      "sizeScale": "apparel-alpha",
+      "basePrice": 899000,
+      "minPrice": 719000,
+      "maxPrice": 899000,
+      "badges": [
+        "Just In",
+        "Sale"
+      ],
+      "colorwayCount": 4,
+      "colorFamilies": [
+        "Black",
+        "Blue",
+        "Green",
+        "Purple"
+      ],
+      "swatches": [
+        {
+          "styleColor": "AX1012-010",
+          "hex": "#111111"
+        },
+        {
+          "styleColor": "AX1012-410",
+          "hex": "#1E293B"
+        },
+        {
+          "styleColor": "AX1012-320",
+          "hex": "#4D7C0F"
+        },
+        {
+          "styleColor": "AX1012-500",
+          "hex": "#7C3AED"
+        }
+      ],
+      "thumbnailUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Universa%20High-Waist%20Legging",
+      "hoverImageUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+      "defaultColorwayId": "AX1012-010",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "description": "Universa High-Waist Legging (Women's Leggings). Part of the AXIS range — engineered for everyday performance and comfort.",
+      "publishedAt": "2026-06-19"
+    },
+    {
+      "id": "AX-1013",
+      "slug": "fast-running-legging",
+      "name": "Fast Running Legging",
+      "subtitle": "Women's Tights",
+      "brand": "AXIS",
+      "gender": "women",
+      "type": "Tights",
+      "categoryId": "women-leggings",
+      "categorySlug": "women-leggings",
+      "collectionIds": [
+        "pro-training"
+      ],
+      "sizeScale": "apparel-alpha",
+      "basePrice": 749000,
+      "minPrice": 749000,
+      "maxPrice": 749000,
+      "badges": [],
+      "colorwayCount": 2,
+      "colorFamilies": [
+        "Black",
+        "Grey"
+      ],
+      "swatches": [
+        {
+          "styleColor": "AX1013-010",
+          "hex": "#111111"
+        },
+        {
+          "styleColor": "AX1013-070",
+          "hex": "#9CA3AF"
+        }
+      ],
+      "thumbnailUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Fast%20Running%20Legging",
+      "hoverImageUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+      "defaultColorwayId": "AX1013-010",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "description": "Fast Running Legging (Women's Tights). Part of the AXIS range — engineered for everyday performance and comfort.",
+      "publishedAt": "2026-01-28"
+    },
+    {
+      "id": "AX-1014",
+      "slug": "air-zoom-trainer",
+      "name": "Air Zoom Trainer",
+      "subtitle": "Women's Road Running Shoes",
+      "brand": "AXIS",
+      "gender": "women",
+      "type": "Shoes",
+      "categoryId": "women-shoes",
+      "categorySlug": "women-shoes",
+      "collectionIds": [
+        "pro-training"
+      ],
+      "sizeScale": "shoe-eu",
+      "basePrice": 1890000,
+      "minPrice": 1890000,
+      "maxPrice": 1890000,
+      "badges": [],
+      "colorwayCount": 3,
+      "colorFamilies": [
+        "White",
+        "Pink",
+        "Black"
+      ],
+      "swatches": [
+        {
+          "styleColor": "AX1014-100",
+          "hex": "#F5F5F5"
+        },
+        {
+          "styleColor": "AX1014-650",
+          "hex": "#EC4899"
+        },
+        {
+          "styleColor": "AX1014-010",
+          "hex": "#111111"
+        }
+      ],
+      "thumbnailUrl": "https://placehold.co/800x800/F5F5F5/ffffff/png?text=Air%20Zoom%20Trainer",
+      "hoverImageUrl": "https://placehold.co/800x800/F5F5F5/ffffff/png?text=White%202",
+      "defaultColorwayId": "AX1014-100",
+      "sizes": [
+        "38",
+        "39",
+        "40",
+        "41",
+        "42",
+        "43",
+        "44",
+        "45"
+      ],
+      "description": "Air Zoom Trainer (Women's Road Running Shoes). Part of the AXIS range — engineered for everyday performance and comfort.",
+      "publishedAt": "2026-02-13"
+    },
+    {
+      "id": "AX-1015",
+      "slug": "kids-tech-fleece-hoodie",
+      "name": "Kids Tech Fleece Hoodie",
+      "subtitle": "Older Kids' Hoodie",
+      "brand": "AXIS",
+      "gender": "kids",
+      "type": "Hoodie",
+      "categoryId": "kids-hoodies",
+      "categorySlug": "kids-hoodies",
+      "collectionIds": [
+        "tech-fleece"
+      ],
+      "sizeScale": "kids-apparel",
+      "basePrice": 799000,
+      "minPrice": 799000,
+      "maxPrice": 799000,
+      "badges": [
+        "Bestseller"
+      ],
+      "colorwayCount": 3,
+      "colorFamilies": [
+        "Black",
+        "Blue",
+        "Red"
+      ],
+      "swatches": [
+        {
+          "styleColor": "AX1015-010",
+          "hex": "#111111"
+        },
+        {
+          "styleColor": "AX1015-430",
+          "hex": "#2563EB"
+        },
+        {
+          "styleColor": "AX1015-600",
+          "hex": "#DC2626"
+        }
+      ],
+      "thumbnailUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Kids%20Tech%20Fleece%20Hoodie",
+      "hoverImageUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+      "defaultColorwayId": "AX1015-010",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "description": "Kids Tech Fleece Hoodie (Older Kids' Hoodie). Part of the AXIS range — engineered for everyday performance and comfort.",
+      "publishedAt": "2026-02-19"
+    },
+    {
+      "id": "AX-1016",
+      "slug": "kids-sportswear-crew",
+      "name": "Kids Sportswear Crew",
+      "subtitle": "Younger Kids' Sweatshirt",
+      "brand": "AXIS",
+      "gender": "kids",
+      "type": "Sweatshirt",
+      "categoryId": "kids-hoodies",
+      "categorySlug": "kids-hoodies",
+      "collectionIds": [
+        "essentials"
+      ],
+      "sizeScale": "kids-apparel",
+      "basePrice": 549000,
+      "minPrice": 439000,
+      "maxPrice": 549000,
+      "badges": [
+        "Sale"
+      ],
+      "colorwayCount": 3,
+      "colorFamilies": [
+        "Grey",
+        "Green",
+        "Pink"
+      ],
+      "swatches": [
+        {
+          "styleColor": "AX1016-070",
+          "hex": "#9CA3AF"
+        },
+        {
+          "styleColor": "AX1016-300",
+          "hex": "#16A34A"
+        },
+        {
+          "styleColor": "AX1016-650",
+          "hex": "#EC4899"
+        }
+      ],
+      "thumbnailUrl": "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Kids%20Sportswear%20Crew",
+      "hoverImageUrl": "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Grey%202",
+      "defaultColorwayId": "AX1016-070",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "description": "Kids Sportswear Crew (Younger Kids' Sweatshirt). Part of the AXIS range — engineered for everyday performance and comfort.",
+      "publishedAt": "2026-01-14"
+    },
+    {
+      "id": "AX-1017",
+      "slug": "kids-graphic-tee-2-pack",
+      "name": "Kids Graphic Tee 2-Pack",
+      "subtitle": "Kids' T-Shirt",
+      "brand": "AXIS",
+      "gender": "kids",
+      "type": "T-Shirt",
+      "categoryId": "kids-tees",
+      "categorySlug": "kids-tees",
+      "collectionIds": [
+        "essentials"
+      ],
+      "sizeScale": "kids-apparel",
+      "basePrice": 349000,
+      "minPrice": 279000,
+      "maxPrice": 349000,
+      "badges": [
+        "Just In",
+        "Sale"
+      ],
+      "colorwayCount": 3,
+      "colorFamilies": [
+        "White",
+        "Black",
+        "Orange"
+      ],
+      "swatches": [
+        {
+          "styleColor": "AX1017-100",
+          "hex": "#F5F5F5"
+        },
+        {
+          "styleColor": "AX1017-010",
+          "hex": "#111111"
+        },
+        {
+          "styleColor": "AX1017-800",
+          "hex": "#EA580C"
+        }
+      ],
+      "thumbnailUrl": "https://placehold.co/800x800/F5F5F5/ffffff/png?text=Kids%20Graphic%20Tee%202-Pack",
+      "hoverImageUrl": "https://placehold.co/800x800/F5F5F5/ffffff/png?text=White%202",
+      "defaultColorwayId": "AX1017-100",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "description": "Kids Graphic Tee 2-Pack (Kids' T-Shirt). Part of the AXIS range — engineered for everyday performance and comfort.",
+      "publishedAt": "2026-04-25"
+    },
+    {
+      "id": "AX-1018",
+      "slug": "kids-revolution-sneaker",
+      "name": "Kids Revolution Sneaker",
+      "subtitle": "Younger Kids' Shoes",
+      "brand": "AXIS",
+      "gender": "kids",
+      "type": "Shoes",
+      "categoryId": "kids-shoes",
+      "categorySlug": "kids-shoes",
+      "collectionIds": [
+        "pro-training"
+      ],
+      "sizeScale": "shoe-eu",
+      "basePrice": 749000,
+      "minPrice": 749000,
+      "maxPrice": 749000,
+      "badges": [
+        "Just In"
+      ],
+      "colorwayCount": 3,
+      "colorFamilies": [
+        "Black",
+        "Blue",
+        "Pink"
+      ],
+      "swatches": [
+        {
+          "styleColor": "AX1018-010",
+          "hex": "#111111"
+        },
+        {
+          "styleColor": "AX1018-430",
+          "hex": "#2563EB"
+        },
+        {
+          "styleColor": "AX1018-650",
+          "hex": "#EC4899"
+        }
+      ],
+      "thumbnailUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Kids%20Revolution%20Sneaker",
+      "hoverImageUrl": "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+      "defaultColorwayId": "AX1018-010",
+      "sizes": [
+        "38",
+        "39",
+        "40",
+        "41",
+        "42",
+        "43",
+        "44",
+        "45"
+      ],
+      "description": "Kids Revolution Sneaker (Younger Kids' Shoes). Part of the AXIS range — engineered for everyday performance and comfort.",
+      "publishedAt": "2026-04-18"
+    }
+  ],
+  "colorways": [
+    {
+      "id": "AX1001-010",
+      "productId": "AX-1001",
+      "styleColor": "AX1001-010",
+      "name": "Sportswear Tech Fleece Hoodie — Black",
+      "colorFamily": "Black",
+      "swatchHex": "#111111",
+      "price": 1590000,
+      "isDefault": true,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/111111/ffffff/png?text=Sportswear%20Tech%20Fleece%20Hoodie",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%203"
+      ]
+    },
+    {
+      "id": "AX1001-070",
+      "productId": "AX-1001",
+      "styleColor": "AX1001-070",
+      "name": "Sportswear Tech Fleece Hoodie — Grey",
+      "colorFamily": "Grey",
+      "swatchHex": "#9CA3AF",
+      "price": 1590000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Sportswear%20Tech%20Fleece%20Hoodie",
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Grey%202",
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Grey%203"
+      ]
+    },
+    {
+      "id": "AX1001-410",
+      "productId": "AX-1001",
+      "styleColor": "AX1001-410",
+      "name": "Sportswear Tech Fleece Hoodie — Navy",
+      "colorFamily": "Blue",
+      "swatchHex": "#1E293B",
+      "price": 1590000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/1E293B/ffffff/png?text=Sportswear%20Tech%20Fleece%20Hoodie",
+        "https://placehold.co/800x800/1E293B/ffffff/png?text=Navy%202",
+        "https://placehold.co/800x800/1E293B/ffffff/png?text=Navy%203"
+      ]
+    },
+    {
+      "id": "AX1001-320",
+      "productId": "AX-1001",
+      "styleColor": "AX1001-320",
+      "name": "Sportswear Tech Fleece Hoodie — Olive",
+      "colorFamily": "Green",
+      "swatchHex": "#4D7C0F",
+      "price": 1590000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/4D7C0F/ffffff/png?text=Sportswear%20Tech%20Fleece%20Hoodie",
+        "https://placehold.co/800x800/4D7C0F/ffffff/png?text=Olive%202",
+        "https://placehold.co/800x800/4D7C0F/ffffff/png?text=Olive%203"
+      ]
+    },
+    {
+      "id": "AX1002-010",
+      "productId": "AX-1002",
+      "styleColor": "AX1002-010",
+      "name": "Club Fleece Pullover — Black",
+      "colorFamily": "Black",
+      "swatchHex": "#111111",
+      "price": 899000,
+      "isDefault": true,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/111111/ffffff/png?text=Club%20Fleece%20Pullover",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%203"
+      ]
+    },
+    {
+      "id": "AX1002-070",
+      "productId": "AX-1002",
+      "styleColor": "AX1002-070",
+      "name": "Club Fleece Pullover — Grey",
+      "colorFamily": "Grey",
+      "swatchHex": "#9CA3AF",
+      "price": 899000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Club%20Fleece%20Pullover",
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Grey%202",
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Grey%203"
+      ]
+    },
+    {
+      "id": "AX1002-200",
+      "productId": "AX-1002",
+      "styleColor": "AX1002-200",
+      "name": "Club Fleece Pullover — Beige",
+      "colorFamily": "Neutral",
+      "swatchHex": "#D6C7A1",
+      "price": 899000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/D6C7A1/ffffff/png?text=Club%20Fleece%20Pullover",
+        "https://placehold.co/800x800/D6C7A1/ffffff/png?text=Beige%202",
+        "https://placehold.co/800x800/D6C7A1/ffffff/png?text=Beige%203"
+      ]
+    },
+    {
+      "id": "AX1003-010",
+      "productId": "AX-1003",
+      "styleColor": "AX1003-010",
+      "name": "Dri-FIT Training Tee — Black",
+      "colorFamily": "Black",
+      "swatchHex": "#111111",
+      "price": 449000,
+      "isDefault": true,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/111111/ffffff/png?text=Dri-FIT%20Training%20Tee",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%203"
+      ]
+    },
+    {
+      "id": "AX1003-100",
+      "productId": "AX-1003",
+      "styleColor": "AX1003-100",
+      "name": "Dri-FIT Training Tee — White",
+      "colorFamily": "White",
+      "swatchHex": "#F5F5F5",
+      "price": 449000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=Dri-FIT%20Training%20Tee",
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=White%202",
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=White%203"
+      ]
+    },
+    {
+      "id": "AX1003-430",
+      "productId": "AX-1003",
+      "styleColor": "AX1003-430",
+      "name": "Dri-FIT Training Tee — Royal",
+      "colorFamily": "Blue",
+      "swatchHex": "#2563EB",
+      "price": 449000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/2563EB/ffffff/png?text=Dri-FIT%20Training%20Tee",
+        "https://placehold.co/800x800/2563EB/ffffff/png?text=Royal%202",
+        "https://placehold.co/800x800/2563EB/ffffff/png?text=Royal%203"
+      ]
+    },
+    {
+      "id": "AX1003-600",
+      "productId": "AX-1003",
+      "styleColor": "AX1003-600",
+      "name": "Dri-FIT Training Tee — Red",
+      "colorFamily": "Red",
+      "swatchHex": "#DC2626",
+      "price": 449000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/DC2626/ffffff/png?text=Dri-FIT%20Training%20Tee",
+        "https://placehold.co/800x800/DC2626/ffffff/png?text=Red%202",
+        "https://placehold.co/800x800/DC2626/ffffff/png?text=Red%203"
+      ]
+    },
+    {
+      "id": "AX1004-100",
+      "productId": "AX-1004",
+      "styleColor": "AX1004-100",
+      "name": "Heritage Graphic Tee — White",
+      "colorFamily": "White",
+      "swatchHex": "#F5F5F5",
+      "price": 499000,
+      "isDefault": true,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=Heritage%20Graphic%20Tee",
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=White%202",
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=White%203"
+      ]
+    },
+    {
+      "id": "AX1004-010",
+      "productId": "AX-1004",
+      "styleColor": "AX1004-010",
+      "name": "Heritage Graphic Tee — Black",
+      "colorFamily": "Black",
+      "swatchHex": "#111111",
+      "price": 499000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/111111/ffffff/png?text=Heritage%20Graphic%20Tee",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%203"
+      ]
+    },
+    {
+      "id": "AX1004-320",
+      "productId": "AX-1004",
+      "styleColor": "AX1004-320",
+      "name": "Heritage Graphic Tee — Olive",
+      "colorFamily": "Green",
+      "swatchHex": "#4D7C0F",
+      "price": 399000,
+      "isDefault": false,
+      "onSale": true,
+      "images": [
+        "https://placehold.co/800x800/4D7C0F/ffffff/png?text=Heritage%20Graphic%20Tee",
+        "https://placehold.co/800x800/4D7C0F/ffffff/png?text=Olive%202",
+        "https://placehold.co/800x800/4D7C0F/ffffff/png?text=Olive%203"
+      ]
+    },
+    {
+      "id": "AX1005-010",
+      "productId": "AX-1005",
+      "styleColor": "AX1005-010",
+      "name": "Tech Fleece Jogger — Black",
+      "colorFamily": "Black",
+      "swatchHex": "#111111",
+      "price": 1290000,
+      "isDefault": true,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/111111/ffffff/png?text=Tech%20Fleece%20Jogger",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%203"
+      ]
+    },
+    {
+      "id": "AX1005-070",
+      "productId": "AX-1005",
+      "styleColor": "AX1005-070",
+      "name": "Tech Fleece Jogger — Grey",
+      "colorFamily": "Grey",
+      "swatchHex": "#9CA3AF",
+      "price": 1290000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Tech%20Fleece%20Jogger",
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Grey%202",
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Grey%203"
+      ]
+    },
+    {
+      "id": "AX1005-410",
+      "productId": "AX-1005",
+      "styleColor": "AX1005-410",
+      "name": "Tech Fleece Jogger — Navy",
+      "colorFamily": "Blue",
+      "swatchHex": "#1E293B",
+      "price": 1290000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/1E293B/ffffff/png?text=Tech%20Fleece%20Jogger",
+        "https://placehold.co/800x800/1E293B/ffffff/png?text=Navy%202",
+        "https://placehold.co/800x800/1E293B/ffffff/png?text=Navy%203"
+      ]
+    },
+    {
+      "id": "AX1006-010",
+      "productId": "AX-1006",
+      "styleColor": "AX1006-010",
+      "name": "Pro Training Tights — Black",
+      "colorFamily": "Black",
+      "swatchHex": "#111111",
+      "price": 649000,
+      "isDefault": true,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/111111/ffffff/png?text=Pro%20Training%20Tights",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%203"
+      ]
+    },
+    {
+      "id": "AX1006-070",
+      "productId": "AX-1006",
+      "styleColor": "AX1006-070",
+      "name": "Pro Training Tights — Grey",
+      "colorFamily": "Grey",
+      "swatchHex": "#9CA3AF",
+      "price": 649000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Pro%20Training%20Tights",
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Grey%202",
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Grey%203"
+      ]
+    },
+    {
+      "id": "AX1007-010",
+      "productId": "AX-1007",
+      "styleColor": "AX1007-010",
+      "name": "Pegasus Trail Runner — Black",
+      "colorFamily": "Black",
+      "swatchHex": "#111111",
+      "price": 1990000,
+      "isDefault": true,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/111111/ffffff/png?text=Pegasus%20Trail%20Runner",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%203"
+      ]
+    },
+    {
+      "id": "AX1007-100",
+      "productId": "AX-1007",
+      "styleColor": "AX1007-100",
+      "name": "Pegasus Trail Runner — White",
+      "colorFamily": "White",
+      "swatchHex": "#F5F5F5",
+      "price": 1990000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=Pegasus%20Trail%20Runner",
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=White%202",
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=White%203"
+      ]
+    },
+    {
+      "id": "AX1007-430",
+      "productId": "AX-1007",
+      "styleColor": "AX1007-430",
+      "name": "Pegasus Trail Runner — Royal",
+      "colorFamily": "Blue",
+      "swatchHex": "#2563EB",
+      "price": 1990000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/2563EB/ffffff/png?text=Pegasus%20Trail%20Runner",
+        "https://placehold.co/800x800/2563EB/ffffff/png?text=Royal%202",
+        "https://placehold.co/800x800/2563EB/ffffff/png?text=Royal%203"
+      ]
+    },
+    {
+      "id": "AX1007-800",
+      "productId": "AX-1007",
+      "styleColor": "AX1007-800",
+      "name": "Pegasus Trail Runner — Orange",
+      "colorFamily": "Orange",
+      "swatchHex": "#EA580C",
+      "price": 1990000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/EA580C/ffffff/png?text=Pegasus%20Trail%20Runner",
+        "https://placehold.co/800x800/EA580C/ffffff/png?text=Orange%202",
+        "https://placehold.co/800x800/EA580C/ffffff/png?text=Orange%203"
+      ]
+    },
+    {
+      "id": "AX1008-010",
+      "productId": "AX-1008",
+      "styleColor": "AX1008-010",
+      "name": "Windrunner Jacket — Black",
+      "colorFamily": "Black",
+      "swatchHex": "#111111",
+      "price": 1490000,
+      "isDefault": true,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/111111/ffffff/png?text=Windrunner%20Jacket",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%203"
+      ]
+    },
+    {
+      "id": "AX1008-650",
+      "productId": "AX-1008",
+      "styleColor": "AX1008-650",
+      "name": "Windrunner Jacket — Pink",
+      "colorFamily": "Pink",
+      "swatchHex": "#EC4899",
+      "price": 1490000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/EC4899/ffffff/png?text=Windrunner%20Jacket",
+        "https://placehold.co/800x800/EC4899/ffffff/png?text=Pink%202",
+        "https://placehold.co/800x800/EC4899/ffffff/png?text=Pink%203"
+      ]
+    },
+    {
+      "id": "AX1008-200",
+      "productId": "AX-1008",
+      "styleColor": "AX1008-200",
+      "name": "Windrunner Jacket — Beige",
+      "colorFamily": "Neutral",
+      "swatchHex": "#D6C7A1",
+      "price": 1490000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/D6C7A1/ffffff/png?text=Windrunner%20Jacket",
+        "https://placehold.co/800x800/D6C7A1/ffffff/png?text=Beige%202",
+        "https://placehold.co/800x800/D6C7A1/ffffff/png?text=Beige%203"
+      ]
+    },
+    {
+      "id": "AX1008-500",
+      "productId": "AX-1008",
+      "styleColor": "AX1008-500",
+      "name": "Windrunner Jacket — Purple",
+      "colorFamily": "Purple",
+      "swatchHex": "#7C3AED",
+      "price": 1490000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/7C3AED/ffffff/png?text=Windrunner%20Jacket",
+        "https://placehold.co/800x800/7C3AED/ffffff/png?text=Purple%202",
+        "https://placehold.co/800x800/7C3AED/ffffff/png?text=Purple%203"
+      ]
+    },
+    {
+      "id": "AX1009-070",
+      "productId": "AX-1009",
+      "styleColor": "AX1009-070",
+      "name": "Sportswear Essential Crew — Grey",
+      "colorFamily": "Grey",
+      "swatchHex": "#9CA3AF",
+      "price": 849000,
+      "isDefault": true,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Sportswear%20Essential%20Crew",
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Grey%202",
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Grey%203"
+      ]
+    },
+    {
+      "id": "AX1009-650",
+      "productId": "AX-1009",
+      "styleColor": "AX1009-650",
+      "name": "Sportswear Essential Crew — Pink",
+      "colorFamily": "Pink",
+      "swatchHex": "#EC4899",
+      "price": 849000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/EC4899/ffffff/png?text=Sportswear%20Essential%20Crew",
+        "https://placehold.co/800x800/EC4899/ffffff/png?text=Pink%202",
+        "https://placehold.co/800x800/EC4899/ffffff/png?text=Pink%203"
+      ]
+    },
+    {
+      "id": "AX1009-100",
+      "productId": "AX-1009",
+      "styleColor": "AX1009-100",
+      "name": "Sportswear Essential Crew — White",
+      "colorFamily": "White",
+      "swatchHex": "#F5F5F5",
+      "price": 849000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=Sportswear%20Essential%20Crew",
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=White%202",
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=White%203"
+      ]
+    },
+    {
+      "id": "AX1010-010",
+      "productId": "AX-1010",
+      "styleColor": "AX1010-010",
+      "name": "Dri-FIT Ribbed Tank — Black",
+      "colorFamily": "Black",
+      "swatchHex": "#111111",
+      "price": 399000,
+      "isDefault": true,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/111111/ffffff/png?text=Dri-FIT%20Ribbed%20Tank",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%203"
+      ]
+    },
+    {
+      "id": "AX1010-100",
+      "productId": "AX-1010",
+      "styleColor": "AX1010-100",
+      "name": "Dri-FIT Ribbed Tank — White",
+      "colorFamily": "White",
+      "swatchHex": "#F5F5F5",
+      "price": 399000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=Dri-FIT%20Ribbed%20Tank",
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=White%202",
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=White%203"
+      ]
+    },
+    {
+      "id": "AX1010-650",
+      "productId": "AX-1010",
+      "styleColor": "AX1010-650",
+      "name": "Dri-FIT Ribbed Tank — Pink",
+      "colorFamily": "Pink",
+      "swatchHex": "#EC4899",
+      "price": 319000,
+      "isDefault": false,
+      "onSale": true,
+      "images": [
+        "https://placehold.co/800x800/EC4899/ffffff/png?text=Dri-FIT%20Ribbed%20Tank",
+        "https://placehold.co/800x800/EC4899/ffffff/png?text=Pink%202",
+        "https://placehold.co/800x800/EC4899/ffffff/png?text=Pink%203"
+      ]
+    },
+    {
+      "id": "AX1011-100",
+      "productId": "AX-1011",
+      "styleColor": "AX1011-100",
+      "name": "Heritage Boxy Tee — White",
+      "colorFamily": "White",
+      "swatchHex": "#F5F5F5",
+      "price": 459000,
+      "isDefault": true,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=Heritage%20Boxy%20Tee",
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=White%202",
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=White%203"
+      ]
+    },
+    {
+      "id": "AX1011-200",
+      "productId": "AX-1011",
+      "styleColor": "AX1011-200",
+      "name": "Heritage Boxy Tee — Beige",
+      "colorFamily": "Neutral",
+      "swatchHex": "#D6C7A1",
+      "price": 459000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/D6C7A1/ffffff/png?text=Heritage%20Boxy%20Tee",
+        "https://placehold.co/800x800/D6C7A1/ffffff/png?text=Beige%202",
+        "https://placehold.co/800x800/D6C7A1/ffffff/png?text=Beige%203"
+      ]
+    },
+    {
+      "id": "AX1011-500",
+      "productId": "AX-1011",
+      "styleColor": "AX1011-500",
+      "name": "Heritage Boxy Tee — Purple",
+      "colorFamily": "Purple",
+      "swatchHex": "#7C3AED",
+      "price": 459000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/7C3AED/ffffff/png?text=Heritage%20Boxy%20Tee",
+        "https://placehold.co/800x800/7C3AED/ffffff/png?text=Purple%202",
+        "https://placehold.co/800x800/7C3AED/ffffff/png?text=Purple%203"
+      ]
+    },
+    {
+      "id": "AX1012-010",
+      "productId": "AX-1012",
+      "styleColor": "AX1012-010",
+      "name": "Universa High-Waist Legging — Black",
+      "colorFamily": "Black",
+      "swatchHex": "#111111",
+      "price": 899000,
+      "isDefault": true,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/111111/ffffff/png?text=Universa%20High-Waist%20Legging",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%203"
+      ]
+    },
+    {
+      "id": "AX1012-410",
+      "productId": "AX-1012",
+      "styleColor": "AX1012-410",
+      "name": "Universa High-Waist Legging — Navy",
+      "colorFamily": "Blue",
+      "swatchHex": "#1E293B",
+      "price": 899000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/1E293B/ffffff/png?text=Universa%20High-Waist%20Legging",
+        "https://placehold.co/800x800/1E293B/ffffff/png?text=Navy%202",
+        "https://placehold.co/800x800/1E293B/ffffff/png?text=Navy%203"
+      ]
+    },
+    {
+      "id": "AX1012-320",
+      "productId": "AX-1012",
+      "styleColor": "AX1012-320",
+      "name": "Universa High-Waist Legging — Olive",
+      "colorFamily": "Green",
+      "swatchHex": "#4D7C0F",
+      "price": 899000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/4D7C0F/ffffff/png?text=Universa%20High-Waist%20Legging",
+        "https://placehold.co/800x800/4D7C0F/ffffff/png?text=Olive%202",
+        "https://placehold.co/800x800/4D7C0F/ffffff/png?text=Olive%203"
+      ]
+    },
+    {
+      "id": "AX1012-500",
+      "productId": "AX-1012",
+      "styleColor": "AX1012-500",
+      "name": "Universa High-Waist Legging — Purple",
+      "colorFamily": "Purple",
+      "swatchHex": "#7C3AED",
+      "price": 719000,
+      "isDefault": false,
+      "onSale": true,
+      "images": [
+        "https://placehold.co/800x800/7C3AED/ffffff/png?text=Universa%20High-Waist%20Legging",
+        "https://placehold.co/800x800/7C3AED/ffffff/png?text=Purple%202",
+        "https://placehold.co/800x800/7C3AED/ffffff/png?text=Purple%203"
+      ]
+    },
+    {
+      "id": "AX1013-010",
+      "productId": "AX-1013",
+      "styleColor": "AX1013-010",
+      "name": "Fast Running Legging — Black",
+      "colorFamily": "Black",
+      "swatchHex": "#111111",
+      "price": 749000,
+      "isDefault": true,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/111111/ffffff/png?text=Fast%20Running%20Legging",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%203"
+      ]
+    },
+    {
+      "id": "AX1013-070",
+      "productId": "AX-1013",
+      "styleColor": "AX1013-070",
+      "name": "Fast Running Legging — Grey",
+      "colorFamily": "Grey",
+      "swatchHex": "#9CA3AF",
+      "price": 749000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Fast%20Running%20Legging",
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Grey%202",
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Grey%203"
+      ]
+    },
+    {
+      "id": "AX1014-100",
+      "productId": "AX-1014",
+      "styleColor": "AX1014-100",
+      "name": "Air Zoom Trainer — White",
+      "colorFamily": "White",
+      "swatchHex": "#F5F5F5",
+      "price": 1890000,
+      "isDefault": true,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=Air%20Zoom%20Trainer",
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=White%202",
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=White%203"
+      ]
+    },
+    {
+      "id": "AX1014-650",
+      "productId": "AX-1014",
+      "styleColor": "AX1014-650",
+      "name": "Air Zoom Trainer — Pink",
+      "colorFamily": "Pink",
+      "swatchHex": "#EC4899",
+      "price": 1890000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/EC4899/ffffff/png?text=Air%20Zoom%20Trainer",
+        "https://placehold.co/800x800/EC4899/ffffff/png?text=Pink%202",
+        "https://placehold.co/800x800/EC4899/ffffff/png?text=Pink%203"
+      ]
+    },
+    {
+      "id": "AX1014-010",
+      "productId": "AX-1014",
+      "styleColor": "AX1014-010",
+      "name": "Air Zoom Trainer — Black",
+      "colorFamily": "Black",
+      "swatchHex": "#111111",
+      "price": 1890000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/111111/ffffff/png?text=Air%20Zoom%20Trainer",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%203"
+      ]
+    },
+    {
+      "id": "AX1015-010",
+      "productId": "AX-1015",
+      "styleColor": "AX1015-010",
+      "name": "Kids Tech Fleece Hoodie — Black",
+      "colorFamily": "Black",
+      "swatchHex": "#111111",
+      "price": 799000,
+      "isDefault": true,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/111111/ffffff/png?text=Kids%20Tech%20Fleece%20Hoodie",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%203"
+      ]
+    },
+    {
+      "id": "AX1015-430",
+      "productId": "AX-1015",
+      "styleColor": "AX1015-430",
+      "name": "Kids Tech Fleece Hoodie — Royal",
+      "colorFamily": "Blue",
+      "swatchHex": "#2563EB",
+      "price": 799000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/2563EB/ffffff/png?text=Kids%20Tech%20Fleece%20Hoodie",
+        "https://placehold.co/800x800/2563EB/ffffff/png?text=Royal%202",
+        "https://placehold.co/800x800/2563EB/ffffff/png?text=Royal%203"
+      ]
+    },
+    {
+      "id": "AX1015-600",
+      "productId": "AX-1015",
+      "styleColor": "AX1015-600",
+      "name": "Kids Tech Fleece Hoodie — Red",
+      "colorFamily": "Red",
+      "swatchHex": "#DC2626",
+      "price": 799000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/DC2626/ffffff/png?text=Kids%20Tech%20Fleece%20Hoodie",
+        "https://placehold.co/800x800/DC2626/ffffff/png?text=Red%202",
+        "https://placehold.co/800x800/DC2626/ffffff/png?text=Red%203"
+      ]
+    },
+    {
+      "id": "AX1016-070",
+      "productId": "AX-1016",
+      "styleColor": "AX1016-070",
+      "name": "Kids Sportswear Crew — Grey",
+      "colorFamily": "Grey",
+      "swatchHex": "#9CA3AF",
+      "price": 549000,
+      "isDefault": true,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Kids%20Sportswear%20Crew",
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Grey%202",
+        "https://placehold.co/800x800/9CA3AF/ffffff/png?text=Grey%203"
+      ]
+    },
+    {
+      "id": "AX1016-300",
+      "productId": "AX-1016",
+      "styleColor": "AX1016-300",
+      "name": "Kids Sportswear Crew — Green",
+      "colorFamily": "Green",
+      "swatchHex": "#16A34A",
+      "price": 549000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/16A34A/ffffff/png?text=Kids%20Sportswear%20Crew",
+        "https://placehold.co/800x800/16A34A/ffffff/png?text=Green%202",
+        "https://placehold.co/800x800/16A34A/ffffff/png?text=Green%203"
+      ]
+    },
+    {
+      "id": "AX1016-650",
+      "productId": "AX-1016",
+      "styleColor": "AX1016-650",
+      "name": "Kids Sportswear Crew — Pink",
+      "colorFamily": "Pink",
+      "swatchHex": "#EC4899",
+      "price": 439000,
+      "isDefault": false,
+      "onSale": true,
+      "images": [
+        "https://placehold.co/800x800/EC4899/ffffff/png?text=Kids%20Sportswear%20Crew",
+        "https://placehold.co/800x800/EC4899/ffffff/png?text=Pink%202",
+        "https://placehold.co/800x800/EC4899/ffffff/png?text=Pink%203"
+      ]
+    },
+    {
+      "id": "AX1017-100",
+      "productId": "AX-1017",
+      "styleColor": "AX1017-100",
+      "name": "Kids Graphic Tee 2-Pack — White",
+      "colorFamily": "White",
+      "swatchHex": "#F5F5F5",
+      "price": 349000,
+      "isDefault": true,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=Kids%20Graphic%20Tee%202-Pack",
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=White%202",
+        "https://placehold.co/800x800/F5F5F5/ffffff/png?text=White%203"
+      ]
+    },
+    {
+      "id": "AX1017-010",
+      "productId": "AX-1017",
+      "styleColor": "AX1017-010",
+      "name": "Kids Graphic Tee 2-Pack — Black",
+      "colorFamily": "Black",
+      "swatchHex": "#111111",
+      "price": 349000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/111111/ffffff/png?text=Kids%20Graphic%20Tee%202-Pack",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%203"
+      ]
+    },
+    {
+      "id": "AX1017-800",
+      "productId": "AX-1017",
+      "styleColor": "AX1017-800",
+      "name": "Kids Graphic Tee 2-Pack — Orange",
+      "colorFamily": "Orange",
+      "swatchHex": "#EA580C",
+      "price": 279000,
+      "isDefault": false,
+      "onSale": true,
+      "images": [
+        "https://placehold.co/800x800/EA580C/ffffff/png?text=Kids%20Graphic%20Tee%202-Pack",
+        "https://placehold.co/800x800/EA580C/ffffff/png?text=Orange%202",
+        "https://placehold.co/800x800/EA580C/ffffff/png?text=Orange%203"
+      ]
+    },
+    {
+      "id": "AX1018-010",
+      "productId": "AX-1018",
+      "styleColor": "AX1018-010",
+      "name": "Kids Revolution Sneaker — Black",
+      "colorFamily": "Black",
+      "swatchHex": "#111111",
+      "price": 749000,
+      "isDefault": true,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/111111/ffffff/png?text=Kids%20Revolution%20Sneaker",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%202",
+        "https://placehold.co/800x800/111111/ffffff/png?text=Black%203"
+      ]
+    },
+    {
+      "id": "AX1018-430",
+      "productId": "AX-1018",
+      "styleColor": "AX1018-430",
+      "name": "Kids Revolution Sneaker — Royal",
+      "colorFamily": "Blue",
+      "swatchHex": "#2563EB",
+      "price": 749000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/2563EB/ffffff/png?text=Kids%20Revolution%20Sneaker",
+        "https://placehold.co/800x800/2563EB/ffffff/png?text=Royal%202",
+        "https://placehold.co/800x800/2563EB/ffffff/png?text=Royal%203"
+      ]
+    },
+    {
+      "id": "AX1018-650",
+      "productId": "AX-1018",
+      "styleColor": "AX1018-650",
+      "name": "Kids Revolution Sneaker — Pink",
+      "colorFamily": "Pink",
+      "swatchHex": "#EC4899",
+      "price": 749000,
+      "isDefault": false,
+      "onSale": false,
+      "images": [
+        "https://placehold.co/800x800/EC4899/ffffff/png?text=Kids%20Revolution%20Sneaker",
+        "https://placehold.co/800x800/EC4899/ffffff/png?text=Pink%202",
+        "https://placehold.co/800x800/EC4899/ffffff/png?text=Pink%203"
+      ]
+    }
+  ],
+  "skus": [
+    {
+      "id": "AX1001-010-XS",
+      "colorwayId": "AX1001-010",
+      "productId": "AX-1001",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 37,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-010-S",
+      "colorwayId": "AX1001-010",
+      "productId": "AX-1001",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 5,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-010-M",
+      "colorwayId": "AX1001-010",
+      "productId": "AX-1001",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 13,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-010-L",
+      "colorwayId": "AX1001-010",
+      "productId": "AX-1001",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 16,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-010-XL",
+      "colorwayId": "AX1001-010",
+      "productId": "AX-1001",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 3,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-010-XXL",
+      "colorwayId": "AX1001-010",
+      "productId": "AX-1001",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 1,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-070-XS",
+      "colorwayId": "AX1001-070",
+      "productId": "AX-1001",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 26,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-070-S",
+      "colorwayId": "AX1001-070",
+      "productId": "AX-1001",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 7,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-070-M",
+      "colorwayId": "AX1001-070",
+      "productId": "AX-1001",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 23,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-070-L",
+      "colorwayId": "AX1001-070",
+      "productId": "AX-1001",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 24,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-070-XL",
+      "colorwayId": "AX1001-070",
+      "productId": "AX-1001",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 27,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-070-XXL",
+      "colorwayId": "AX1001-070",
+      "productId": "AX-1001",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 7,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-410-XS",
+      "colorwayId": "AX1001-410",
+      "productId": "AX-1001",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 40,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-410-S",
+      "colorwayId": "AX1001-410",
+      "productId": "AX-1001",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 20,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-410-M",
+      "colorwayId": "AX1001-410",
+      "productId": "AX-1001",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 16,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-410-L",
+      "colorwayId": "AX1001-410",
+      "productId": "AX-1001",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 20,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-410-XL",
+      "colorwayId": "AX1001-410",
+      "productId": "AX-1001",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 8,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-410-XXL",
+      "colorwayId": "AX1001-410",
+      "productId": "AX-1001",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 31,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-320-XS",
+      "colorwayId": "AX1001-320",
+      "productId": "AX-1001",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 12,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-320-S",
+      "colorwayId": "AX1001-320",
+      "productId": "AX-1001",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 27,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-320-M",
+      "colorwayId": "AX1001-320",
+      "productId": "AX-1001",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 34,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-320-L",
+      "colorwayId": "AX1001-320",
+      "productId": "AX-1001",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 14,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-320-XL",
+      "colorwayId": "AX1001-320",
+      "productId": "AX-1001",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 1590000
+    },
+    {
+      "id": "AX1001-320-XXL",
+      "colorwayId": "AX1001-320",
+      "productId": "AX-1001",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 28,
+      "price": 1590000
+    },
+    {
+      "id": "AX1002-010-XS",
+      "colorwayId": "AX1002-010",
+      "productId": "AX-1002",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 27,
+      "price": 899000
+    },
+    {
+      "id": "AX1002-010-S",
+      "colorwayId": "AX1002-010",
+      "productId": "AX-1002",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 39,
+      "price": 899000
+    },
+    {
+      "id": "AX1002-010-M",
+      "colorwayId": "AX1002-010",
+      "productId": "AX-1002",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 1,
+      "price": 899000
+    },
+    {
+      "id": "AX1002-010-L",
+      "colorwayId": "AX1002-010",
+      "productId": "AX-1002",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 37,
+      "price": 899000
+    },
+    {
+      "id": "AX1002-010-XL",
+      "colorwayId": "AX1002-010",
+      "productId": "AX-1002",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 35,
+      "price": 899000
+    },
+    {
+      "id": "AX1002-010-XXL",
+      "colorwayId": "AX1002-010",
+      "productId": "AX-1002",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 899000
+    },
+    {
+      "id": "AX1002-070-XS",
+      "colorwayId": "AX1002-070",
+      "productId": "AX-1002",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 35,
+      "price": 899000
+    },
+    {
+      "id": "AX1002-070-S",
+      "colorwayId": "AX1002-070",
+      "productId": "AX-1002",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 9,
+      "price": 899000
+    },
+    {
+      "id": "AX1002-070-M",
+      "colorwayId": "AX1002-070",
+      "productId": "AX-1002",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 14,
+      "price": 899000
+    },
+    {
+      "id": "AX1002-070-L",
+      "colorwayId": "AX1002-070",
+      "productId": "AX-1002",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 28,
+      "price": 899000
+    },
+    {
+      "id": "AX1002-070-XL",
+      "colorwayId": "AX1002-070",
+      "productId": "AX-1002",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 6,
+      "price": 899000
+    },
+    {
+      "id": "AX1002-070-XXL",
+      "colorwayId": "AX1002-070",
+      "productId": "AX-1002",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 18,
+      "price": 899000
+    },
+    {
+      "id": "AX1002-200-XS",
+      "colorwayId": "AX1002-200",
+      "productId": "AX-1002",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 899000
+    },
+    {
+      "id": "AX1002-200-S",
+      "colorwayId": "AX1002-200",
+      "productId": "AX-1002",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 24,
+      "price": 899000
+    },
+    {
+      "id": "AX1002-200-M",
+      "colorwayId": "AX1002-200",
+      "productId": "AX-1002",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 10,
+      "price": 899000
+    },
+    {
+      "id": "AX1002-200-L",
+      "colorwayId": "AX1002-200",
+      "productId": "AX-1002",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 899000
+    },
+    {
+      "id": "AX1002-200-XL",
+      "colorwayId": "AX1002-200",
+      "productId": "AX-1002",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 23,
+      "price": 899000
+    },
+    {
+      "id": "AX1002-200-XXL",
+      "colorwayId": "AX1002-200",
+      "productId": "AX-1002",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 12,
+      "price": 899000
+    },
+    {
+      "id": "AX1003-010-XS",
+      "colorwayId": "AX1003-010",
+      "productId": "AX-1003",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-010-S",
+      "colorwayId": "AX1003-010",
+      "productId": "AX-1003",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 12,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-010-M",
+      "colorwayId": "AX1003-010",
+      "productId": "AX-1003",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 31,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-010-L",
+      "colorwayId": "AX1003-010",
+      "productId": "AX-1003",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 2,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-010-XL",
+      "colorwayId": "AX1003-010",
+      "productId": "AX-1003",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 2,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-010-XXL",
+      "colorwayId": "AX1003-010",
+      "productId": "AX-1003",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 28,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-100-XS",
+      "colorwayId": "AX1003-100",
+      "productId": "AX-1003",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-100-S",
+      "colorwayId": "AX1003-100",
+      "productId": "AX-1003",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 21,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-100-M",
+      "colorwayId": "AX1003-100",
+      "productId": "AX-1003",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 29,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-100-L",
+      "colorwayId": "AX1003-100",
+      "productId": "AX-1003",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 15,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-100-XL",
+      "colorwayId": "AX1003-100",
+      "productId": "AX-1003",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 33,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-100-XXL",
+      "colorwayId": "AX1003-100",
+      "productId": "AX-1003",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 19,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-430-XS",
+      "colorwayId": "AX1003-430",
+      "productId": "AX-1003",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 13,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-430-S",
+      "colorwayId": "AX1003-430",
+      "productId": "AX-1003",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 20,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-430-M",
+      "colorwayId": "AX1003-430",
+      "productId": "AX-1003",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 24,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-430-L",
+      "colorwayId": "AX1003-430",
+      "productId": "AX-1003",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 25,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-430-XL",
+      "colorwayId": "AX1003-430",
+      "productId": "AX-1003",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 24,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-430-XXL",
+      "colorwayId": "AX1003-430",
+      "productId": "AX-1003",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-600-XS",
+      "colorwayId": "AX1003-600",
+      "productId": "AX-1003",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 12,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-600-S",
+      "colorwayId": "AX1003-600",
+      "productId": "AX-1003",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 37,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-600-M",
+      "colorwayId": "AX1003-600",
+      "productId": "AX-1003",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 30,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-600-L",
+      "colorwayId": "AX1003-600",
+      "productId": "AX-1003",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 32,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-600-XL",
+      "colorwayId": "AX1003-600",
+      "productId": "AX-1003",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 31,
+      "price": 449000
+    },
+    {
+      "id": "AX1003-600-XXL",
+      "colorwayId": "AX1003-600",
+      "productId": "AX-1003",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 21,
+      "price": 449000
+    },
+    {
+      "id": "AX1004-100-XS",
+      "colorwayId": "AX1004-100",
+      "productId": "AX-1004",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 7,
+      "price": 499000
+    },
+    {
+      "id": "AX1004-100-S",
+      "colorwayId": "AX1004-100",
+      "productId": "AX-1004",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 26,
+      "price": 499000
+    },
+    {
+      "id": "AX1004-100-M",
+      "colorwayId": "AX1004-100",
+      "productId": "AX-1004",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 499000
+    },
+    {
+      "id": "AX1004-100-L",
+      "colorwayId": "AX1004-100",
+      "productId": "AX-1004",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 34,
+      "price": 499000
+    },
+    {
+      "id": "AX1004-100-XL",
+      "colorwayId": "AX1004-100",
+      "productId": "AX-1004",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 35,
+      "price": 499000
+    },
+    {
+      "id": "AX1004-100-XXL",
+      "colorwayId": "AX1004-100",
+      "productId": "AX-1004",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 499000
+    },
+    {
+      "id": "AX1004-010-XS",
+      "colorwayId": "AX1004-010",
+      "productId": "AX-1004",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 6,
+      "price": 499000
+    },
+    {
+      "id": "AX1004-010-S",
+      "colorwayId": "AX1004-010",
+      "productId": "AX-1004",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 499000
+    },
+    {
+      "id": "AX1004-010-M",
+      "colorwayId": "AX1004-010",
+      "productId": "AX-1004",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 25,
+      "price": 499000
+    },
+    {
+      "id": "AX1004-010-L",
+      "colorwayId": "AX1004-010",
+      "productId": "AX-1004",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 18,
+      "price": 499000
+    },
+    {
+      "id": "AX1004-010-XL",
+      "colorwayId": "AX1004-010",
+      "productId": "AX-1004",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 30,
+      "price": 499000
+    },
+    {
+      "id": "AX1004-010-XXL",
+      "colorwayId": "AX1004-010",
+      "productId": "AX-1004",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 22,
+      "price": 499000
+    },
+    {
+      "id": "AX1004-320-XS",
+      "colorwayId": "AX1004-320",
+      "productId": "AX-1004",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 16,
+      "price": 399000
+    },
+    {
+      "id": "AX1004-320-S",
+      "colorwayId": "AX1004-320",
+      "productId": "AX-1004",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 33,
+      "price": 399000
+    },
+    {
+      "id": "AX1004-320-M",
+      "colorwayId": "AX1004-320",
+      "productId": "AX-1004",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 2,
+      "price": 399000
+    },
+    {
+      "id": "AX1004-320-L",
+      "colorwayId": "AX1004-320",
+      "productId": "AX-1004",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 33,
+      "price": 399000
+    },
+    {
+      "id": "AX1004-320-XL",
+      "colorwayId": "AX1004-320",
+      "productId": "AX-1004",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 28,
+      "price": 399000
+    },
+    {
+      "id": "AX1004-320-XXL",
+      "colorwayId": "AX1004-320",
+      "productId": "AX-1004",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 399000
+    },
+    {
+      "id": "AX1005-010-XS",
+      "colorwayId": "AX1005-010",
+      "productId": "AX-1005",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 34,
+      "price": 1290000
+    },
+    {
+      "id": "AX1005-010-S",
+      "colorwayId": "AX1005-010",
+      "productId": "AX-1005",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 5,
+      "price": 1290000
+    },
+    {
+      "id": "AX1005-010-M",
+      "colorwayId": "AX1005-010",
+      "productId": "AX-1005",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 18,
+      "price": 1290000
+    },
+    {
+      "id": "AX1005-010-L",
+      "colorwayId": "AX1005-010",
+      "productId": "AX-1005",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 15,
+      "price": 1290000
+    },
+    {
+      "id": "AX1005-010-XL",
+      "colorwayId": "AX1005-010",
+      "productId": "AX-1005",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 22,
+      "price": 1290000
+    },
+    {
+      "id": "AX1005-010-XXL",
+      "colorwayId": "AX1005-010",
+      "productId": "AX-1005",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 8,
+      "price": 1290000
+    },
+    {
+      "id": "AX1005-070-XS",
+      "colorwayId": "AX1005-070",
+      "productId": "AX-1005",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 27,
+      "price": 1290000
+    },
+    {
+      "id": "AX1005-070-S",
+      "colorwayId": "AX1005-070",
+      "productId": "AX-1005",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 29,
+      "price": 1290000
+    },
+    {
+      "id": "AX1005-070-M",
+      "colorwayId": "AX1005-070",
+      "productId": "AX-1005",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 9,
+      "price": 1290000
+    },
+    {
+      "id": "AX1005-070-L",
+      "colorwayId": "AX1005-070",
+      "productId": "AX-1005",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 36,
+      "price": 1290000
+    },
+    {
+      "id": "AX1005-070-XL",
+      "colorwayId": "AX1005-070",
+      "productId": "AX-1005",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 19,
+      "price": 1290000
+    },
+    {
+      "id": "AX1005-070-XXL",
+      "colorwayId": "AX1005-070",
+      "productId": "AX-1005",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 1290000
+    },
+    {
+      "id": "AX1005-410-XS",
+      "colorwayId": "AX1005-410",
+      "productId": "AX-1005",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 30,
+      "price": 1290000
+    },
+    {
+      "id": "AX1005-410-S",
+      "colorwayId": "AX1005-410",
+      "productId": "AX-1005",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 9,
+      "price": 1290000
+    },
+    {
+      "id": "AX1005-410-M",
+      "colorwayId": "AX1005-410",
+      "productId": "AX-1005",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 35,
+      "price": 1290000
+    },
+    {
+      "id": "AX1005-410-L",
+      "colorwayId": "AX1005-410",
+      "productId": "AX-1005",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 19,
+      "price": 1290000
+    },
+    {
+      "id": "AX1005-410-XL",
+      "colorwayId": "AX1005-410",
+      "productId": "AX-1005",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 1290000
+    },
+    {
+      "id": "AX1005-410-XXL",
+      "colorwayId": "AX1005-410",
+      "productId": "AX-1005",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 40,
+      "price": 1290000
+    },
+    {
+      "id": "AX1006-010-XS",
+      "colorwayId": "AX1006-010",
+      "productId": "AX-1006",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 25,
+      "price": 649000
+    },
+    {
+      "id": "AX1006-010-S",
+      "colorwayId": "AX1006-010",
+      "productId": "AX-1006",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 1,
+      "price": 649000
+    },
+    {
+      "id": "AX1006-010-M",
+      "colorwayId": "AX1006-010",
+      "productId": "AX-1006",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 16,
+      "price": 649000
+    },
+    {
+      "id": "AX1006-010-L",
+      "colorwayId": "AX1006-010",
+      "productId": "AX-1006",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 5,
+      "price": 649000
+    },
+    {
+      "id": "AX1006-010-XL",
+      "colorwayId": "AX1006-010",
+      "productId": "AX-1006",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 25,
+      "price": 649000
+    },
+    {
+      "id": "AX1006-010-XXL",
+      "colorwayId": "AX1006-010",
+      "productId": "AX-1006",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 22,
+      "price": 649000
+    },
+    {
+      "id": "AX1006-070-XS",
+      "colorwayId": "AX1006-070",
+      "productId": "AX-1006",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 9,
+      "price": 649000
+    },
+    {
+      "id": "AX1006-070-S",
+      "colorwayId": "AX1006-070",
+      "productId": "AX-1006",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 7,
+      "price": 649000
+    },
+    {
+      "id": "AX1006-070-M",
+      "colorwayId": "AX1006-070",
+      "productId": "AX-1006",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 23,
+      "price": 649000
+    },
+    {
+      "id": "AX1006-070-L",
+      "colorwayId": "AX1006-070",
+      "productId": "AX-1006",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 649000
+    },
+    {
+      "id": "AX1006-070-XL",
+      "colorwayId": "AX1006-070",
+      "productId": "AX-1006",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 13,
+      "price": 649000
+    },
+    {
+      "id": "AX1006-070-XXL",
+      "colorwayId": "AX1006-070",
+      "productId": "AX-1006",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 24,
+      "price": 649000
+    },
+    {
+      "id": "AX1007-010-38",
+      "colorwayId": "AX1007-010",
+      "productId": "AX-1007",
+      "size": "38",
+      "sizeLabel": "38",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 39,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-010-39",
+      "colorwayId": "AX1007-010",
+      "productId": "AX-1007",
+      "size": "39",
+      "sizeLabel": "39",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 28,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-010-40",
+      "colorwayId": "AX1007-010",
+      "productId": "AX-1007",
+      "size": "40",
+      "sizeLabel": "40",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 22,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-010-41",
+      "colorwayId": "AX1007-010",
+      "productId": "AX-1007",
+      "size": "41",
+      "sizeLabel": "41",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 18,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-010-42",
+      "colorwayId": "AX1007-010",
+      "productId": "AX-1007",
+      "size": "42",
+      "sizeLabel": "42",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 1,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-010-43",
+      "colorwayId": "AX1007-010",
+      "productId": "AX-1007",
+      "size": "43",
+      "sizeLabel": "43",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 26,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-010-44",
+      "colorwayId": "AX1007-010",
+      "productId": "AX-1007",
+      "size": "44",
+      "sizeLabel": "44",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 7,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-010-45",
+      "colorwayId": "AX1007-010",
+      "productId": "AX-1007",
+      "size": "45",
+      "sizeLabel": "45",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 19,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-100-38",
+      "colorwayId": "AX1007-100",
+      "productId": "AX-1007",
+      "size": "38",
+      "sizeLabel": "38",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 5,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-100-39",
+      "colorwayId": "AX1007-100",
+      "productId": "AX-1007",
+      "size": "39",
+      "sizeLabel": "39",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 4,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-100-40",
+      "colorwayId": "AX1007-100",
+      "productId": "AX-1007",
+      "size": "40",
+      "sizeLabel": "40",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 19,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-100-41",
+      "colorwayId": "AX1007-100",
+      "productId": "AX-1007",
+      "size": "41",
+      "sizeLabel": "41",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 18,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-100-42",
+      "colorwayId": "AX1007-100",
+      "productId": "AX-1007",
+      "size": "42",
+      "sizeLabel": "42",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 31,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-100-43",
+      "colorwayId": "AX1007-100",
+      "productId": "AX-1007",
+      "size": "43",
+      "sizeLabel": "43",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 25,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-100-44",
+      "colorwayId": "AX1007-100",
+      "productId": "AX-1007",
+      "size": "44",
+      "sizeLabel": "44",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 1,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-100-45",
+      "colorwayId": "AX1007-100",
+      "productId": "AX-1007",
+      "size": "45",
+      "sizeLabel": "45",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 6,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-430-38",
+      "colorwayId": "AX1007-430",
+      "productId": "AX-1007",
+      "size": "38",
+      "sizeLabel": "38",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 21,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-430-39",
+      "colorwayId": "AX1007-430",
+      "productId": "AX-1007",
+      "size": "39",
+      "sizeLabel": "39",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 18,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-430-40",
+      "colorwayId": "AX1007-430",
+      "productId": "AX-1007",
+      "size": "40",
+      "sizeLabel": "40",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 5,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-430-41",
+      "colorwayId": "AX1007-430",
+      "productId": "AX-1007",
+      "size": "41",
+      "sizeLabel": "41",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 16,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-430-42",
+      "colorwayId": "AX1007-430",
+      "productId": "AX-1007",
+      "size": "42",
+      "sizeLabel": "42",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 28,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-430-43",
+      "colorwayId": "AX1007-430",
+      "productId": "AX-1007",
+      "size": "43",
+      "sizeLabel": "43",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 28,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-430-44",
+      "colorwayId": "AX1007-430",
+      "productId": "AX-1007",
+      "size": "44",
+      "sizeLabel": "44",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 12,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-430-45",
+      "colorwayId": "AX1007-430",
+      "productId": "AX-1007",
+      "size": "45",
+      "sizeLabel": "45",
+      "sizeScale": "shoe-eu",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-800-38",
+      "colorwayId": "AX1007-800",
+      "productId": "AX-1007",
+      "size": "38",
+      "sizeLabel": "38",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 39,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-800-39",
+      "colorwayId": "AX1007-800",
+      "productId": "AX-1007",
+      "size": "39",
+      "sizeLabel": "39",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 3,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-800-40",
+      "colorwayId": "AX1007-800",
+      "productId": "AX-1007",
+      "size": "40",
+      "sizeLabel": "40",
+      "sizeScale": "shoe-eu",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-800-41",
+      "colorwayId": "AX1007-800",
+      "productId": "AX-1007",
+      "size": "41",
+      "sizeLabel": "41",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 15,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-800-42",
+      "colorwayId": "AX1007-800",
+      "productId": "AX-1007",
+      "size": "42",
+      "sizeLabel": "42",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 13,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-800-43",
+      "colorwayId": "AX1007-800",
+      "productId": "AX-1007",
+      "size": "43",
+      "sizeLabel": "43",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 23,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-800-44",
+      "colorwayId": "AX1007-800",
+      "productId": "AX-1007",
+      "size": "44",
+      "sizeLabel": "44",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 25,
+      "price": 1990000
+    },
+    {
+      "id": "AX1007-800-45",
+      "colorwayId": "AX1007-800",
+      "productId": "AX-1007",
+      "size": "45",
+      "sizeLabel": "45",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 24,
+      "price": 1990000
+    },
+    {
+      "id": "AX1008-010-XS",
+      "colorwayId": "AX1008-010",
+      "productId": "AX-1008",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 5,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-010-S",
+      "colorwayId": "AX1008-010",
+      "productId": "AX-1008",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 14,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-010-M",
+      "colorwayId": "AX1008-010",
+      "productId": "AX-1008",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 34,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-010-L",
+      "colorwayId": "AX1008-010",
+      "productId": "AX-1008",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-010-XL",
+      "colorwayId": "AX1008-010",
+      "productId": "AX-1008",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-010-XXL",
+      "colorwayId": "AX1008-010",
+      "productId": "AX-1008",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 1,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-650-XS",
+      "colorwayId": "AX1008-650",
+      "productId": "AX-1008",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-650-S",
+      "colorwayId": "AX1008-650",
+      "productId": "AX-1008",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 21,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-650-M",
+      "colorwayId": "AX1008-650",
+      "productId": "AX-1008",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 24,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-650-L",
+      "colorwayId": "AX1008-650",
+      "productId": "AX-1008",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 34,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-650-XL",
+      "colorwayId": "AX1008-650",
+      "productId": "AX-1008",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 16,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-650-XXL",
+      "colorwayId": "AX1008-650",
+      "productId": "AX-1008",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 30,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-200-XS",
+      "colorwayId": "AX1008-200",
+      "productId": "AX-1008",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 17,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-200-S",
+      "colorwayId": "AX1008-200",
+      "productId": "AX-1008",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 3,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-200-M",
+      "colorwayId": "AX1008-200",
+      "productId": "AX-1008",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 28,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-200-L",
+      "colorwayId": "AX1008-200",
+      "productId": "AX-1008",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 1,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-200-XL",
+      "colorwayId": "AX1008-200",
+      "productId": "AX-1008",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 34,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-200-XXL",
+      "colorwayId": "AX1008-200",
+      "productId": "AX-1008",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 16,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-500-XS",
+      "colorwayId": "AX1008-500",
+      "productId": "AX-1008",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 26,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-500-S",
+      "colorwayId": "AX1008-500",
+      "productId": "AX-1008",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 27,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-500-M",
+      "colorwayId": "AX1008-500",
+      "productId": "AX-1008",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-500-L",
+      "colorwayId": "AX1008-500",
+      "productId": "AX-1008",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 18,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-500-XL",
+      "colorwayId": "AX1008-500",
+      "productId": "AX-1008",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 36,
+      "price": 1490000
+    },
+    {
+      "id": "AX1008-500-XXL",
+      "colorwayId": "AX1008-500",
+      "productId": "AX-1008",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 23,
+      "price": 1490000
+    },
+    {
+      "id": "AX1009-070-XS",
+      "colorwayId": "AX1009-070",
+      "productId": "AX-1009",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 7,
+      "price": 849000
+    },
+    {
+      "id": "AX1009-070-S",
+      "colorwayId": "AX1009-070",
+      "productId": "AX-1009",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 15,
+      "price": 849000
+    },
+    {
+      "id": "AX1009-070-M",
+      "colorwayId": "AX1009-070",
+      "productId": "AX-1009",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 849000
+    },
+    {
+      "id": "AX1009-070-L",
+      "colorwayId": "AX1009-070",
+      "productId": "AX-1009",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 25,
+      "price": 849000
+    },
+    {
+      "id": "AX1009-070-XL",
+      "colorwayId": "AX1009-070",
+      "productId": "AX-1009",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 8,
+      "price": 849000
+    },
+    {
+      "id": "AX1009-070-XXL",
+      "colorwayId": "AX1009-070",
+      "productId": "AX-1009",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 1,
+      "price": 849000
+    },
+    {
+      "id": "AX1009-650-XS",
+      "colorwayId": "AX1009-650",
+      "productId": "AX-1009",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 16,
+      "price": 849000
+    },
+    {
+      "id": "AX1009-650-S",
+      "colorwayId": "AX1009-650",
+      "productId": "AX-1009",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 3,
+      "price": 849000
+    },
+    {
+      "id": "AX1009-650-M",
+      "colorwayId": "AX1009-650",
+      "productId": "AX-1009",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 31,
+      "price": 849000
+    },
+    {
+      "id": "AX1009-650-L",
+      "colorwayId": "AX1009-650",
+      "productId": "AX-1009",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 11,
+      "price": 849000
+    },
+    {
+      "id": "AX1009-650-XL",
+      "colorwayId": "AX1009-650",
+      "productId": "AX-1009",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 5,
+      "price": 849000
+    },
+    {
+      "id": "AX1009-650-XXL",
+      "colorwayId": "AX1009-650",
+      "productId": "AX-1009",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 2,
+      "price": 849000
+    },
+    {
+      "id": "AX1009-100-XS",
+      "colorwayId": "AX1009-100",
+      "productId": "AX-1009",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 849000
+    },
+    {
+      "id": "AX1009-100-S",
+      "colorwayId": "AX1009-100",
+      "productId": "AX-1009",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 30,
+      "price": 849000
+    },
+    {
+      "id": "AX1009-100-M",
+      "colorwayId": "AX1009-100",
+      "productId": "AX-1009",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 23,
+      "price": 849000
+    },
+    {
+      "id": "AX1009-100-L",
+      "colorwayId": "AX1009-100",
+      "productId": "AX-1009",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 12,
+      "price": 849000
+    },
+    {
+      "id": "AX1009-100-XL",
+      "colorwayId": "AX1009-100",
+      "productId": "AX-1009",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 849000
+    },
+    {
+      "id": "AX1009-100-XXL",
+      "colorwayId": "AX1009-100",
+      "productId": "AX-1009",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 4,
+      "price": 849000
+    },
+    {
+      "id": "AX1010-010-XS",
+      "colorwayId": "AX1010-010",
+      "productId": "AX-1010",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 399000
+    },
+    {
+      "id": "AX1010-010-S",
+      "colorwayId": "AX1010-010",
+      "productId": "AX-1010",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 4,
+      "price": 399000
+    },
+    {
+      "id": "AX1010-010-M",
+      "colorwayId": "AX1010-010",
+      "productId": "AX-1010",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 38,
+      "price": 399000
+    },
+    {
+      "id": "AX1010-010-L",
+      "colorwayId": "AX1010-010",
+      "productId": "AX-1010",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 12,
+      "price": 399000
+    },
+    {
+      "id": "AX1010-010-XL",
+      "colorwayId": "AX1010-010",
+      "productId": "AX-1010",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 28,
+      "price": 399000
+    },
+    {
+      "id": "AX1010-010-XXL",
+      "colorwayId": "AX1010-010",
+      "productId": "AX-1010",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 34,
+      "price": 399000
+    },
+    {
+      "id": "AX1010-100-XS",
+      "colorwayId": "AX1010-100",
+      "productId": "AX-1010",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 1,
+      "price": 399000
+    },
+    {
+      "id": "AX1010-100-S",
+      "colorwayId": "AX1010-100",
+      "productId": "AX-1010",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 27,
+      "price": 399000
+    },
+    {
+      "id": "AX1010-100-M",
+      "colorwayId": "AX1010-100",
+      "productId": "AX-1010",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 38,
+      "price": 399000
+    },
+    {
+      "id": "AX1010-100-L",
+      "colorwayId": "AX1010-100",
+      "productId": "AX-1010",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 27,
+      "price": 399000
+    },
+    {
+      "id": "AX1010-100-XL",
+      "colorwayId": "AX1010-100",
+      "productId": "AX-1010",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 23,
+      "price": 399000
+    },
+    {
+      "id": "AX1010-100-XXL",
+      "colorwayId": "AX1010-100",
+      "productId": "AX-1010",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 17,
+      "price": 399000
+    },
+    {
+      "id": "AX1010-650-XS",
+      "colorwayId": "AX1010-650",
+      "productId": "AX-1010",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 12,
+      "price": 319000
+    },
+    {
+      "id": "AX1010-650-S",
+      "colorwayId": "AX1010-650",
+      "productId": "AX-1010",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 25,
+      "price": 319000
+    },
+    {
+      "id": "AX1010-650-M",
+      "colorwayId": "AX1010-650",
+      "productId": "AX-1010",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 8,
+      "price": 319000
+    },
+    {
+      "id": "AX1010-650-L",
+      "colorwayId": "AX1010-650",
+      "productId": "AX-1010",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 35,
+      "price": 319000
+    },
+    {
+      "id": "AX1010-650-XL",
+      "colorwayId": "AX1010-650",
+      "productId": "AX-1010",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 7,
+      "price": 319000
+    },
+    {
+      "id": "AX1010-650-XXL",
+      "colorwayId": "AX1010-650",
+      "productId": "AX-1010",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 34,
+      "price": 319000
+    },
+    {
+      "id": "AX1011-100-XS",
+      "colorwayId": "AX1011-100",
+      "productId": "AX-1011",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 24,
+      "price": 459000
+    },
+    {
+      "id": "AX1011-100-S",
+      "colorwayId": "AX1011-100",
+      "productId": "AX-1011",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 459000
+    },
+    {
+      "id": "AX1011-100-M",
+      "colorwayId": "AX1011-100",
+      "productId": "AX-1011",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 19,
+      "price": 459000
+    },
+    {
+      "id": "AX1011-100-L",
+      "colorwayId": "AX1011-100",
+      "productId": "AX-1011",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 459000
+    },
+    {
+      "id": "AX1011-100-XL",
+      "colorwayId": "AX1011-100",
+      "productId": "AX-1011",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 13,
+      "price": 459000
+    },
+    {
+      "id": "AX1011-100-XXL",
+      "colorwayId": "AX1011-100",
+      "productId": "AX-1011",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 459000
+    },
+    {
+      "id": "AX1011-200-XS",
+      "colorwayId": "AX1011-200",
+      "productId": "AX-1011",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 25,
+      "price": 459000
+    },
+    {
+      "id": "AX1011-200-S",
+      "colorwayId": "AX1011-200",
+      "productId": "AX-1011",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 459000
+    },
+    {
+      "id": "AX1011-200-M",
+      "colorwayId": "AX1011-200",
+      "productId": "AX-1011",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 26,
+      "price": 459000
+    },
+    {
+      "id": "AX1011-200-L",
+      "colorwayId": "AX1011-200",
+      "productId": "AX-1011",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 9,
+      "price": 459000
+    },
+    {
+      "id": "AX1011-200-XL",
+      "colorwayId": "AX1011-200",
+      "productId": "AX-1011",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 18,
+      "price": 459000
+    },
+    {
+      "id": "AX1011-200-XXL",
+      "colorwayId": "AX1011-200",
+      "productId": "AX-1011",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 459000
+    },
+    {
+      "id": "AX1011-500-XS",
+      "colorwayId": "AX1011-500",
+      "productId": "AX-1011",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 24,
+      "price": 459000
+    },
+    {
+      "id": "AX1011-500-S",
+      "colorwayId": "AX1011-500",
+      "productId": "AX-1011",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 459000
+    },
+    {
+      "id": "AX1011-500-M",
+      "colorwayId": "AX1011-500",
+      "productId": "AX-1011",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 17,
+      "price": 459000
+    },
+    {
+      "id": "AX1011-500-L",
+      "colorwayId": "AX1011-500",
+      "productId": "AX-1011",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 26,
+      "price": 459000
+    },
+    {
+      "id": "AX1011-500-XL",
+      "colorwayId": "AX1011-500",
+      "productId": "AX-1011",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 459000
+    },
+    {
+      "id": "AX1011-500-XXL",
+      "colorwayId": "AX1011-500",
+      "productId": "AX-1011",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 19,
+      "price": 459000
+    },
+    {
+      "id": "AX1012-010-XS",
+      "colorwayId": "AX1012-010",
+      "productId": "AX-1012",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 12,
+      "price": 899000
+    },
+    {
+      "id": "AX1012-010-S",
+      "colorwayId": "AX1012-010",
+      "productId": "AX-1012",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 9,
+      "price": 899000
+    },
+    {
+      "id": "AX1012-010-M",
+      "colorwayId": "AX1012-010",
+      "productId": "AX-1012",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 11,
+      "price": 899000
+    },
+    {
+      "id": "AX1012-010-L",
+      "colorwayId": "AX1012-010",
+      "productId": "AX-1012",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 19,
+      "price": 899000
+    },
+    {
+      "id": "AX1012-010-XL",
+      "colorwayId": "AX1012-010",
+      "productId": "AX-1012",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 25,
+      "price": 899000
+    },
+    {
+      "id": "AX1012-010-XXL",
+      "colorwayId": "AX1012-010",
+      "productId": "AX-1012",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 30,
+      "price": 899000
+    },
+    {
+      "id": "AX1012-410-XS",
+      "colorwayId": "AX1012-410",
+      "productId": "AX-1012",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 20,
+      "price": 899000
+    },
+    {
+      "id": "AX1012-410-S",
+      "colorwayId": "AX1012-410",
+      "productId": "AX-1012",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 899000
+    },
+    {
+      "id": "AX1012-410-M",
+      "colorwayId": "AX1012-410",
+      "productId": "AX-1012",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 11,
+      "price": 899000
+    },
+    {
+      "id": "AX1012-410-L",
+      "colorwayId": "AX1012-410",
+      "productId": "AX-1012",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 12,
+      "price": 899000
+    },
+    {
+      "id": "AX1012-410-XL",
+      "colorwayId": "AX1012-410",
+      "productId": "AX-1012",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 35,
+      "price": 899000
+    },
+    {
+      "id": "AX1012-410-XXL",
+      "colorwayId": "AX1012-410",
+      "productId": "AX-1012",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 6,
+      "price": 899000
+    },
+    {
+      "id": "AX1012-320-XS",
+      "colorwayId": "AX1012-320",
+      "productId": "AX-1012",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 38,
+      "price": 899000
+    },
+    {
+      "id": "AX1012-320-S",
+      "colorwayId": "AX1012-320",
+      "productId": "AX-1012",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 16,
+      "price": 899000
+    },
+    {
+      "id": "AX1012-320-M",
+      "colorwayId": "AX1012-320",
+      "productId": "AX-1012",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 28,
+      "price": 899000
+    },
+    {
+      "id": "AX1012-320-L",
+      "colorwayId": "AX1012-320",
+      "productId": "AX-1012",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 15,
+      "price": 899000
+    },
+    {
+      "id": "AX1012-320-XL",
+      "colorwayId": "AX1012-320",
+      "productId": "AX-1012",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 29,
+      "price": 899000
+    },
+    {
+      "id": "AX1012-320-XXL",
+      "colorwayId": "AX1012-320",
+      "productId": "AX-1012",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 20,
+      "price": 899000
+    },
+    {
+      "id": "AX1012-500-XS",
+      "colorwayId": "AX1012-500",
+      "productId": "AX-1012",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 34,
+      "price": 719000
+    },
+    {
+      "id": "AX1012-500-S",
+      "colorwayId": "AX1012-500",
+      "productId": "AX-1012",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 30,
+      "price": 719000
+    },
+    {
+      "id": "AX1012-500-M",
+      "colorwayId": "AX1012-500",
+      "productId": "AX-1012",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 40,
+      "price": 719000
+    },
+    {
+      "id": "AX1012-500-L",
+      "colorwayId": "AX1012-500",
+      "productId": "AX-1012",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 38,
+      "price": 719000
+    },
+    {
+      "id": "AX1012-500-XL",
+      "colorwayId": "AX1012-500",
+      "productId": "AX-1012",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 7,
+      "price": 719000
+    },
+    {
+      "id": "AX1012-500-XXL",
+      "colorwayId": "AX1012-500",
+      "productId": "AX-1012",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 6,
+      "price": 719000
+    },
+    {
+      "id": "AX1013-010-XS",
+      "colorwayId": "AX1013-010",
+      "productId": "AX-1013",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 37,
+      "price": 749000
+    },
+    {
+      "id": "AX1013-010-S",
+      "colorwayId": "AX1013-010",
+      "productId": "AX-1013",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 13,
+      "price": 749000
+    },
+    {
+      "id": "AX1013-010-M",
+      "colorwayId": "AX1013-010",
+      "productId": "AX-1013",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 6,
+      "price": 749000
+    },
+    {
+      "id": "AX1013-010-L",
+      "colorwayId": "AX1013-010",
+      "productId": "AX-1013",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 7,
+      "price": 749000
+    },
+    {
+      "id": "AX1013-010-XL",
+      "colorwayId": "AX1013-010",
+      "productId": "AX-1013",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 25,
+      "price": 749000
+    },
+    {
+      "id": "AX1013-010-XXL",
+      "colorwayId": "AX1013-010",
+      "productId": "AX-1013",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 5,
+      "price": 749000
+    },
+    {
+      "id": "AX1013-070-XS",
+      "colorwayId": "AX1013-070",
+      "productId": "AX-1013",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 9,
+      "price": 749000
+    },
+    {
+      "id": "AX1013-070-S",
+      "colorwayId": "AX1013-070",
+      "productId": "AX-1013",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 10,
+      "price": 749000
+    },
+    {
+      "id": "AX1013-070-M",
+      "colorwayId": "AX1013-070",
+      "productId": "AX-1013",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 749000
+    },
+    {
+      "id": "AX1013-070-L",
+      "colorwayId": "AX1013-070",
+      "productId": "AX-1013",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 749000
+    },
+    {
+      "id": "AX1013-070-XL",
+      "colorwayId": "AX1013-070",
+      "productId": "AX-1013",
+      "size": "XL",
+      "sizeLabel": "XL",
+      "sizeScale": "apparel-alpha",
+      "inStock": true,
+      "stockQty": 21,
+      "price": 749000
+    },
+    {
+      "id": "AX1013-070-XXL",
+      "colorwayId": "AX1013-070",
+      "productId": "AX-1013",
+      "size": "XXL",
+      "sizeLabel": "XXL",
+      "sizeScale": "apparel-alpha",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 749000
+    },
+    {
+      "id": "AX1014-100-38",
+      "colorwayId": "AX1014-100",
+      "productId": "AX-1014",
+      "size": "38",
+      "sizeLabel": "38",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 4,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-100-39",
+      "colorwayId": "AX1014-100",
+      "productId": "AX-1014",
+      "size": "39",
+      "sizeLabel": "39",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 19,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-100-40",
+      "colorwayId": "AX1014-100",
+      "productId": "AX-1014",
+      "size": "40",
+      "sizeLabel": "40",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 37,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-100-41",
+      "colorwayId": "AX1014-100",
+      "productId": "AX-1014",
+      "size": "41",
+      "sizeLabel": "41",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 8,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-100-42",
+      "colorwayId": "AX1014-100",
+      "productId": "AX-1014",
+      "size": "42",
+      "sizeLabel": "42",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 28,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-100-43",
+      "colorwayId": "AX1014-100",
+      "productId": "AX-1014",
+      "size": "43",
+      "sizeLabel": "43",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 8,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-100-44",
+      "colorwayId": "AX1014-100",
+      "productId": "AX-1014",
+      "size": "44",
+      "sizeLabel": "44",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 34,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-100-45",
+      "colorwayId": "AX1014-100",
+      "productId": "AX-1014",
+      "size": "45",
+      "sizeLabel": "45",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 21,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-650-38",
+      "colorwayId": "AX1014-650",
+      "productId": "AX-1014",
+      "size": "38",
+      "sizeLabel": "38",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 12,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-650-39",
+      "colorwayId": "AX1014-650",
+      "productId": "AX-1014",
+      "size": "39",
+      "sizeLabel": "39",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 39,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-650-40",
+      "colorwayId": "AX1014-650",
+      "productId": "AX-1014",
+      "size": "40",
+      "sizeLabel": "40",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 30,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-650-41",
+      "colorwayId": "AX1014-650",
+      "productId": "AX-1014",
+      "size": "41",
+      "sizeLabel": "41",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 36,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-650-42",
+      "colorwayId": "AX1014-650",
+      "productId": "AX-1014",
+      "size": "42",
+      "sizeLabel": "42",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 39,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-650-43",
+      "colorwayId": "AX1014-650",
+      "productId": "AX-1014",
+      "size": "43",
+      "sizeLabel": "43",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 24,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-650-44",
+      "colorwayId": "AX1014-650",
+      "productId": "AX-1014",
+      "size": "44",
+      "sizeLabel": "44",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 11,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-650-45",
+      "colorwayId": "AX1014-650",
+      "productId": "AX-1014",
+      "size": "45",
+      "sizeLabel": "45",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 14,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-010-38",
+      "colorwayId": "AX1014-010",
+      "productId": "AX-1014",
+      "size": "38",
+      "sizeLabel": "38",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 27,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-010-39",
+      "colorwayId": "AX1014-010",
+      "productId": "AX-1014",
+      "size": "39",
+      "sizeLabel": "39",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 11,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-010-40",
+      "colorwayId": "AX1014-010",
+      "productId": "AX-1014",
+      "size": "40",
+      "sizeLabel": "40",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 3,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-010-41",
+      "colorwayId": "AX1014-010",
+      "productId": "AX-1014",
+      "size": "41",
+      "sizeLabel": "41",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 39,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-010-42",
+      "colorwayId": "AX1014-010",
+      "productId": "AX-1014",
+      "size": "42",
+      "sizeLabel": "42",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 24,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-010-43",
+      "colorwayId": "AX1014-010",
+      "productId": "AX-1014",
+      "size": "43",
+      "sizeLabel": "43",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 32,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-010-44",
+      "colorwayId": "AX1014-010",
+      "productId": "AX-1014",
+      "size": "44",
+      "sizeLabel": "44",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 14,
+      "price": 1890000
+    },
+    {
+      "id": "AX1014-010-45",
+      "colorwayId": "AX1014-010",
+      "productId": "AX-1014",
+      "size": "45",
+      "sizeLabel": "45",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 6,
+      "price": 1890000
+    },
+    {
+      "id": "AX1015-010-XS",
+      "colorwayId": "AX1015-010",
+      "productId": "AX-1015",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 1,
+      "price": 799000
+    },
+    {
+      "id": "AX1015-010-S",
+      "colorwayId": "AX1015-010",
+      "productId": "AX-1015",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 26,
+      "price": 799000
+    },
+    {
+      "id": "AX1015-010-M",
+      "colorwayId": "AX1015-010",
+      "productId": "AX-1015",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 14,
+      "price": 799000
+    },
+    {
+      "id": "AX1015-010-L",
+      "colorwayId": "AX1015-010",
+      "productId": "AX-1015",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 29,
+      "price": 799000
+    },
+    {
+      "id": "AX1015-430-XS",
+      "colorwayId": "AX1015-430",
+      "productId": "AX-1015",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 10,
+      "price": 799000
+    },
+    {
+      "id": "AX1015-430-S",
+      "colorwayId": "AX1015-430",
+      "productId": "AX-1015",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 4,
+      "price": 799000
+    },
+    {
+      "id": "AX1015-430-M",
+      "colorwayId": "AX1015-430",
+      "productId": "AX-1015",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 39,
+      "price": 799000
+    },
+    {
+      "id": "AX1015-430-L",
+      "colorwayId": "AX1015-430",
+      "productId": "AX-1015",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 12,
+      "price": 799000
+    },
+    {
+      "id": "AX1015-600-XS",
+      "colorwayId": "AX1015-600",
+      "productId": "AX-1015",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 32,
+      "price": 799000
+    },
+    {
+      "id": "AX1015-600-S",
+      "colorwayId": "AX1015-600",
+      "productId": "AX-1015",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 10,
+      "price": 799000
+    },
+    {
+      "id": "AX1015-600-M",
+      "colorwayId": "AX1015-600",
+      "productId": "AX-1015",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 10,
+      "price": 799000
+    },
+    {
+      "id": "AX1015-600-L",
+      "colorwayId": "AX1015-600",
+      "productId": "AX-1015",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 9,
+      "price": 799000
+    },
+    {
+      "id": "AX1016-070-XS",
+      "colorwayId": "AX1016-070",
+      "productId": "AX-1016",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 12,
+      "price": 549000
+    },
+    {
+      "id": "AX1016-070-S",
+      "colorwayId": "AX1016-070",
+      "productId": "AX-1016",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 32,
+      "price": 549000
+    },
+    {
+      "id": "AX1016-070-M",
+      "colorwayId": "AX1016-070",
+      "productId": "AX-1016",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 18,
+      "price": 549000
+    },
+    {
+      "id": "AX1016-070-L",
+      "colorwayId": "AX1016-070",
+      "productId": "AX-1016",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 33,
+      "price": 549000
+    },
+    {
+      "id": "AX1016-300-XS",
+      "colorwayId": "AX1016-300",
+      "productId": "AX-1016",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 33,
+      "price": 549000
+    },
+    {
+      "id": "AX1016-300-S",
+      "colorwayId": "AX1016-300",
+      "productId": "AX-1016",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 27,
+      "price": 549000
+    },
+    {
+      "id": "AX1016-300-M",
+      "colorwayId": "AX1016-300",
+      "productId": "AX-1016",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 31,
+      "price": 549000
+    },
+    {
+      "id": "AX1016-300-L",
+      "colorwayId": "AX1016-300",
+      "productId": "AX-1016",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 27,
+      "price": 549000
+    },
+    {
+      "id": "AX1016-650-XS",
+      "colorwayId": "AX1016-650",
+      "productId": "AX-1016",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 19,
+      "price": 439000
+    },
+    {
+      "id": "AX1016-650-S",
+      "colorwayId": "AX1016-650",
+      "productId": "AX-1016",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 32,
+      "price": 439000
+    },
+    {
+      "id": "AX1016-650-M",
+      "colorwayId": "AX1016-650",
+      "productId": "AX-1016",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 11,
+      "price": 439000
+    },
+    {
+      "id": "AX1016-650-L",
+      "colorwayId": "AX1016-650",
+      "productId": "AX-1016",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 10,
+      "price": 439000
+    },
+    {
+      "id": "AX1017-100-XS",
+      "colorwayId": "AX1017-100",
+      "productId": "AX-1017",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 10,
+      "price": 349000
+    },
+    {
+      "id": "AX1017-100-S",
+      "colorwayId": "AX1017-100",
+      "productId": "AX-1017",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "kids-apparel",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 349000
+    },
+    {
+      "id": "AX1017-100-M",
+      "colorwayId": "AX1017-100",
+      "productId": "AX-1017",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 13,
+      "price": 349000
+    },
+    {
+      "id": "AX1017-100-L",
+      "colorwayId": "AX1017-100",
+      "productId": "AX-1017",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "kids-apparel",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 349000
+    },
+    {
+      "id": "AX1017-010-XS",
+      "colorwayId": "AX1017-010",
+      "productId": "AX-1017",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 23,
+      "price": 349000
+    },
+    {
+      "id": "AX1017-010-S",
+      "colorwayId": "AX1017-010",
+      "productId": "AX-1017",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 38,
+      "price": 349000
+    },
+    {
+      "id": "AX1017-010-M",
+      "colorwayId": "AX1017-010",
+      "productId": "AX-1017",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 4,
+      "price": 349000
+    },
+    {
+      "id": "AX1017-010-L",
+      "colorwayId": "AX1017-010",
+      "productId": "AX-1017",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 11,
+      "price": 349000
+    },
+    {
+      "id": "AX1017-800-XS",
+      "colorwayId": "AX1017-800",
+      "productId": "AX-1017",
+      "size": "XS",
+      "sizeLabel": "XS",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 24,
+      "price": 279000
+    },
+    {
+      "id": "AX1017-800-S",
+      "colorwayId": "AX1017-800",
+      "productId": "AX-1017",
+      "size": "S",
+      "sizeLabel": "S",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 34,
+      "price": 279000
+    },
+    {
+      "id": "AX1017-800-M",
+      "colorwayId": "AX1017-800",
+      "productId": "AX-1017",
+      "size": "M",
+      "sizeLabel": "M",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 38,
+      "price": 279000
+    },
+    {
+      "id": "AX1017-800-L",
+      "colorwayId": "AX1017-800",
+      "productId": "AX-1017",
+      "size": "L",
+      "sizeLabel": "L",
+      "sizeScale": "kids-apparel",
+      "inStock": true,
+      "stockQty": 29,
+      "price": 279000
+    },
+    {
+      "id": "AX1018-010-38",
+      "colorwayId": "AX1018-010",
+      "productId": "AX-1018",
+      "size": "38",
+      "sizeLabel": "38",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 29,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-010-39",
+      "colorwayId": "AX1018-010",
+      "productId": "AX-1018",
+      "size": "39",
+      "sizeLabel": "39",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 38,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-010-40",
+      "colorwayId": "AX1018-010",
+      "productId": "AX-1018",
+      "size": "40",
+      "sizeLabel": "40",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 34,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-010-41",
+      "colorwayId": "AX1018-010",
+      "productId": "AX-1018",
+      "size": "41",
+      "sizeLabel": "41",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 27,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-010-42",
+      "colorwayId": "AX1018-010",
+      "productId": "AX-1018",
+      "size": "42",
+      "sizeLabel": "42",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 21,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-010-43",
+      "colorwayId": "AX1018-010",
+      "productId": "AX-1018",
+      "size": "43",
+      "sizeLabel": "43",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 22,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-010-44",
+      "colorwayId": "AX1018-010",
+      "productId": "AX-1018",
+      "size": "44",
+      "sizeLabel": "44",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 15,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-010-45",
+      "colorwayId": "AX1018-010",
+      "productId": "AX-1018",
+      "size": "45",
+      "sizeLabel": "45",
+      "sizeScale": "shoe-eu",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-430-38",
+      "colorwayId": "AX1018-430",
+      "productId": "AX-1018",
+      "size": "38",
+      "sizeLabel": "38",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 15,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-430-39",
+      "colorwayId": "AX1018-430",
+      "productId": "AX-1018",
+      "size": "39",
+      "sizeLabel": "39",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 24,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-430-40",
+      "colorwayId": "AX1018-430",
+      "productId": "AX-1018",
+      "size": "40",
+      "sizeLabel": "40",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 31,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-430-41",
+      "colorwayId": "AX1018-430",
+      "productId": "AX-1018",
+      "size": "41",
+      "sizeLabel": "41",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 18,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-430-42",
+      "colorwayId": "AX1018-430",
+      "productId": "AX-1018",
+      "size": "42",
+      "sizeLabel": "42",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 20,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-430-43",
+      "colorwayId": "AX1018-430",
+      "productId": "AX-1018",
+      "size": "43",
+      "sizeLabel": "43",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 10,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-430-44",
+      "colorwayId": "AX1018-430",
+      "productId": "AX-1018",
+      "size": "44",
+      "sizeLabel": "44",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 34,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-430-45",
+      "colorwayId": "AX1018-430",
+      "productId": "AX-1018",
+      "size": "45",
+      "sizeLabel": "45",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 30,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-650-38",
+      "colorwayId": "AX1018-650",
+      "productId": "AX-1018",
+      "size": "38",
+      "sizeLabel": "38",
+      "sizeScale": "shoe-eu",
+      "inStock": false,
+      "stockQty": 0,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-650-39",
+      "colorwayId": "AX1018-650",
+      "productId": "AX-1018",
+      "size": "39",
+      "sizeLabel": "39",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 38,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-650-40",
+      "colorwayId": "AX1018-650",
+      "productId": "AX-1018",
+      "size": "40",
+      "sizeLabel": "40",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 15,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-650-41",
+      "colorwayId": "AX1018-650",
+      "productId": "AX-1018",
+      "size": "41",
+      "sizeLabel": "41",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 32,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-650-42",
+      "colorwayId": "AX1018-650",
+      "productId": "AX-1018",
+      "size": "42",
+      "sizeLabel": "42",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 2,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-650-43",
+      "colorwayId": "AX1018-650",
+      "productId": "AX-1018",
+      "size": "43",
+      "sizeLabel": "43",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 37,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-650-44",
+      "colorwayId": "AX1018-650",
+      "productId": "AX-1018",
+      "size": "44",
+      "sizeLabel": "44",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 15,
+      "price": 749000
+    },
+    {
+      "id": "AX1018-650-45",
+      "colorwayId": "AX1018-650",
+      "productId": "AX-1018",
+      "size": "45",
+      "sizeLabel": "45",
+      "sizeScale": "shoe-eu",
+      "inStock": true,
+      "stockQty": 14,
+      "price": 749000
+    }
+  ],
+  "categories": [
+    {
+      "id": "men",
+      "slug": "men",
+      "name": "Men",
+      "parentId": null,
+      "gender": "men",
+      "level": 0
+    },
+    {
+      "id": "women",
+      "slug": "women",
+      "name": "Women",
+      "parentId": null,
+      "gender": "women",
+      "level": 0
+    },
+    {
+      "id": "kids",
+      "slug": "kids",
+      "name": "Kids",
+      "parentId": null,
+      "gender": "kids",
+      "level": 0
+    },
+    {
+      "id": "men-hoodies",
+      "slug": "men-hoodies",
+      "name": "Hoodies & Sweatshirts",
+      "parentId": "men",
+      "gender": "men",
+      "level": 1
+    },
+    {
+      "id": "men-tees",
+      "slug": "men-tees",
+      "name": "Tops & T-Shirts",
+      "parentId": "men",
+      "gender": "men",
+      "level": 1
+    },
+    {
+      "id": "men-pants",
+      "slug": "men-pants",
+      "name": "Trousers & Tights",
+      "parentId": "men",
+      "gender": "men",
+      "level": 1
+    },
+    {
+      "id": "men-shoes",
+      "slug": "men-shoes",
+      "name": "Shoes",
+      "parentId": "men",
+      "gender": "men",
+      "level": 1
+    },
+    {
+      "id": "women-hoodies",
+      "slug": "women-hoodies",
+      "name": "Hoodies & Sweatshirts",
+      "parentId": "women",
+      "gender": "women",
+      "level": 1
+    },
+    {
+      "id": "women-tees",
+      "slug": "women-tees",
+      "name": "Tops & T-Shirts",
+      "parentId": "women",
+      "gender": "women",
+      "level": 1
+    },
+    {
+      "id": "women-leggings",
+      "slug": "women-leggings",
+      "name": "Leggings & Tights",
+      "parentId": "women",
+      "gender": "women",
+      "level": 1
+    },
+    {
+      "id": "women-shoes",
+      "slug": "women-shoes",
+      "name": "Shoes",
+      "parentId": "women",
+      "gender": "women",
+      "level": 1
+    },
+    {
+      "id": "kids-hoodies",
+      "slug": "kids-hoodies",
+      "name": "Hoodies & Sweatshirts",
+      "parentId": "kids",
+      "gender": "kids",
+      "level": 1
+    },
+    {
+      "id": "kids-tees",
+      "slug": "kids-tees",
+      "name": "Tops & T-Shirts",
+      "parentId": "kids",
+      "gender": "kids",
+      "level": 1
+    },
+    {
+      "id": "kids-shoes",
+      "slug": "kids-shoes",
+      "name": "Shoes",
+      "parentId": "kids",
+      "gender": "kids",
+      "level": 1
+    }
+  ],
+  "collections": [
+    {
+      "id": "tech-fleece",
+      "slug": "tech-fleece",
+      "name": "Tech Fleece"
+    },
+    {
+      "id": "essentials",
+      "slug": "essentials",
+      "name": "Essentials"
+    },
+    {
+      "id": "pro-training",
+      "slug": "pro-training",
+      "name": "Pro Training"
+    },
+    {
+      "id": "heritage",
+      "slug": "heritage",
+      "name": "Heritage"
+    },
+    {
+      "id": "windrunner",
+      "slug": "windrunner",
+      "name": "Windrunner"
+    }
+  ],
+  "sizeScales": [
+    {
+      "id": "apparel-alpha",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ]
+    },
+    {
+      "id": "shoe-eu",
+      "sizes": [
+        "38",
+        "39",
+        "40",
+        "41",
+        "42",
+        "43",
+        "44",
+        "45"
+      ]
+    },
+    {
+      "id": "kids-apparel",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ]
+    }
+  ]
+}

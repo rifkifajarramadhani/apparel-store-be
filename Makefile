@@ -8,7 +8,7 @@ export MYSQL_URL ?= mysql://$(DATABASE_USER):$(DATABASE_PASSWORD)@tcp(db:3306)/$
 MIGRATIONS := internal/adapter/mysql/migrations
 
 .PHONY: build run-server run-worker run-scheduler queue schedule migrate-create migrate \
-	fmt fmt-check vet lint test test-race test-integration vuln check
+	seed-catalog fmt fmt-check vet lint test test-race test-integration vuln check
 
 build:
 	go build ./cmd/server ./cmd/worker ./cmd/scheduler ./cmd/queue ./cmd/schedule
@@ -33,6 +33,9 @@ migrate-create:
 
 migrate:
 	docker compose exec server migrate -database '$(MYSQL_URL)' -path $(MIGRATIONS) $(args)
+
+seed-catalog:
+	docker compose exec server go run ./cmd/seed
 
 fmt:
 	goimports -w .

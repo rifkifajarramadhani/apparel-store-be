@@ -60,7 +60,7 @@ func (tokensFake) ValidateAccessToken(token string) (appauth.Claims, error) {
 
 func TestUserRouteAuthorizationMatrix(t *testing.T) {
 	app := fiber.New()
-	Setup(app, &usersFake{verified: time.Now()}, authFake{}, tokensFake{}, slog.New(slog.NewTextHandler(io.Discard, nil)))
+	Setup(app, &usersFake{verified: time.Now()}, authFake{}, nil, nil, tokensFake{}, slog.New(slog.NewTextHandler(io.Discard, nil)))
 	tests := []struct {
 		name   string
 		method string
