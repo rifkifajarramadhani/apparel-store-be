@@ -14,12 +14,12 @@ import (
 )
 
 type catalogSeed struct {
-	Products    []catalog.Product    `json:"products"`
-	Colorways   []catalog.Colorway   `json:"colorways"`
-	Skus        []catalog.Sku        `json:"skus"`
-	Categories  []catalog.Category   `json:"categories"`
-	Collections []catalog.Collection `json:"collections"`
-	SizeScales  []catalog.SizeScale  `json:"sizeScales"`
+	Products    []catalog.SeedProduct    `json:"products"`
+	Colorways   []catalog.SeedColourway  `json:"colorways"`
+	Skus        []catalog.SeedSKU        `json:"skus"`
+	Categories  []catalog.SeedCategory   `json:"categories"`
+	Collections []catalog.SeedCollection `json:"collections"`
+	SizeScales  []catalog.SeedSizeScale  `json:"sizeScales"`
 }
 
 func main() {

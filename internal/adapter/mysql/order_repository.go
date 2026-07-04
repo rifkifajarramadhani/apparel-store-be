@@ -7,8 +7,14 @@ import (
 
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/order"
 	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
 )
+
+type checkoutSKURow struct {
+	ID, PublicID, ProductPublicID, ProductName, SizeName string
+	ProductRefID                                         uint64
+	Amount                                               int
+	OnHand, Reserved                                     int
+}
 
 type OrderRepository struct {
 	db *gorm.DB
@@ -26,32 +32,35 @@ func (r *OrderRepository) Create(ctx context.Context, userID int, lines []order.
 		items := make([]orderItemModel, 0, len(lines))
 		total := 0
 		for _, line := range lines {
-			var sku skuModel
-			if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).
-				First(&sku, "id = ?", line.SkuID).Error; err != nil {
+			var sku checkoutSKURow
+			now := time.Now().UTC()
+			err := tx.Raw(`SELECT s.id,s.public_id,p.id product_ref_id,p.public_id product_public_id,p.name product_name,sz.name size_name,
+				COALESCE((SELECT sp.amount FROM prices sp WHERE sp.sku_id=s.id AND sp.currency='IDR' AND sp.archived_at IS NULL AND sp.valid_from<=? AND (sp.valid_to IS NULL OR sp.valid_to>?) ORDER BY sp.valid_from DESC LIMIT 1),
+				(SELECT pp.amount FROM prices pp WHERE pp.product_id=s.product_id AND pp.currency='IDR' AND pp.archived_at IS NULL AND pp.valid_from<=? AND (pp.valid_to IS NULL OR pp.valid_to>?) ORDER BY pp.valid_from DESC LIMIT 1),0) amount,
+				ib.on_hand,ib.reserved
+				FROM skus s JOIN products p ON p.id=s.product_id AND p.archived_at IS NULL
+				JOIN sizes sz ON sz.id=s.size_id AND sz.archived_at IS NULL
+				JOIN inventory_balances ib ON ib.sku_id=s.id
+				JOIN inventory_locations il ON il.id=ib.location_id AND il.code='default' AND il.archived_at IS NULL
+				WHERE s.public_id=? AND s.archived_at IS NULL FOR UPDATE`, now, now, now, now, line.SkuID).Take(&sku).Error
+			if err != nil {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					return order.ErrNotFound
 				}
 				return err
 			}
-			if sku.StockQty < line.Qty {
+			if sku.OnHand-sku.Reserved < line.Qty {
 				return order.ErrOutOfStock
 			}
-			var product productModel
-			if err := tx.Select("name").First(&product, "id = ?", sku.ProductID).Error; err != nil {
-				return err
-			}
-			newQty := sku.StockQty - line.Qty
-			if err := tx.Model(&skuModel{}).Where("id = ?", sku.ID).Updates(map[string]any{
-				"stock_qty": newQty, "in_stock": newQty > 0,
-			}).Error; err != nil {
+			if err := tx.Exec("UPDATE inventory_balances SET on_hand=on_hand-? WHERE sku_id=? AND location_id=(SELECT id FROM inventory_locations WHERE code='default')", line.Qty, sku.ID).Error; err != nil {
 				return err
 			}
 			items = append(items, orderItemModel{
-				SkuID: sku.ID, ProductID: sku.ProductID, Name: product.Name,
-				Size: sku.Size, UnitPrice: sku.Price, Qty: line.Qty,
+				SkuID: sku.PublicID, ProductID: sku.ProductPublicID, Name: sku.ProductName,
+				SkuRefID: publicUint64(sku.ID), ProductRefID: &sku.ProductRefID,
+				Size: sku.SizeName, UnitPrice: sku.Amount, Qty: line.Qty,
 			})
-			total += sku.Price * line.Qty
+			total += sku.Amount * line.Qty
 		}
 		created = orderModel{
 			UserID: userID, Status: order.StatusConfirmed, Total: total,
@@ -63,6 +72,16 @@ func (r *OrderRepository) Create(ctx context.Context, userID int, lines []order.
 		return order.Order{}, err
 	}
 	return toOrder(created), nil
+}
+
+func publicUint64(raw string) *uint64 {
+	var value uint64
+	for _, char := range raw {
+		if char >= '0' && char <= '9' {
+			value = value*10 + uint64(char-'0')
+		}
+	}
+	return &value
 }
 
 func (r *OrderRepository) ListByUser(ctx context.Context, userID int) ([]order.Order, error) {

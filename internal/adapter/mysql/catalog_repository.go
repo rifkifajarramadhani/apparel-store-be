@@ -3,401 +3,246 @@ package mysqladapter
 import (
 	"context"
 	"errors"
+	"time"
 
-	mysqldriver "github.com/go-sql-driver/mysql"
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/catalog"
 	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
 )
 
-func isDuplicateKey(err error) bool {
-	var mysqlErr *mysqldriver.MySQLError
-	return errors.As(err, &mysqlErr) && mysqlErr.Number == 1062
-}
-
-type CatalogRepository struct {
-	db *gorm.DB
-}
+type CatalogRepository struct{ db *gorm.DB }
 
 func NewCatalogRepository(db *gorm.DB) *CatalogRepository {
 	return &CatalogRepository{db: db}
 }
 
-func (r *CatalogRepository) ListProducts(ctx context.Context, q catalog.ProductQuery) ([]catalog.Product, int64, error) {
-	tx := r.db.WithContext(ctx).Model(&productModel{})
-	if q.CategoryID != "" {
-		tx = tx.Where("category_id = ?", q.CategoryID)
+type productRow struct {
+	ID, PublicID, StyleCode, Slug, Name, Subtitle, Gender, ProductType, Description string
+	BrandPublicID, BrandSlug, BrandName                                             string
+}
+
+func (r *CatalogRepository) ListProducts(ctx context.Context, q catalog.ProductQuery) (catalog.CursorPage[catalog.Product], error) {
+	query := r.db.WithContext(ctx).Table("products p").
+		Select("p.id, p.public_id, p.style_code, p.slug, p.name, p.subtitle, p.gender, p.product_type, p.description, b.public_id brand_public_id, b.slug brand_slug, b.name brand_name").
+		Joins("JOIN brands b ON b.id = p.brand_id AND b.archived_at IS NULL").
+		Where("p.archived_at IS NULL")
+	if q.Cursor != "" {
+		query = query.Where("p.public_id > ?", q.Cursor)
+	}
+	if q.BrandSlug != "" {
+		query = query.Where("b.slug = ?", q.BrandSlug)
 	}
 	if q.CategorySlug != "" {
-		tx = tx.Where("category_slug = ?", q.CategorySlug)
+		query = query.Joins("JOIN product_categories pc_filter ON pc_filter.product_id = p.id").Joins("JOIN categories c_filter ON c_filter.id = pc_filter.category_id AND c_filter.archived_at IS NULL").Where("c_filter.slug = ?", q.CategorySlug)
 	}
-	if q.Gender != "" {
-		tx = tx.Where("gender = ?", q.Gender)
+	if q.Query != "" {
+		like := "%" + q.Query + "%"
+		query = query.Where("p.name LIKE ? OR p.subtitle LIKE ? OR p.style_code LIKE ?", like, like, like)
 	}
-	if q.Slug != "" {
-		tx = tx.Where("slug = ?", q.Slug)
+	var rows []productRow
+	if err := query.Order("p.public_id ASC").Limit(q.Limit + 1).Scan(&rows).Error; err != nil {
+		return catalog.CursorPage[catalog.Product]{}, err
 	}
-	if q.MinPrice != nil {
-		tx = tx.Where("min_price >= ?", *q.MinPrice)
+	hasMore := len(rows) > q.Limit
+	if hasMore {
+		rows = rows[:q.Limit]
 	}
-	if q.MaxPrice != nil {
-		tx = tx.Where("max_price <= ?", *q.MaxPrice)
+	products, ids := make([]catalog.Product, len(rows)), make([]uint64, len(rows))
+	for i, row := range rows {
+		products[i] = productFromRow(row)
+		ids[i] = parseUintID(row.ID)
 	}
-	if q.Q != "" {
-		like := "%" + q.Q + "%"
-		tx = tx.Where("name LIKE ? OR subtitle LIKE ? OR brand LIKE ? OR type LIKE ?", like, like, like, like)
+	if err := r.hydrateProducts(ctx, products, ids, q.Currency); err != nil {
+		return catalog.CursorPage[catalog.Product]{}, err
 	}
-
-	var total int64
-	if err := tx.Count(&total).Error; err != nil {
-		return nil, 0, err
+	page := catalog.CursorPage[catalog.Product]{Items: products}
+	if hasMore {
+		page.NextCursor = products[len(products)-1].ID
 	}
-
-	switch q.SortBy {
-	case "publishedAt":
-		tx = tx.Order(orderClause("published_at", q.SortDesc))
-	case "minPrice":
-		tx = tx.Order(orderClause("min_price", q.SortDesc))
-	default:
-		tx = tx.Order("published_at DESC")
-	}
-	if q.Limit > 0 {
-		page := q.Page
-		if page < 1 {
-			page = 1
-		}
-		tx = tx.Offset((page - 1) * q.Limit).Limit(q.Limit)
-	}
-
-	var records []productModel
-	if err := tx.Find(&records).Error; err != nil {
-		return nil, 0, err
-	}
-	products := make([]catalog.Product, 0, len(records))
-	for _, record := range records {
-		products = append(products, toProduct(record))
-	}
-	return products, total, nil
+	return page, nil
 }
 
-func orderClause(column string, desc bool) string {
-	if desc {
-		return column + " DESC"
-	}
-	return column + " ASC"
-}
-
-func (r *CatalogRepository) GetProduct(ctx context.Context, id string) (catalog.Product, error) {
-	var record productModel
-	if err := r.db.WithContext(ctx).First(&record, "id = ?", id).Error; err != nil {
-		return catalog.Product{}, mapCatalogNotFound(err)
-	}
-	return toProduct(record), nil
-}
-
-func (r *CatalogRepository) ProductExists(ctx context.Context, id string) (bool, error) {
-	var count int64
-	err := r.db.WithContext(ctx).Model(&productModel{}).Where("id = ?", id).Count(&count).Error
-	return count > 0, err
-}
-
-func (r *CatalogRepository) GetAggregate(ctx context.Context, productID string) (catalog.Aggregate, error) {
-	product, err := r.GetProduct(ctx, productID)
-	if err != nil {
-		return catalog.Aggregate{}, err
-	}
-	colorways, err := r.ListColorways(ctx, productID, false)
-	if err != nil {
-		return catalog.Aggregate{}, err
-	}
-	skus, err := r.ListSkus(ctx, productID, "")
-	if err != nil {
-		return catalog.Aggregate{}, err
-	}
-	return catalog.Aggregate{Product: product, Colorways: colorways, Skus: skus}, nil
-}
-
-// SaveAggregate replaces the product row and all of its colorways/skus in one
-// transaction, matching the json-server admin route semantics (full replace).
-func (r *CatalogRepository) SaveAggregate(ctx context.Context, agg catalog.Aggregate) error {
-	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		if err := tx.Where("product_id = ?", agg.Product.ID).Delete(&skuModel{}).Error; err != nil {
-			return err
-		}
-		if err := tx.Where("product_id = ?", agg.Product.ID).Delete(&colorwayModel{}).Error; err != nil {
-			return err
-		}
-		model := fromProduct(agg.Product)
-		if err := tx.Save(&model).Error; err != nil {
-			return err
-		}
-		for _, cw := range agg.Colorways {
-			record := fromColorway(cw)
-			if err := tx.Create(&record).Error; err != nil {
-				return err
-			}
-		}
-		for _, sku := range agg.Skus {
-			record := fromSku(sku)
-			if err := tx.Create(&record).Error; err != nil {
-				return err
-			}
-		}
-		return nil
-	})
-}
-
-func (r *CatalogRepository) DeleteProduct(ctx context.Context, id string) error {
-	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		if err := tx.Where("product_id = ?", id).Delete(&skuModel{}).Error; err != nil {
-			return err
-		}
-		if err := tx.Where("product_id = ?", id).Delete(&colorwayModel{}).Error; err != nil {
-			return err
-		}
-		return tx.Delete(&productModel{}, "id = ?", id).Error
-	})
-}
-
-func (r *CatalogRepository) ListColorways(ctx context.Context, productID string, embedSkus bool) ([]catalog.Colorway, error) {
-	tx := r.db.WithContext(ctx).Model(&colorwayModel{})
-	if productID != "" {
-		tx = tx.Where("product_id = ?", productID)
-	}
-	var records []colorwayModel
-	if err := tx.Order("is_default DESC, id ASC").Find(&records).Error; err != nil {
-		return nil, err
-	}
-	colorways := make([]catalog.Colorway, 0, len(records))
-	for _, record := range records {
-		cw := toColorway(record)
-		if embedSkus {
-			skus, err := r.ListSkus(ctx, "", cw.ID)
-			if err != nil {
-				return nil, err
-			}
-			cw.Skus = skus
-		}
-		colorways = append(colorways, cw)
-	}
-	return colorways, nil
-}
-
-func (r *CatalogRepository) ListSkus(ctx context.Context, productID, colorwayID string) ([]catalog.Sku, error) {
-	tx := r.db.WithContext(ctx).Model(&skuModel{})
-	if productID != "" {
-		tx = tx.Where("product_id = ?", productID)
-	}
-	if colorwayID != "" {
-		tx = tx.Where("colorway_id = ?", colorwayID)
-	}
-	var records []skuModel
-	if err := tx.Order("id ASC").Find(&records).Error; err != nil {
-		return nil, err
-	}
-	skus := make([]catalog.Sku, 0, len(records))
-	for _, record := range records {
-		skus = append(skus, toSku(record))
-	}
-	return skus, nil
-}
-
-func (r *CatalogRepository) GetSku(ctx context.Context, id string) (catalog.Sku, error) {
-	var record skuModel
-	if err := r.db.WithContext(ctx).First(&record, "id = ?", id).Error; err != nil {
-		return catalog.Sku{}, mapCatalogNotFound(err)
-	}
-	return toSku(record), nil
-}
-
-func (r *CatalogRepository) UpdateSku(ctx context.Context, sku catalog.Sku) error {
-	record := fromSku(sku)
-	result := r.db.WithContext(ctx).Model(&skuModel{}).Where("id = ?", sku.ID).Updates(map[string]any{
-		"colorway_id": record.ColorwayID, "product_id": record.ProductID, "size": record.Size,
-		"size_label": record.SizeLabel, "size_scale": record.SizeScale,
-		"in_stock": record.InStock, "stock_qty": record.StockQty, "price": record.Price,
-	})
-	if result.Error != nil {
-		return result.Error
-	}
-	if result.RowsAffected == 0 {
-		return catalog.ErrNotFound
-	}
-	return nil
-}
-
-func (r *CatalogRepository) ListCategories(ctx context.Context) ([]catalog.Category, error) {
-	var records []categoryModel
-	if err := r.db.WithContext(ctx).Order("level ASC, id ASC").Find(&records).Error; err != nil {
-		return nil, err
-	}
-	categories := make([]catalog.Category, 0, len(records))
-	for _, record := range records {
-		categories = append(categories, catalog.Category{
-			ID: record.ID, Slug: record.Slug, Name: record.Name,
-			ParentID: record.ParentID, Gender: record.Gender, Level: record.Level,
-		})
-	}
-	return categories, nil
-}
-
-func (r *CatalogRepository) SaveCategory(ctx context.Context, c catalog.Category, create bool) error {
-	record := categoryModel{ID: c.ID, Slug: c.Slug, Name: c.Name, ParentID: c.ParentID, Gender: c.Gender, Level: c.Level}
-	if create {
-		return mapCatalogWriteError(r.db.WithContext(ctx).Create(&record).Error)
-	}
-	result := r.db.WithContext(ctx).Model(&categoryModel{}).Where("id = ?", c.ID).Updates(map[string]any{
-		"slug": c.Slug, "name": c.Name, "parent_id": c.ParentID, "gender": c.Gender, "level": c.Level,
-	})
-	if result.Error != nil {
-		return result.Error
-	}
-	if result.RowsAffected == 0 {
-		return catalog.ErrNotFound
-	}
-	return nil
-}
-
-func (r *CatalogRepository) DeleteCategory(ctx context.Context, id string) error {
-	return requireCatalogAffected(r.db.WithContext(ctx).Delete(&categoryModel{}, "id = ?", id))
-}
-
-func (r *CatalogRepository) CountCategoryReferences(ctx context.Context, id string) (int64, int64, error) {
-	var products, children int64
-	if err := r.db.WithContext(ctx).Model(&productModel{}).Where("category_id = ?", id).Count(&products).Error; err != nil {
-		return 0, 0, err
-	}
-	if err := r.db.WithContext(ctx).Model(&categoryModel{}).Where("parent_id = ?", id).Count(&children).Error; err != nil {
-		return 0, 0, err
-	}
-	return products, children, nil
-}
-
-func (r *CatalogRepository) ListCollections(ctx context.Context) ([]catalog.Collection, error) {
-	var records []collectionModel
-	if err := r.db.WithContext(ctx).Order("id ASC").Find(&records).Error; err != nil {
-		return nil, err
-	}
-	collections := make([]catalog.Collection, 0, len(records))
-	for _, record := range records {
-		collections = append(collections, catalog.Collection{ID: record.ID, Slug: record.Slug, Name: record.Name})
-	}
-	return collections, nil
-}
-
-func (r *CatalogRepository) SaveCollection(ctx context.Context, c catalog.Collection, create bool) error {
-	record := collectionModel{ID: c.ID, Slug: c.Slug, Name: c.Name}
-	if create {
-		return mapCatalogWriteError(r.db.WithContext(ctx).Create(&record).Error)
-	}
-	result := r.db.WithContext(ctx).Model(&collectionModel{}).Where("id = ?", c.ID).Updates(map[string]any{
-		"slug": c.Slug, "name": c.Name,
-	})
-	if result.Error != nil {
-		return result.Error
-	}
-	if result.RowsAffected == 0 {
-		return catalog.ErrNotFound
-	}
-	return nil
-}
-
-func (r *CatalogRepository) DeleteCollection(ctx context.Context, id string) error {
-	return requireCatalogAffected(r.db.WithContext(ctx).Delete(&collectionModel{}, "id = ?", id))
-}
-
-// CountCollectionReferences counts products whose collectionIds JSON array
-// contains the id. Uses MySQL JSON_CONTAINS on the JSON column.
-func (r *CatalogRepository) CountCollectionReferences(ctx context.Context, id string) (int64, error) {
-	var count int64
-	err := r.db.WithContext(ctx).Model(&productModel{}).
-		Where("JSON_CONTAINS(collection_ids, JSON_QUOTE(?))", id).Count(&count).Error
-	return count, err
-}
-
-func (r *CatalogRepository) ListSizeScales(ctx context.Context) ([]catalog.SizeScale, error) {
-	var records []sizeScaleModel
-	if err := r.db.WithContext(ctx).Order("id ASC").Find(&records).Error; err != nil {
-		return nil, err
-	}
-	scales := make([]catalog.SizeScale, 0, len(records))
-	for _, record := range records {
-		scales = append(scales, catalog.SizeScale{ID: record.ID, Sizes: orEmpty(record.Sizes)})
-	}
-	return scales, nil
-}
-
-// SeedCatalog upserts a full catalog dataset. Idempotent: re-running replaces
-// rows by primary key. Used by cmd/seed.
-func (r *CatalogRepository) SeedCatalog(
-	ctx context.Context,
-	products []catalog.Product,
-	colorways []catalog.Colorway,
-	skus []catalog.Sku,
-	categories []catalog.Category,
-	collections []catalog.Collection,
-	sizeScales []catalog.SizeScale,
-) error {
-	upsert := clause.OnConflict{UpdateAll: true}
-	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		for _, c := range categories {
-			record := categoryModel{ID: c.ID, Slug: c.Slug, Name: c.Name, ParentID: c.ParentID, Gender: c.Gender, Level: c.Level}
-			if err := tx.Clauses(upsert).Create(&record).Error; err != nil {
-				return err
-			}
-		}
-		for _, c := range collections {
-			record := collectionModel{ID: c.ID, Slug: c.Slug, Name: c.Name}
-			if err := tx.Clauses(upsert).Create(&record).Error; err != nil {
-				return err
-			}
-		}
-		for _, s := range sizeScales {
-			record := sizeScaleModel{ID: s.ID, Sizes: orEmpty(s.Sizes)}
-			if err := tx.Clauses(upsert).Create(&record).Error; err != nil {
-				return err
-			}
-		}
-		for _, p := range products {
-			record := fromProduct(p)
-			if err := tx.Clauses(upsert).Create(&record).Error; err != nil {
-				return err
-			}
-		}
-		for _, cw := range colorways {
-			record := fromColorway(cw)
-			if err := tx.Clauses(upsert).Create(&record).Error; err != nil {
-				return err
-			}
-		}
-		for _, sku := range skus {
-			record := fromSku(sku)
-			if err := tx.Clauses(upsert).Create(&record).Error; err != nil {
-				return err
-			}
-		}
-		return nil
-	})
-}
-
-func mapCatalogNotFound(err error) error {
+func (r *CatalogRepository) GetProduct(ctx context.Context, id, currency string) (catalog.Product, error) {
+	var row productRow
+	err := r.db.WithContext(ctx).Table("products p").Select("p.id, p.public_id, p.style_code, p.slug, p.name, p.subtitle, p.gender, p.product_type, p.description, b.public_id brand_public_id, b.slug brand_slug, b.name brand_name").Joins("JOIN brands b ON b.id = p.brand_id AND b.archived_at IS NULL").Where("p.archived_at IS NULL AND (p.public_id = ? OR p.slug = ?)", id, id).Take(&row).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return catalog.ErrNotFound
+		return catalog.Product{}, catalog.ErrNotFound
 	}
-	return err
+	if err != nil {
+		return catalog.Product{}, err
+	}
+	products := []catalog.Product{productFromRow(row)}
+	if err := r.hydrateProducts(ctx, products, []uint64{parseUintID(row.ID)}, currency); err != nil {
+		return catalog.Product{}, err
+	}
+	return products[0], nil
 }
 
-func mapCatalogWriteError(err error) error {
-	if err == nil {
+func productFromRow(row productRow) catalog.Product {
+	return catalog.Product{ID: row.PublicID, StyleCode: row.StyleCode, Slug: row.Slug, Name: row.Name, Subtitle: row.Subtitle, Gender: row.Gender, ProductType: row.ProductType, Description: row.Description, Brand: catalog.Brand{ID: row.BrandPublicID, Slug: row.BrandSlug, Name: row.BrandName}, Categories: []catalog.Category{}, Colourways: []catalog.Colourway{}, Sizes: []catalog.Size{}, Assets: []catalog.Asset{}}
+}
+
+func parseUintID(raw string) uint64 {
+	var id uint64
+	for _, c := range raw {
+		if c >= '0' && c <= '9' {
+			id = id*10 + uint64(c-'0')
+		}
+	}
+	return id
+}
+
+type categoryLinkRow struct {
+	ProductID            uint64
+	PublicID, Slug, Name string
+	ParentPublicID       *string
+}
+type colourLinkRow struct {
+	ProductID                                   uint64
+	PublicID, Slug, Name, ColourFamily, HexCode string
+}
+type sizeLinkRow struct {
+	ProductID                       uint64
+	PublicID, ScaleCode, Code, Name string
+	SortOrder                       int
+}
+type assetLinkRow struct {
+	ProductID                               uint64
+	PublicID, MediaType, URL, AltText, Role string
+	SortOrder                               int
+}
+type priceRangeRow struct {
+	ProductID            uint64
+	MinAmount, MaxAmount int64
+}
+
+func (r *CatalogRepository) hydrateProducts(ctx context.Context, products []catalog.Product, ids []uint64, currency string) error {
+	if len(ids) == 0 {
 		return nil
 	}
-	if isDuplicateKey(err) {
-		return catalog.ErrConflict
+	positions := make(map[uint64]int, len(ids))
+	for i, id := range ids {
+		positions[id] = i
 	}
-	return err
+	var categories []categoryLinkRow
+	if err := r.db.WithContext(ctx).Raw("SELECT pc.product_id, c.public_id, c.slug, c.name, parent.public_id parent_public_id FROM product_categories pc JOIN categories c ON c.id=pc.category_id AND c.archived_at IS NULL LEFT JOIN categories parent ON parent.id=c.parent_id WHERE pc.product_id IN ? ORDER BY pc.is_primary DESC,c.name", ids).Scan(&categories).Error; err != nil {
+		return err
+	}
+	for _, row := range categories {
+		i := positions[row.ProductID]
+		products[i].Categories = append(products[i].Categories, catalog.Category{ID: row.PublicID, ParentID: row.ParentPublicID, Slug: row.Slug, Name: row.Name})
+	}
+	var colours []colourLinkRow
+	if err := r.db.WithContext(ctx).Raw("SELECT DISTINCT s.product_id,c.public_id,c.slug,c.name,c.colour_family,c.hex_code FROM skus s JOIN colourways c ON c.id=s.colourway_id AND c.archived_at IS NULL WHERE s.archived_at IS NULL AND s.product_id IN ? ORDER BY c.name", ids).Scan(&colours).Error; err != nil {
+		return err
+	}
+	for _, row := range colours {
+		i := positions[row.ProductID]
+		products[i].Colourways = append(products[i].Colourways, catalog.Colourway{ID: row.PublicID, Slug: row.Slug, Name: row.Name, ColourFamily: row.ColourFamily, HexCode: row.HexCode})
+	}
+	var sizes []sizeLinkRow
+	if err := r.db.WithContext(ctx).Raw("SELECT DISTINCT s.product_id,sz.public_id,ss.code scale_code,sz.code,sz.name,sz.sort_order FROM skus s JOIN sizes sz ON sz.id=s.size_id AND sz.archived_at IS NULL JOIN size_scales ss ON ss.id=sz.size_scale_id AND ss.archived_at IS NULL WHERE s.archived_at IS NULL AND s.product_id IN ? ORDER BY sz.sort_order,sz.name", ids).Scan(&sizes).Error; err != nil {
+		return err
+	}
+	for _, row := range sizes {
+		i := positions[row.ProductID]
+		products[i].Sizes = append(products[i].Sizes, catalog.Size{ID: row.PublicID, ScaleCode: row.ScaleCode, Code: row.Code, Name: row.Name, SortOrder: row.SortOrder})
+	}
+	var assets []assetLinkRow
+	if err := r.db.WithContext(ctx).Raw("SELECT pa.product_id,a.public_id,a.media_type,a.url,COALESCE(a.alt_text,'') alt_text,pa.role,pa.sort_order FROM product_assets pa JOIN assets a ON a.id=pa.asset_id AND a.archived_at IS NULL WHERE pa.product_id IN ? ORDER BY pa.role,pa.sort_order", ids).Scan(&assets).Error; err != nil {
+		return err
+	}
+	for _, row := range assets {
+		i := positions[row.ProductID]
+		products[i].Assets = append(products[i].Assets, catalog.Asset{ID: row.PublicID, MediaType: row.MediaType, URL: row.URL, AltText: row.AltText, Role: row.Role, SortOrder: row.SortOrder})
+	}
+	var ranges []priceRangeRow
+	now := time.Now().UTC()
+	priceSQL := `SELECT s.product_id, MIN(COALESCE(sp.amount,pp.amount)) min_amount, MAX(COALESCE(sp.amount,pp.amount)) max_amount FROM skus s LEFT JOIN prices sp ON sp.sku_id=s.id AND sp.currency=? AND sp.archived_at IS NULL AND sp.valid_from<=? AND (sp.valid_to IS NULL OR sp.valid_to>?) LEFT JOIN prices pp ON pp.product_id=s.product_id AND pp.currency=? AND pp.archived_at IS NULL AND pp.valid_from<=? AND (pp.valid_to IS NULL OR pp.valid_to>?) WHERE s.archived_at IS NULL AND s.product_id IN ? GROUP BY s.product_id`
+	if err := r.db.WithContext(ctx).Raw(priceSQL, currency, now, now, currency, now, now, ids).Scan(&ranges).Error; err != nil {
+		return err
+	}
+	for _, row := range ranges {
+		i := positions[row.ProductID]
+		min, max := catalog.Money{Currency: currency, Amount: row.MinAmount}, catalog.Money{Currency: currency, Amount: row.MaxAmount}
+		products[i].MinPrice, products[i].MaxPrice = &min, &max
+	}
+	return nil
 }
 
-func requireCatalogAffected(result *gorm.DB) error {
+func (r *CatalogRepository) ListBrands(ctx context.Context) ([]catalog.Brand, error) {
+	var out []catalog.Brand
+	err := r.db.WithContext(ctx).Table("brands").Select("public_id id,slug,name").Where("archived_at IS NULL").Order("name").Scan(&out).Error
+	return out, err
+}
+func (r *CatalogRepository) ListCategories(ctx context.Context) ([]catalog.Category, error) {
+	var out []catalog.Category
+	err := r.db.WithContext(ctx).Raw("SELECT c.public_id id,p.public_id parent_id,c.slug,c.name FROM categories c LEFT JOIN categories p ON p.id=c.parent_id WHERE c.archived_at IS NULL ORDER BY c.name").Scan(&out).Error
+	return out, err
+}
+func (r *CatalogRepository) ListCollections(ctx context.Context) ([]catalog.Collection, error) {
+	var out []catalog.Collection
+	err := r.db.WithContext(ctx).Table("collections").Select("public_id id,slug,name").Where("archived_at IS NULL").Order("name").Scan(&out).Error
+	return out, err
+}
+func (r *CatalogRepository) ListColourways(ctx context.Context) ([]catalog.Colourway, error) {
+	var out []catalog.Colourway
+	err := r.db.WithContext(ctx).Table("colourways").Select("public_id id,slug,name,colour_family,hex_code").Where("archived_at IS NULL").Order("name").Scan(&out).Error
+	return out, err
+}
+func (r *CatalogRepository) ListSizes(ctx context.Context) ([]catalog.Size, error) {
+	var out []catalog.Size
+	err := r.db.WithContext(ctx).Raw("SELECT sz.public_id id,ss.code scale_code,sz.code,sz.name,sz.sort_order FROM sizes sz JOIN size_scales ss ON ss.id=sz.size_scale_id WHERE sz.archived_at IS NULL AND ss.archived_at IS NULL ORDER BY ss.code,sz.sort_order").Scan(&out).Error
+	return out, err
+}
+
+type skuRow struct {
+	ID, Code, Barcode, ProductID                                     string
+	ColourwayID, ColourwaySlug, ColourwayName, ColourFamily, HexCode string
+	SizeID, ScaleCode, SizeCode, SizeName                            string
+	SortOrder, OnHand, Reserved                                      int
+	Amount                                                           int64
+	CompareAtAmount                                                  *int64
+}
+
+func (r *CatalogRepository) ListSkus(ctx context.Context, q catalog.SkuQuery) (catalog.CursorPage[catalog.Sku], error) {
+	now := time.Now().UTC()
+	sql := `SELECT s.public_id id,s.sku_code code,COALESCE(s.barcode,'') barcode,p.public_id product_id,c.public_id colourway_id,c.slug colourway_slug,c.name colourway_name,COALESCE(c.colour_family,'') colour_family,c.hex_code,sz.public_id size_id,ss.code scale_code,sz.code size_code,sz.name size_name,sz.sort_order,COALESCE(SUM(ib.on_hand),0) on_hand,COALESCE(SUM(ib.reserved),0) reserved,COALESCE((SELECT sp.amount FROM prices sp WHERE sp.sku_id=s.id AND sp.currency=? AND sp.archived_at IS NULL AND sp.valid_from<=? AND (sp.valid_to IS NULL OR sp.valid_to>?) ORDER BY sp.valid_from DESC LIMIT 1),(SELECT pp.amount FROM prices pp WHERE pp.product_id=s.product_id AND pp.currency=? AND pp.archived_at IS NULL AND pp.valid_from<=? AND (pp.valid_to IS NULL OR pp.valid_to>?) ORDER BY pp.valid_from DESC LIMIT 1),0) amount FROM skus s JOIN products p ON p.id=s.product_id AND p.archived_at IS NULL JOIN colourways c ON c.id=s.colourway_id AND c.archived_at IS NULL JOIN sizes sz ON sz.id=s.size_id AND sz.archived_at IS NULL JOIN size_scales ss ON ss.id=sz.size_scale_id LEFT JOIN inventory_balances ib ON ib.sku_id=s.id WHERE s.archived_at IS NULL`
+	args := []any{q.Currency, now, now, q.Currency, now, now}
+	if q.ProductID != "" {
+		sql += " AND p.public_id=?"
+		args = append(args, q.ProductID)
+	}
+	if q.ColourwayID != "" {
+		sql += " AND c.public_id=?"
+		args = append(args, q.ColourwayID)
+	}
+	if q.Cursor != "" {
+		sql += " AND s.public_id>?"
+		args = append(args, q.Cursor)
+	}
+	sql += " GROUP BY s.id,p.public_id,c.id,sz.id,ss.code ORDER BY s.public_id LIMIT ?"
+	args = append(args, q.Limit+1)
+	var rows []skuRow
+	if err := r.db.WithContext(ctx).Raw(sql, args...).Scan(&rows).Error; err != nil {
+		return catalog.CursorPage[catalog.Sku]{}, err
+	}
+	hasMore := len(rows) > q.Limit
+	if hasMore {
+		rows = rows[:q.Limit]
+	}
+	items := make([]catalog.Sku, 0, len(rows))
+	for _, row := range rows {
+		items = append(items, catalog.Sku{ID: row.ID, Code: row.Code, Barcode: row.Barcode, ProductID: row.ProductID, Colourway: catalog.Colourway{ID: row.ColourwayID, Slug: row.ColourwaySlug, Name: row.ColourwayName, ColourFamily: row.ColourFamily, HexCode: row.HexCode}, Size: catalog.Size{ID: row.SizeID, ScaleCode: row.ScaleCode, Code: row.SizeCode, Name: row.SizeName, SortOrder: row.SortOrder}, Price: catalog.Money{Currency: q.Currency, Amount: row.Amount, CompareAtAmount: row.CompareAtAmount}, OnHand: row.OnHand, Reserved: row.Reserved, Available: row.OnHand - row.Reserved, Assets: []catalog.Asset{}})
+	}
+	page := catalog.CursorPage[catalog.Sku]{Items: items}
+	if hasMore {
+		page.NextCursor = items[len(items)-1].ID
+	}
+	return page, nil
+}
+
+func (r *CatalogRepository) SetInventory(ctx context.Context, in catalog.InventoryAdjustment) error {
+	result := r.db.WithContext(ctx).Exec(`INSERT INTO inventory_balances(sku_id,location_id,on_hand,reserved) SELECT s.id,l.id,?,? FROM skus s JOIN inventory_locations l ON l.public_id=? WHERE s.public_id=? AND s.archived_at IS NULL AND l.archived_at IS NULL ON DUPLICATE KEY UPDATE on_hand=VALUES(on_hand),reserved=VALUES(reserved)`, in.OnHand, in.Reserved, in.LocationID, in.SkuID)
 	if result.Error != nil {
 		return result.Error
 	}

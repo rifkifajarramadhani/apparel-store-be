@@ -44,13 +44,14 @@ func Setup(app *fiber.App, users handler.UserService, auth handler.AuthService, 
 
 	// Public catalog reads (no auth) — the storefront browses signed-out.
 	catalogHandler := handler.NewCatalogHandler(catalogService, logger)
-	api.Get("/products", catalogHandler.GetProducts)
-	api.Get("/products/:id", catalogHandler.GetProduct)
-	api.Get("/colorways", catalogHandler.GetColorways)
-	api.Get("/skus", catalogHandler.GetSkus)
-	api.Get("/categories", catalogHandler.GetCategories)
-	api.Get("/collections", catalogHandler.GetCollections)
-	api.Get("/sizeScales", catalogHandler.GetSizeScales)
+	api.Get("/products", catalogHandler.Products)
+	api.Get("/products/:id", catalogHandler.Product)
+	api.Get("/skus", catalogHandler.Skus)
+	api.Get("/brands", catalogHandler.Brands)
+	api.Get("/categories", catalogHandler.Categories)
+	api.Get("/collections", catalogHandler.Collections)
+	api.Get("/colourways", catalogHandler.Colourways)
+	api.Get("/sizes", catalogHandler.Sizes)
 
 	protected := api.Group("", middleware.JWTAuth(tokens, users))
 	protected.Get("/auth/me", authHandler.Me)
@@ -76,15 +77,5 @@ func Setup(app *fiber.App, users handler.UserService, auth handler.AuthService, 
 
 	// Admin-only catalog writes.
 	adminCatalog := protected.Group("", middleware.AdminOnly)
-	adminCatalog.Get("/admin/products/:id", catalogHandler.GetProductAggregate)
-	adminCatalog.Post("/admin/products", catalogHandler.CreateProductAggregate)
-	adminCatalog.Put("/admin/products/:id", catalogHandler.UpdateProductAggregate)
-	adminCatalog.Delete("/admin/products/:id", catalogHandler.DeleteProduct)
-	adminCatalog.Put("/skus/:id", catalogHandler.UpdateSku)
-	adminCatalog.Post("/categories", catalogHandler.CreateCategory)
-	adminCatalog.Put("/categories/:id", catalogHandler.UpdateCategory)
-	adminCatalog.Delete("/categories/:id", catalogHandler.DeleteCategory)
-	adminCatalog.Post("/collections", catalogHandler.CreateCollection)
-	adminCatalog.Put("/collections/:id", catalogHandler.UpdateCollection)
-	adminCatalog.Delete("/collections/:id", catalogHandler.DeleteCollection)
+	adminCatalog.Put("/inventory", catalogHandler.SetInventory)
 }

@@ -55,7 +55,8 @@ func WireHTTPServices(cfg *config.Config, db *gorm.DB, logger *slog.Logger, disp
 		time.Duration(cfg.Auth.VerificationTTLHours)*time.Hour,
 		cfg.Auth.BootstrapAdminEmail,
 	)
-	catalogService := catalog.NewService(mysqladapter.NewCatalogRepository(db))
+	catalogRepository := mysqladapter.NewCatalogRepository(db)
+	catalogService := catalog.NewService(catalogRepository)
 	orderService := order.NewService(mysqladapter.NewOrderRepository(db))
 	return HTTPServices{
 		Users: users, Auth: authService, Catalog: catalogService,

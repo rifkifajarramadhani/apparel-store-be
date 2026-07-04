@@ -1,6 +1,4 @@
-DROP TABLE IF EXISTS skus;
-DROP TABLE IF EXISTS colorways;
-DROP TABLE IF EXISTS products;
-DROP TABLE IF EXISTS size_scales;
-DROP TABLE IF EXISTS collections;
-DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS sku_assets, product_assets;
+DROP TABLE IF EXISTS assets, inventory_balances, inventory_locations, prices;
+DROP TABLE IF EXISTS skus, product_collections, product_categories, products;
+DROP TABLE IF EXISTS colourways, sizes, size_scales, collections, categories, brands;
