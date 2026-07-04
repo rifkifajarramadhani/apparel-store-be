@@ -223,17 +223,23 @@ func (w *DatabaseWorker) runLoop(ctx context.Context, offset int) {
 
 func (w *DatabaseWorker) reserve(ctx context.Context, queueName string) (*databaseJob, error) {
 	var job databaseJob
+	found := false
 	now := w.clock.Now()
 	w.maybeCleanup(ctx, now)
 	err := w.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		err := tx.Clauses(clause.Locking{Strength: "UPDATE", Options: "SKIP LOCKED"}).
+		result := tx.Clauses(clause.Locking{Strength: "UPDATE", Options: "SKIP LOCKED"}).
 			Where("queue = ? AND ((status IN ? AND available_at <= ?) OR (status = ? AND leased_until <= ?))",
 				queueName, []string{jobStatusPending, jobStatusRetry}, now, jobStatusActive, now).
 			Order("available_at ASC, created_at ASC").
-			First(&job).Error
-		if err != nil {
-			return err
+			Limit(1).
+			Find(&job)
+		if result.Error != nil {
+			return result.Error
 		}
+		if result.RowsAffected == 0 {
+			return nil
+		}
+		found = true
 		token := uuid.NewString()
 		leasedUntil := now.Add(w.reservation)
 		if err := tx.Model(&databaseJob{}).Where("id = ?", job.ID).Updates(map[string]any{
@@ -250,7 +256,7 @@ func (w *DatabaseWorker) reserve(ctx context.Context, queueName string) (*databa
 		job.LeasedUntil = &leasedUntil
 		return nil
 	})
-	if errors.Is(err, gorm.ErrRecordNotFound) {
+	if err == nil && !found {
 		return nil, nil
 	}
 	return &job, err

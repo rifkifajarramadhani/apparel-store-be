@@ -1,10 +1,13 @@
 package queueinfra
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
+	"log"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -12,6 +15,7 @@ import (
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/queue"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	gormlogger "gorm.io/gorm/logger"
 )
 
 type integrationJob struct {
@@ -60,6 +64,22 @@ func TestDatabaseQueueDispatchReserveAndComplete(t *testing.T) {
 		Concurrency: 1, ShutdownSeconds: 1, Queues: map[string]int{"default": 1},
 		Database: config.DatabaseQueueConfig{PollIntervalMilliseconds: 10, ReservationSeconds: 5},
 	}, registry, nil)
+	var databaseLogs bytes.Buffer
+	emptyQueueDB := db.Session(&gorm.Session{Logger: gormlogger.New(log.New(&databaseLogs, "", 0), gormlogger.Config{
+		LogLevel: gormlogger.Warn,
+	})})
+	emptyQueueWorker := NewDatabaseWorker(emptyQueueDB, worker.cfg, registry, nil)
+	emptyJob, err := emptyQueueWorker.reserve(ctx, taskID+"-empty")
+	if err != nil {
+		t.Fatalf("reserve empty queue: %v", err)
+	}
+	if emptyJob != nil {
+		t.Fatalf("reserved job from empty queue = %#v, want nil", emptyJob)
+	}
+	if strings.Contains(databaseLogs.String(), gorm.ErrRecordNotFound.Error()) {
+		t.Fatalf("empty queue logged an expected not-found result: %s", databaseLogs.String())
+	}
+
 	job, err := worker.reserve(ctx, "default")
 	if err != nil {
 		t.Fatal(err)
