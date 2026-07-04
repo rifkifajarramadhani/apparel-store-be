@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
 	"strings"
@@ -17,8 +18,10 @@ import (
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/http/router"
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/logging"
 	mysqladapter "github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/mysql"
+	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/uploadthing"
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/bootstrap"
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/config"
+	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/storage"
 )
 
 func main() {
@@ -56,9 +59,16 @@ func run() error {
 		defer func() { _ = closer.Close() }()
 	}
 	services := bootstrap.WireHTTPServices(cfg, db, appLogger.Logger, dispatcher)
+	var imageUploader storage.ImageUploader
+	if strings.TrimSpace(cfg.UploadThing.Token) != "" {
+		imageUploader, err = uploadthing.NewClient(cfg.UploadThing.Token, &http.Client{Timeout: 60 * time.Second})
+		if err != nil {
+			return fmt.Errorf("configure UploadThing: %w", err)
+		}
+	}
 
 	app := fiber.New(fiber.Config{
-		BodyLimit: 64 * 1024, ReadTimeout: 10 * time.Second, WriteTimeout: 15 * time.Second, IdleTimeout: 60 * time.Second,
+		BodyLimit: 128 * 1024 * 1024, ReadTimeout: 90 * time.Second, WriteTimeout: 90 * time.Second, IdleTimeout: 60 * time.Second,
 		ErrorHandler: func(c fiber.Ctx, err error) error {
 			var fiberErr *fiber.Error
 			if errors.As(err, &fiberErr) {
@@ -76,7 +86,7 @@ func run() error {
 		ExposeHeaders:    []string{"X-Total-Count"},
 		AllowCredentials: false,
 	}))
-	router.Setup(app, services.Users, services.Auth, services.Catalog, services.Orders, services.Tokens, appLogger.Logger, cfg.App.StorefrontURL)
+	router.Setup(app, services.Users, services.Auth, services.Catalog, services.Orders, services.Tokens, imageUploader, appLogger.Logger, cfg.App.StorefrontURL)
 	app.Get("/health/live", func(c fiber.Ctx) error {
 		return c.JSON(fiber.Map{"status": "ok"})
 	})

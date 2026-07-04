@@ -54,3 +54,6 @@ mail:
 logging:
   level: info
   file: logs/app.log
+
+uploadthing:
+  token: ""

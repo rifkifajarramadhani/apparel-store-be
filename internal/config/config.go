@@ -92,15 +92,20 @@ type LoggingConfig struct {
 	File  string `mapstructure:"file"`
 }
 
+type UploadThingConfig struct {
+	Token string `mapstructure:"token"`
+}
+
 type Config struct {
-	App       AppConfig       `mapstructure:"app"`
-	Database  DatabaseConfig  `mapstructure:"database"`
-	Auth      AuthConfig      `mapstructure:"auth"`
-	Redis     RedisConfig     `mapstructure:"redis"`
-	Queue     QueueConfig     `mapstructure:"queue"`
-	Scheduler SchedulerConfig `mapstructure:"scheduler"`
-	Mail      MailConfig      `mapstructure:"mail"`
-	Logging   LoggingConfig   `mapstructure:"logging"`
+	App         AppConfig         `mapstructure:"app"`
+	Database    DatabaseConfig    `mapstructure:"database"`
+	Auth        AuthConfig        `mapstructure:"auth"`
+	Redis       RedisConfig       `mapstructure:"redis"`
+	Queue       QueueConfig       `mapstructure:"queue"`
+	Scheduler   SchedulerConfig   `mapstructure:"scheduler"`
+	Mail        MailConfig        `mapstructure:"mail"`
+	Logging     LoggingConfig     `mapstructure:"logging"`
+	UploadThing UploadThingConfig `mapstructure:"uploadthing"`
 }
 
 func Load() (*Config, error) {
@@ -176,6 +181,7 @@ var configKeys = []string{
 	"queue.database.poll_interval_milliseconds", "queue.database.reservation_seconds",
 	"scheduler.timezone", "mail.host", "mail.port", "mail.username", "mail.password", "mail.encryption",
 	"mail.from_address", "mail.from_name", "logging.level", "logging.file",
+	"uploadthing.token",
 }
 
 func validateConfig(config *Config) error {

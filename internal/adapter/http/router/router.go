@@ -9,9 +9,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/http/handler"
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/http/middleware"
+	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/storage"
 )
 
-func Setup(app *fiber.App, users handler.UserService, auth handler.AuthService, catalogService handler.CatalogService, orders handler.OrderService, tokens middleware.AccessTokenValidator, logger *slog.Logger, storefrontURL ...string) {
+func Setup(app *fiber.App, users handler.UserService, auth handler.AuthService, catalogService handler.CatalogService, orders handler.OrderService, tokens middleware.AccessTokenValidator, uploader storage.ImageUploader, logger *slog.Logger, storefrontURL ...string) {
 	app.Use(func(c fiber.Ctx) error {
 		requestID := c.Get("X-Request-ID")
 		if requestID == "" {
@@ -78,4 +79,9 @@ func Setup(app *fiber.App, users handler.UserService, auth handler.AuthService, 
 	// Admin-only catalog writes.
 	adminCatalog := protected.Group("", middleware.AdminOnly)
 	adminCatalog.Put("/inventory", catalogHandler.SetInventory)
+	uploadHandler := handler.NewUploadHandler(uploader, logger)
+	adminCatalog.Post("/admin/products/assets/batch", uploadHandler.ProductImages)
+	adminCatalog.Post("/admin/products", catalogHandler.CreateProduct)
+	adminCatalog.Put("/admin/products/:id", catalogHandler.UpdateProduct)
+	adminCatalog.Delete("/admin/products/:id", catalogHandler.DeleteProduct)
 }

@@ -343,7 +343,8 @@ curl http://localhost:8080/api/auth/me \
 - API runs via Air using `.air.toml`.
 - Worker runs via Air using `.air.worker.toml`.
 - Build target for Air is `./cmd/server` and binary output is `tmp/main`.
-- Configuration supports environment-variable overrides such as `DATABASE_HOST`, `DATABASE_PASSWORD`, `AUTH_JWT_ACCESS_SECRET`, `AUTH_JWT_REFRESH_SECRET`, `QUEUE_DRIVER`, `REDIS_ADDRESS`, and `MAIL_PASSWORD`.
+- Configuration supports environment-variable overrides such as `DATABASE_HOST`, `DATABASE_PASSWORD`, `AUTH_JWT_ACCESS_SECRET`, `AUTH_JWT_REFRESH_SECRET`, `QUEUE_DRIVER`, `REDIS_ADDRESS`, `MAIL_PASSWORD`, and `UPLOADTHING_TOKEN`.
+- Product image batch uploads require the server-only `UPLOADTHING_TOKEN` from the UploadThing dashboard. When omitted, the authenticated upload endpoint responds with `503`.
 - Password hashing and current-password checks are handled in the core service.
 - Refresh tokens are persisted as SHA-256 hashes in `refresh_tokens` table.
 - User-management routes require the `admin` role; self-service routes only operate on the authenticated account.
