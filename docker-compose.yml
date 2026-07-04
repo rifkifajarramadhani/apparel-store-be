@@ -1,6 +1,11 @@
 volumes:
   db_data:
 
+networks:
+  shared:
+    name: apparel-store-shared
+    external: true
+
 services:
   server:
     build:
@@ -17,11 +22,19 @@ services:
     environment:
       DATABASE_HOST: db
       REDIS_ADDRESS: redis:6379
+      APP_PUBLIC_URL: https://dev.apparel-store.com
+      APP_STOREFRONT_URL: https://dev.apparel-store.com
+      APP_CORS_ORIGINS: https://dev.apparel-store.com
     depends_on:
       db:
         condition: service_healthy
       redis:
         condition: service_healthy
+    networks:
+      default:
+      shared:
+        aliases:
+          - apparel-store-backend
 
   worker:
     build:
