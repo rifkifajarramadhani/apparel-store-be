@@ -31,10 +31,12 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("load config: %w", err)
 	}
+
 	logger, err := logging.New(cfg.Logging)
 	if err != nil {
 		return fmt.Errorf("create logger: %w", err)
 	}
+
 	defer func() { _ = logger.Close() }()
 	var db = (*gorm.DB)(nil)
 	if cfg.Queue.Driver == config.QueueDriverDatabase {
@@ -43,13 +45,16 @@ func run() error {
 			logger.ErrorContext(ctx, "connect to database failed", "error", err)
 			return fmt.Errorf("connect to database: %w", err)
 		}
+
 		defer func() { _ = mysqladapter.Close(db) }()
 	}
+
 	registry, err := bootstrap.ScheduleRegistry(cfg)
 	if err != nil {
 		logger.ErrorContext(ctx, "build schedule registry failed", "error", err)
 		return fmt.Errorf("build schedule registry: %w", err)
 	}
+
 	dispatcher, err := bootstrap.Dispatcher(cfg, db)
 	if err != nil {
 		logger.ErrorContext(ctx, "build queue dispatcher failed", "error", err)
@@ -58,6 +63,7 @@ func run() error {
 	if closer, ok := dispatcher.(interface{ Close() error }); ok {
 		defer func() { _ = closer.Close() }()
 	}
+
 	runner := scheduler.NewRunner(registry, dispatcher)
 	logger.Info("scheduler running", "timezone", cfg.Scheduler.Timezone, "queue_driver", cfg.Queue.Driver)
 	for {

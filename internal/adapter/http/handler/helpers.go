@@ -32,6 +32,7 @@ func writeBindError(c fiber.Ctx, err error) error {
 	if errors.Is(err, fiber.ErrUnsupportedMediaType) {
 		return c.Status(fiber.StatusUnsupportedMediaType).JSON(fiber.Map{"error": "content type must be application/json"})
 	}
+
 	return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid request body"})
 }
 

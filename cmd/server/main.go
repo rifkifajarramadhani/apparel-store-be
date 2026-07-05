@@ -38,16 +38,19 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("load config: %w", err)
 	}
+
 	appLogger, err := logging.New(cfg.Logging)
 	if err != nil {
 		return fmt.Errorf("create logger: %w", err)
 	}
+
 	defer func() { _ = appLogger.Close() }()
 	db, err := mysqladapter.Open(ctx, cfg.Database.DSN, appLogger.Logger)
 	if err != nil {
 		appLogger.ErrorContext(ctx, "connect to database failed", "error", err)
 		return fmt.Errorf("connect to database: %w", err)
 	}
+
 	defer func() { _ = mysqladapter.Close(db) }()
 
 	dispatcher, err := bootstrap.Dispatcher(cfg, db)
@@ -58,6 +61,7 @@ func run() error {
 	if closer, ok := dispatcher.(interface{ Close() error }); ok {
 		defer func() { _ = closer.Close() }()
 	}
+
 	services := bootstrap.WireHTTPServices(cfg, db, appLogger.Logger, dispatcher)
 	var imageUploader storage.ImageUploader
 	if strings.TrimSpace(cfg.UploadThing.Token) != "" {
@@ -95,6 +99,7 @@ func run() error {
 		if dbErr != nil || sqlDB.PingContext(c.Context()) != nil {
 			return c.Status(fiber.StatusServiceUnavailable).JSON(fiber.Map{"status": "unavailable"})
 		}
+
 		return c.JSON(fiber.Map{"status": "ok"})
 	})
 	go func() {
@@ -116,5 +121,6 @@ func run() error {
 			return fmt.Errorf("listen: %w", err)
 		}
 	}
+
 	return nil
 }

@@ -36,6 +36,7 @@ func (m Welcome) Content() (Content, error) {
 	if err != nil {
 		return Content{}, err
 	}
+
 	html, err := renderHTMLTemplate("welcome.html", welcomeHTMLTemplate, data)
 	if err != nil {
 		return Content{}, err

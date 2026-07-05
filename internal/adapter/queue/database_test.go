@@ -15,6 +15,7 @@ func TestWeightedQueueNamesAreStable(t *testing.T) {
 	if len(got) != len(want) {
 		t.Fatalf("weighted queues = %v, want %v", got, want)
 	}
+
 	for index := range want {
 		if got[index] != want[index] {
 			t.Fatalf("weighted queues = %v, want %v", got, want)

@@ -18,6 +18,7 @@ func RegisterHandlers(registry *queue.HandlerRegistry, maintenance *auth.Mainten
 		if err := json.Unmarshal(payload, &job); err != nil {
 			return fmt.Errorf("decode demo log job: %w", err)
 		}
+
 		logger.InfoContext(ctx, "demo job", "message", job.Message)
 		return nil
 	}); err != nil {

@@ -67,6 +67,7 @@ func TestCreateProductValidation(t *testing.T) {
 		},
 		"sku unknown colourway": func(a *ProductAggregate) { a.Skus[0].ColourwayID = "GHOST" },
 	}
+
 	for name, mutate := range cases {
 		t.Run(name, func(t *testing.T) {
 			agg := validAggregate()

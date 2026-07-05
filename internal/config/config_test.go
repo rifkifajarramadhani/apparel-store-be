@@ -73,6 +73,7 @@ func TestLoadUsesDotEnvAndEnvironmentPrecedence(t *testing.T) {
 	if err := os.Mkdir(filepath.Join(directory, "configs"), 0o755); err != nil {
 		t.Fatal(err)
 	}
+
 	configFile := `
 app:
   port: 8080
@@ -99,6 +100,7 @@ queue:
 	); err != nil {
 		t.Fatal(err)
 	}
+
 	originalDirectory, err := os.Getwd()
 	if err != nil {
 		t.Fatal(err)
@@ -190,10 +192,12 @@ func TestNormalizeAuthConfigRejectsUnsafeProductionSecrets(t *testing.T) {
 		{JWTAccessSecret: "super-secret-access-key-change-me", JWTRefreshSecret: "different-secret-that-is-at-least-32"},
 		{JWTAccessSecret: "local-access-secret-change-me", JWTRefreshSecret: "local-refresh-secret-change-me-too"},
 	}
+
 	staging := AppConfig{Environment: "staging"}
 	if err := normalizeAuthConfig(&staging, &AuthConfig{}); err == nil {
 		t.Fatal("expected non-development environment to reject unsafe secrets")
 	}
+
 	for _, auth := range tests {
 		app := AppConfig{Environment: "production"}
 		if err := normalizeAuthConfig(&app, &auth); err == nil {
@@ -221,6 +225,7 @@ func TestNormalizeAuthConfigRejectsUnsafeAppURLs(t *testing.T) {
 		{StorefrontURL: "https://user:pass@example.com"},
 		{StorefrontURL: "https://example.com/?redirect=elsewhere"},
 	}
+
 	for _, app := range tests {
 		if err := normalizeAuthConfig(&app, &AuthConfig{}); err == nil {
 			t.Fatalf("expected URL rejection for %+v", app)
@@ -235,6 +240,7 @@ func TestValidateConfigRequiresProductionDatabasePassword(t *testing.T) {
 		Redis:    RedisConfig{Address: "redis:6379"},
 		Queue:    QueueConfig{Queues: map[string]int{"default": 1}},
 	}
+
 	err := validateConfig(&cfg)
 	if err == nil || !strings.Contains(err.Error(), "DATABASE_PASSWORD") {
 		t.Fatalf("error = %v, want missing DATABASE_PASSWORD error", err)
@@ -248,6 +254,7 @@ func TestProductionSecretErrorsDoNotExposeValues(t *testing.T) {
 		JWTAccessSecret:  secret,
 		JWTRefreshSecret: "valid-refresh-secret-that-is-long-enough",
 	}
+
 	err := normalizeAuthConfig(&app, &auth)
 	if err == nil {
 		t.Fatal("expected unsafe production secret error")

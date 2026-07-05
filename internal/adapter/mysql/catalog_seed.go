@@ -26,6 +26,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 		if err := tx.Exec("SET FOREIGN_KEY_CHECKS=0").Error; err != nil {
 			return err
 		}
+
 		for _, table := range []string{"assets", "prices", "skus", "product_collections", "product_categories", "products", "colourways", "sizes", "size_scales", "collections", "categories", "brands"} {
 			if err := tx.Exec("DELETE FROM " + table).Error; err != nil {
 				return err
@@ -41,10 +42,12 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 			if _, ok := brandIDs[key]; ok {
 				continue
 			}
+
 			slug := strings.ToLower(strings.ReplaceAll(key, " ", "-"))
 			if err := tx.Exec("INSERT INTO brands(public_id,slug,name) VALUES(?,?,?)", seedPublicID("BR", key), slug, key).Error; err != nil {
 				return err
 			}
+
 			id, err := seedRowID(tx, "brands", "slug", slug)
 			if err != nil {
 				return err
@@ -57,6 +60,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 			if err := tx.Exec("INSERT INTO categories(public_id,slug,name,gender) VALUES(?,?,?,?)", seedPublicID("CA", c.ID), c.Slug, c.Name, c.Gender).Error; err != nil {
 				return err
 			}
+
 			id, err := seedRowID(tx, "categories", "slug", c.Slug)
 			if err != nil {
 				return err
@@ -77,6 +81,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 			if err := tx.Exec("INSERT INTO collections(public_id,slug,name) VALUES(?,?,?)", seedPublicID("CL", c.ID), c.Slug, c.Name).Error; err != nil {
 				return err
 			}
+
 			id, err := seedRowID(tx, "collections", "slug", c.Slug)
 			if err != nil {
 				return err
@@ -89,6 +94,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 			if err := tx.Exec("INSERT INTO size_scales(public_id,code,name) VALUES(?,?,?)", seedPublicID("SC", scale.ID), scale.ID, scale.ID).Error; err != nil {
 				return err
 			}
+
 			id, err := seedRowID(tx, "size_scales", "code", scale.ID)
 			if err != nil {
 				return err
@@ -99,6 +105,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 				if err := tx.Exec("INSERT INTO sizes(public_id,size_scale_id,code,name,sort_order) VALUES(?,?,?,?,?)", seedPublicID("SZ", key), scaleIDs[scale.ID], size, size, order).Error; err != nil {
 					return err
 				}
+
 				var sizeID uint64
 				if err := tx.Raw("SELECT id FROM sizes WHERE size_scale_id=? AND code=?", scaleIDs[scale.ID], size).Scan(&sizeID).Error; err != nil {
 					return err
@@ -121,6 +128,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 			if err := tx.Exec("INSERT INTO colourways(public_id,name,hex_code) VALUES(?,?,?)", seedPublicID("CO", key), colour.Name, colour.SwatchHex).Error; err != nil {
 				return err
 			}
+
 			id, err := seedRowID(tx, "colourways", "name", colour.Name)
 			if err != nil {
 				return err
@@ -135,6 +143,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 			if err := tx.Exec("INSERT INTO products(public_id,style_code,slug,brand_id,name,subtitle,gender,product_type,description,published_at) VALUES(?,?,?,?,?,?,?,?,?,?)", seedPublicID("PR", p.ID), p.ID, p.Slug, brandIDs[strings.TrimSpace(p.Brand)], p.Name, p.Subtitle, p.Gender, p.Type, p.Description, published).Error; err != nil {
 				return err
 			}
+
 			id, err := seedRowID(tx, "products", "style_code", p.ID)
 			if err != nil {
 				return err
@@ -145,6 +154,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 					return err
 				}
 			}
+
 			for _, collectionID := range p.CollectionIDs {
 				if collectionIDs[collectionID] != 0 {
 					if err := tx.Exec("INSERT INTO product_collections(product_id,collection_id) VALUES(?,?)", productIDs[p.ID], collectionIDs[collectionID]).Error; err != nil {
@@ -161,6 +171,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 			if err := tx.Exec("INSERT INTO skus(public_id,sku_code,product_id,colourway_id,size_id,on_hand) VALUES(?,?,?,?,?,?)", seedPublicID("SK", sku.ID), sku.ID, productIDs[sku.ProductID], colourIDs[sku.ColourwayID], sizeIDs[sku.SizeScale+":"+sku.Size], sku.StockQty).Error; err != nil {
 				return err
 			}
+
 			var skuID uint64
 			if err := tx.Raw("SELECT id FROM skus WHERE sku_code=?", sku.ID).Scan(&skuID).Error; err != nil {
 				return err

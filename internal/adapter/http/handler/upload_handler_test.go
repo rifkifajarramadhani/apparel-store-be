@@ -28,6 +28,7 @@ func (f *uploaderFake) Upload(_ context.Context, file storage.File) (storage.Upl
 	if f.uploads == f.failAt {
 		return storage.UploadedFile{}, errors.New("storage unavailable")
 	}
+
 	return storage.UploadedFile{Key: "key-" + file.Name, URL: "https://app.ufs.sh/f/key-" + file.Name}, nil
 }
 
@@ -43,6 +44,7 @@ func uploadRequest(t *testing.T, metadata string, files ...string) *http.Request
 	if err := writer.WriteField("metadata", metadata); err != nil {
 		t.Fatal(err)
 	}
+
 	for _, name := range files {
 		header := make(textproto.MIMEHeader)
 		header.Set("Content-Disposition", `form-data; name="files"; filename="`+name+`"`)
@@ -58,6 +60,7 @@ func uploadRequest(t *testing.T, metadata string, files ...string) *http.Request
 	if err := writer.Close(); err != nil {
 		t.Fatal(err)
 	}
+
 	request := httptest.NewRequest(http.MethodPost, "/upload", &body)
 	request.Header.Set("Content-Type", writer.FormDataContentType())
 	return request
@@ -72,11 +75,13 @@ func TestUploadHandlerProductImages(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	defer func() { _ = response.Body.Close() }()
 	if response.StatusCode != fiber.StatusOK {
 		body, _ := io.ReadAll(response.Body)
 		t.Fatalf("status = %d, body = %s", response.StatusCode, body)
 	}
+
 	body, _ := io.ReadAll(response.Body)
 	if !strings.Contains(string(body), `"clientId":"one"`) || !strings.Contains(string(body), `"key":"key-two.png"`) {
 		t.Fatalf("unexpected body: %s", body)
@@ -92,6 +97,7 @@ func TestUploadHandlerRollsBackPartialBatch(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	defer func() { _ = response.Body.Close() }()
 	if response.StatusCode != fiber.StatusBadGateway {
 		t.Fatalf("status = %d", response.StatusCode)

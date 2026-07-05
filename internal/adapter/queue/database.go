@@ -79,10 +79,12 @@ func (d *DatabaseDispatcher) Dispatch(ctx context.Context, job queue.Job, option
 	if queueName == "" {
 		queueName = "default"
 	}
+
 	availableAt := options.ProcessAt
 	if availableAt.IsZero() {
 		availableAt = d.clock.Now()
 	}
+
 	maxRetry := options.MaxRetry
 	if maxRetry <= 0 {
 		maxRetry = defaultMaxRetry
@@ -99,6 +101,7 @@ func (d *DatabaseDispatcher) Dispatch(ctx context.Context, job queue.Job, option
 		RetentionSecs:  durationSeconds(options.Retention),
 		AvailableAt:    availableAt,
 	}
+
 	locks := dispatchLocks(record.ID, queueName, job.Type(), payload, options, d.clock.Now())
 
 	err = d.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -112,11 +115,13 @@ func (d *DatabaseDispatcher) Dispatch(ctx context.Context, job queue.Job, option
 		if err := tx.Create(&record).Error; err != nil {
 			return err
 		}
+
 		for _, lock := range locks {
 			if err := tx.Create(&lock).Error; err != nil {
 				return err
 			}
 		}
+
 		return nil
 	})
 	if isDuplicateKey(err) {
@@ -133,6 +138,7 @@ func NewDatabaseWorker(db *gorm.DB, cfg config.QueueConfig, registry *queue.Hand
 	if logger == nil {
 		logger = slog.Default()
 	}
+
 	weighted := weightedQueueNames(cfg.Queues)
 	return &DatabaseWorker{
 		db:              db,
@@ -157,6 +163,7 @@ func (w *DatabaseWorker) Run(ctx context.Context) error {
 	if len(w.weightedQueues) == 0 {
 		return errors.New("at least one queue must be configured")
 	}
+
 	workerCtx, cancel := context.WithCancel(ctx)
 	defer cancel()
 	var workers sync.WaitGroup
@@ -182,6 +189,7 @@ func (w *DatabaseWorker) Run(ctx context.Context) error {
 	case <-timer.C:
 		w.logger.WarnContext(ctx, "database queue shutdown timed out")
 	}
+
 	return nil
 }
 
@@ -272,6 +280,7 @@ func (w *DatabaseWorker) process(workerCtx context.Context, job *databaseJob) {
 		if err := w.fail(job, fmt.Errorf("no handler registered for %q", job.Type)); err != nil {
 			w.logger.ErrorContext(workerCtx, "database queue failure transition failed", "job_id", job.ID, "error", err)
 		}
+
 		return
 	}
 
@@ -280,6 +289,7 @@ func (w *DatabaseWorker) process(workerCtx context.Context, job *databaseJob) {
 	if job.TimeoutSeconds > 0 {
 		handlerCtx, cancel = context.WithTimeout(workerCtx, time.Duration(job.TimeoutSeconds)*time.Second)
 	}
+
 	defer cancel()
 
 	heartbeatDone := make(chan struct{})
@@ -293,6 +303,7 @@ func (w *DatabaseWorker) process(workerCtx context.Context, job *databaseJob) {
 		if updateErr := w.fail(job, err); updateErr != nil {
 			w.logger.ErrorContext(workerCtx, "database queue failure transition failed", "job_id", job.ID, "error", updateErr)
 		}
+
 		return
 	}
 	if err := w.complete(job); err != nil {
@@ -314,6 +325,7 @@ func (w *DatabaseWorker) heartbeat(ctx context.Context, job *databaseJob, done <
 	if interval < time.Second {
 		interval = time.Second
 	}
+
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 	for {
@@ -356,6 +368,7 @@ func (w *DatabaseWorker) complete(job *databaseJob) error {
 				return err
 			}
 		}
+
 		return tx.Clauses(clause.OnConflict{
 			Columns:   []clause.Column{{Name: "queue"}},
 			DoUpdates: clause.Assignments(map[string]any{"processed_total": gorm.Expr("processed_total + 1")}),
@@ -380,6 +393,7 @@ func (w *DatabaseWorker) cleanup(ctx context.Context, now time.Time) {
 	if err := w.db.WithContext(ctx).Where("expires_at <= ?", now).Delete(&databaseLock{}).Error; err != nil {
 		w.logger.WarnContext(ctx, "database queue lock cleanup failed", "error", err)
 	}
+
 	var ids []string
 	if err := w.db.WithContext(ctx).Model(&databaseJob{}).
 		Where("status = ? AND expires_at <= ?", jobStatusCompleted, now).
@@ -387,12 +401,14 @@ func (w *DatabaseWorker) cleanup(ctx context.Context, now time.Time) {
 		if err != nil {
 			w.logger.WarnContext(ctx, "database queue cleanup scan failed", "error", err)
 		}
+
 		return
 	}
 	if err := w.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		if err := tx.Where("job_id IN ? AND expires_at IS NULL", ids).Delete(&databaseLock{}).Error; err != nil {
 			return err
 		}
+
 		return tx.Where("id IN ?", ids).Delete(&databaseJob{}).Error
 	}); err != nil {
 		w.logger.WarnContext(ctx, "database queue completed-job cleanup failed", "error", err)
@@ -407,6 +423,7 @@ func (w *DatabaseWorker) fail(job *databaseJob, handlerErr error) error {
 		status = jobStatusFailed
 		availableAt = now
 	}
+
 	message := handlerErr.Error()
 	return w.db.Model(&databaseJob{}).
 		Where("id = ? AND status = ? AND lease_token = ?", job.ID, jobStatusActive, *job.LeaseToken).
@@ -442,12 +459,14 @@ func (i *DatabaseInspector) Queues(ctx context.Context) ([]string, error) {
 	if err := i.db.WithContext(ctx).Model(&databaseJob{}).Distinct().Pluck("queue", &stored).Error; err != nil {
 		return nil, err
 	}
+
 	for _, name := range stored {
 		names[name] = struct{}{}
 	}
 	if err := i.db.WithContext(ctx).Model(&databaseStat{}).Distinct().Pluck("queue", &stored).Error; err != nil {
 		return nil, err
 	}
+
 	for _, name := range stored {
 		names[name] = struct{}{}
 	}
@@ -470,6 +489,7 @@ func (i *DatabaseInspector) Stats(ctx context.Context, queueName string) (queue.
 		Retry     int64
 		Failed    int64
 	}
+
 	err := i.db.WithContext(ctx).Model(&databaseJob{}).
 		Select(`COALESCE(SUM(status = ? AND available_at <= ?), 0) AS pending,
 			COALESCE(SUM(status = ?), 0) AS active,
@@ -506,6 +526,7 @@ func (i *DatabaseInspector) Failed(ctx context.Context, queueName string, limit 
 		if job.LastFailedAt != nil {
 			failedAt = *job.LastFailedAt
 		}
+
 		lastError := ""
 		if job.LastError != nil {
 			lastError = *job.LastError
@@ -524,6 +545,7 @@ func (i *DatabaseInspector) Retry(ctx context.Context, queueName, id string) (in
 	if id != "all" {
 		query = query.Where("id = ?", id)
 	}
+
 	result := query.Updates(map[string]any{
 		"status": jobStatusRetry, "attempts": 0, "available_at": i.clock.Now(),
 		"last_error": nil, "last_failed_at": nil,
@@ -563,6 +585,7 @@ func chooseJobID(taskID string) string {
 	if taskID != "" {
 		return taskID
 	}
+
 	return uuid.NewString()
 }
 
@@ -578,6 +601,7 @@ func dispatchLocks(jobID, queueName, jobType string, payload []byte, options que
 			JobID:   jobID, ExpiresAt: &expiresAt,
 		})
 	}
+
 	return locks
 }
 
@@ -590,10 +614,12 @@ func durationSeconds(duration time.Duration) int {
 	if duration <= 0 {
 		return 0
 	}
+
 	seconds := int(duration / time.Second)
 	if seconds == 0 {
 		return 1
 	}
+
 	return seconds
 }
 

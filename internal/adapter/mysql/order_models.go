@@ -25,6 +25,7 @@ func toOrder(m orderModel) order.Order {
 			Size: item.Size, UnitPrice: item.UnitPrice, Qty: item.Qty,
 		})
 	}
+
 	return order.Order{
 		ID: m.ID, UserID: m.UserID, Status: m.Status, Total: m.Total,
 		CreatedAt: m.CreatedAt, Items: items,

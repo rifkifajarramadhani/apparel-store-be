@@ -51,6 +51,7 @@ func (r *Registry) Register(definition Definition) error {
 	if definition.Name == "" || definition.Cron == "" || definition.Job == nil {
 		return errors.New("schedule name, cron, and job are required")
 	}
+
 	for _, existing := range r.definitions {
 		if existing.Name == definition.Name {
 			return fmt.Errorf("schedule %q already registered", definition.Name)

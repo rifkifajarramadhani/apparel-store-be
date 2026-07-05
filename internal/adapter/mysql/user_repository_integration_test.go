@@ -20,10 +20,12 @@ func TestUserSecurityTransactions(t *testing.T) {
 	if dsn == "" {
 		t.Skip("USER_TEST_MYSQL_DSN is not set")
 	}
+
 	db, err := gorm.Open(gormmysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	repo := NewUserRepository(db)
 	ctx := context.Background()
 	suffix := uuid.NewString()
@@ -32,6 +34,7 @@ func TestUserSecurityTransactions(t *testing.T) {
 			Username: "rollback_" + suffix[:8], Email: fmt.Sprintf("rollback-%s@example.com", suffix),
 			Password: "hashed", Role: user.RoleUser, TokenVersion: 1,
 		}
+
 		dispatchErr := errors.New("queue unavailable")
 		err := repo.RegisterUser(ctx, account, &auth.EmailVerificationToken{
 			TokenHash: "rollback-token-" + suffix, ExpiresAt: time.Now().Add(time.Hour),
@@ -66,10 +69,12 @@ func TestUserSecurityTransactions(t *testing.T) {
 		}); err != nil {
 			t.Fatal(err)
 		}
+
 		result, err := repo.VerifyEmail(ctx, test.hash, time.Now(), func(account user.User, admins int64) (user.Role, error) {
 			if account.Email == test.bootstrap && admins == 0 {
 				return user.RoleAdmin, nil
 			}
+
 			return account.Role, nil
 		})
 		if err != nil {
@@ -79,6 +84,7 @@ func TestUserSecurityTransactions(t *testing.T) {
 			t.Fatal("initial verification was not marked as first verification")
 		}
 	}
+
 	verifiedAdmin, err := repo.GetByID(ctx, admin.ID)
 	if err != nil {
 		t.Fatal(err)
@@ -89,16 +95,19 @@ func TestUserSecurityTransactions(t *testing.T) {
 	if _, err := repo.VerifyEmail(ctx, "admin-token-hash-"+suffix, time.Now(), nil); !errors.Is(err, auth.ErrInvalidToken) {
 		t.Fatalf("replayed verification error = %v", err)
 	}
+
 	pendingEmail := fmt.Sprintf("updated-%s@example.com", suffix)
 	if err := repo.UpdateProfile(ctx, member.ID, member.Username, pendingEmail); err != nil {
 		t.Fatal(err)
 	}
+
 	pendingHash := "pending-token-hash-" + suffix
 	if err := repo.ReplaceEmailVerificationToken(ctx, &auth.EmailVerificationToken{
 		UserID: member.ID, TokenHash: pendingHash, ExpiresAt: time.Now().Add(time.Hour),
 	}); err != nil {
 		t.Fatal(err)
 	}
+
 	pendingResult, err := repo.VerifyEmail(ctx, pendingHash, time.Now(), nil)
 	if err != nil {
 		t.Fatal(err)

@@ -63,6 +63,7 @@ func TestJWTAuthResolvesCurrentUserAndRejectsStaleOrDeletedAccounts(t *testing.T
 			want:     fiber.StatusUnauthorized,
 		},
 	}
+
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			app := fiber.New()
@@ -75,6 +76,7 @@ func TestJWTAuthResolvesCurrentUserAndRejectsStaleOrDeletedAccounts(t *testing.T
 			if err != nil {
 				t.Fatal(err)
 			}
+
 			defer func() { _ = response.Body.Close() }()
 			if response.StatusCode != test.want {
 				t.Fatalf("status = %d, want %d", response.StatusCode, test.want)
@@ -91,6 +93,7 @@ func TestAdminOnly(t *testing.T) {
 		{user.RoleAdmin, fiber.StatusOK},
 		{user.RoleUser, fiber.StatusForbidden},
 	}
+
 	for _, test := range tests {
 		app := fiber.New()
 		app.Get("/", func(c fiber.Ctx) error {
@@ -103,6 +106,7 @@ func TestAdminOnly(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
+
 		defer func() { _ = response.Body.Close() }()
 		if response.StatusCode != test.want {
 			t.Fatalf("role %q status = %d, want %d", test.role, response.StatusCode, test.want)

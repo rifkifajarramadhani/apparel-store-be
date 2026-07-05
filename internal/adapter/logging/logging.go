@@ -19,6 +19,7 @@ func New(cfg config.LoggingConfig) (*Logger, error) {
 	if err := os.MkdirAll(filepath.Dir(cfg.File), 0o750); err != nil {
 		return nil, fmt.Errorf("create log directory: %w", err)
 	}
+
 	file, err := os.OpenFile(cfg.File, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0o640)
 	if err != nil {
 		return nil, fmt.Errorf("open log file: %w", err)
@@ -42,5 +43,6 @@ func (l *Logger) Close() error {
 	if l == nil || l.file == nil {
 		return nil
 	}
+
 	return l.file.Close()
 }

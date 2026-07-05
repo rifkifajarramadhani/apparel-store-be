@@ -73,6 +73,7 @@ func TestVerifyEmailLinkRedirectsToStorefront(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
+
 			defer func() { _ = response.Body.Close() }()
 			if response.StatusCode != fiber.StatusSeeOther || response.Header.Get("Location") != test.location {
 				t.Fatalf("status/location = %d %q", response.StatusCode, response.Header.Get("Location"))
@@ -101,10 +102,12 @@ func TestRegisterResponseCompatibility(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	defer func() { _ = response.Body.Close() }()
 	if response.StatusCode != fiber.StatusCreated {
 		t.Fatalf("status = %d", response.StatusCode)
 	}
+
 	var body map[string]any
 	if err := json.NewDecoder(response.Body).Decode(&body); err != nil {
 		t.Fatal(err)
@@ -128,6 +131,7 @@ func TestRegisterRejectsUnknownJSONFields(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	defer func() { _ = response.Body.Close() }()
 	if response.StatusCode != fiber.StatusBadRequest {
 		t.Fatalf("status = %d", response.StatusCode)

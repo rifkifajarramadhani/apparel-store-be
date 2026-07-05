@@ -41,6 +41,7 @@ func (h *CatalogHandler) Products(c fiber.Ctx) error {
 	if err != nil {
 		return writeCatalogError(c, h.logger, err)
 	}
+
 	return c.JSON(page)
 }
 
@@ -49,6 +50,7 @@ func (h *CatalogHandler) Product(c fiber.Ctx) error {
 	if err != nil {
 		return writeCatalogError(c, h.logger, err)
 	}
+
 	return c.JSON(item)
 }
 
@@ -57,6 +59,7 @@ func (h *CatalogHandler) Skus(c fiber.Ctx) error {
 	if err != nil {
 		return writeCatalogError(c, h.logger, err)
 	}
+
 	return c.JSON(page)
 }
 
@@ -65,6 +68,7 @@ func (h *CatalogHandler) Brands(c fiber.Ctx) error {
 	if err != nil {
 		return writeCatalogError(c, h.logger, err)
 	}
+
 	return c.JSON(items)
 }
 
@@ -73,6 +77,7 @@ func (h *CatalogHandler) Categories(c fiber.Ctx) error {
 	if err != nil {
 		return writeCatalogError(c, h.logger, err)
 	}
+
 	return c.JSON(items)
 }
 
@@ -81,6 +86,7 @@ func (h *CatalogHandler) Collections(c fiber.Ctx) error {
 	if err != nil {
 		return writeCatalogError(c, h.logger, err)
 	}
+
 	return c.JSON(items)
 }
 
@@ -89,6 +95,7 @@ func (h *CatalogHandler) Colourways(c fiber.Ctx) error {
 	if err != nil {
 		return writeCatalogError(c, h.logger, err)
 	}
+
 	return c.JSON(items)
 }
 
@@ -97,6 +104,7 @@ func (h *CatalogHandler) Sizes(c fiber.Ctx) error {
 	if err != nil {
 		return writeCatalogError(c, h.logger, err)
 	}
+
 	return c.JSON(items)
 }
 
@@ -179,12 +187,14 @@ func (d productAggregateDTO) toDomain() catalog.ProductAggregate {
 			Price: c.Price, IsDefault: c.IsDefault,
 		})
 	}
+
 	for _, s := range d.Skus {
 		agg.Skus = append(agg.Skus, catalog.SkuWrite{
 			ID: s.ID, ColourwayID: s.ColorwayID, Size: s.Size, SizeScale: s.SizeScale,
 			StockQty: s.StockQty, Price: s.Price,
 		})
 	}
+
 	for _, img := range d.Images {
 		agg.Images = append(agg.Images, catalog.ImageWrite{URL: img.URL, ColourwayID: img.ColorwayID})
 	}
@@ -225,6 +235,7 @@ func (h *CatalogHandler) DeleteProduct(c fiber.Ctx) error {
 	if err := h.catalog.DeleteProduct(c.Context(), c.Params("id")); err != nil {
 		return writeCatalogError(c, h.logger, err)
 	}
+
 	return c.JSON(fiber.Map{"success": true})
 }
 

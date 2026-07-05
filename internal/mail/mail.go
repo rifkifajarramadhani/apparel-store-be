@@ -157,6 +157,7 @@ func validateMessage(message Message) error {
 	if len(message.Envelope.To) == 0 {
 		return errors.New("at least one recipient is required")
 	}
+
 	for _, recipient := range message.Envelope.To {
 		if _, err := stdmail.ParseAddress(recipient.Address); err != nil {
 			return fmt.Errorf("invalid recipient address: %w", err)

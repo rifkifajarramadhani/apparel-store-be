@@ -17,6 +17,7 @@ func TestServiceTokenTypesVersionsAndValidation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	claims, err := service.ValidateRefreshToken(refresh)
 	if err != nil {
 		t.Fatal(err)

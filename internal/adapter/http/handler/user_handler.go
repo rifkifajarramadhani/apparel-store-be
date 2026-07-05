@@ -40,6 +40,7 @@ func (h *UserHandler) GetUsers(c fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
+
 	limit, err := parsePositiveQuery(c, "limit", user.DefaultLimit)
 	if err != nil {
 		return err

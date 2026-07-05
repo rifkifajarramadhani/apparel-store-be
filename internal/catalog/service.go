@@ -17,6 +17,7 @@ func normalizeLimit(limit int) int {
 	if limit > MaxLimit {
 		return MaxLimit
 	}
+
 	return limit
 }
 
@@ -28,6 +29,7 @@ func normalizeCurrency(currency string) (string, error) {
 	if len(currency) != 3 {
 		return "", fmt.Errorf("%w: currency must be a three-letter code", ErrInvalidInput)
 	}
+
 	return currency, nil
 }
 
@@ -141,6 +143,7 @@ func validateAggregate(in ProductAggregate) error {
 			return fmt.Errorf("%w: sku %q references an unknown colourway", ErrInvalidInput, sku.ID)
 		}
 	}
+
 	for _, image := range in.Images {
 		if image.ColourwayID != "" {
 			if _, ok := colourways[image.ColourwayID]; !ok {

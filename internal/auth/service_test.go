@@ -27,6 +27,7 @@ func (r *userStoreFake) GetUserByID(context.Context, int) (*user.User, error) {
 	if r.account == nil {
 		return nil, user.ErrNotFound
 	}
+
 	copy := *r.account
 	return &copy, nil
 }
@@ -51,6 +52,7 @@ func (r *refreshTokenRepoFake) GetActiveRefreshTokenByHash(context.Context, stri
 	if r.stored == nil {
 		return nil, errors.New("not found")
 	}
+
 	return r.stored, nil
 }
 func (r *refreshTokenRepoFake) RevokeRefreshTokenByHash(context.Context, string) error {
@@ -168,6 +170,7 @@ func TestVerifyEmailSendsWelcomeOnlyForFirstVerification(t *testing.T) {
 		{"first verification", true, 1},
 		{"pending email verification", false, 0},
 	}
+
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			verification := &verificationRepoFake{result: &EmailVerificationResult{
@@ -246,6 +249,7 @@ func TestLogoutRevokesTokenAndIsIdempotent(t *testing.T) {
 		{"empty token is success", "", nil, false, false},
 		{"storage failure surfaces", "refresh-token", errors.New("db down"), true, false},
 	}
+
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			refresh := &refreshTokenRepoFake{revokeErr: test.revokeErr}

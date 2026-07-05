@@ -63,6 +63,7 @@ func TestRunnerUsesDeterministicTaskIDAndIgnoresDuplicate(t *testing.T) {
 	}); err != nil {
 		t.Fatal(err)
 	}
+
 	dispatcher := &fakeDispatcher{err: queue.ErrDuplicateJob}
 	at := time.Date(2026, 6, 11, 12, 34, 45, 0, time.UTC)
 

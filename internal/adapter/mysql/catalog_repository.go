@@ -19,6 +19,7 @@ func parseUintID(raw string) uint64 {
 			id = id*10 + uint64(c-'0')
 		}
 	}
+
 	return id
 }
 

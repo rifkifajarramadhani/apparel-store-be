@@ -17,6 +17,7 @@ func Open(ctx context.Context, dsn string, logger *slog.Logger) (*gorm.DB, error
 	if logger == nil {
 		logger = slog.Default()
 	}
+
 	var lastErr error
 	for attempt := 1; attempt <= connectionAttempts; attempt++ {
 		db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
@@ -57,10 +58,12 @@ func Close(db *gorm.DB) error {
 	if db == nil {
 		return nil
 	}
+
 	sqlDB, err := db.DB()
 	if err != nil {
 		return err
 	}
+
 	return sqlDB.Close()
 }
 
@@ -68,6 +71,7 @@ func mapNotFound(err error) error {
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return ErrNotFound
 	}
+
 	return err
 }
 

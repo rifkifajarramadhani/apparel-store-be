@@ -78,6 +78,7 @@ func (c *Client) Upload(ctx context.Context, file storage.File) (storage.Uploade
 	if err != nil {
 		return storage.UploadedFile{}, fmt.Errorf("upload to UploadThing: %w", err)
 	}
+
 	defer response.Body.Close()
 	if response.StatusCode < 200 || response.StatusCode >= 300 {
 		message, _ := io.ReadAll(io.LimitReader(response.Body, 4096))
@@ -118,6 +119,7 @@ func (c *Client) prepare(ctx context.Context, file storage.File) (prepareRespons
 	if err != nil {
 		return prepareResponse{}, fmt.Errorf("prepare UploadThing upload: %w", err)
 	}
+
 	defer response.Body.Close()
 	if response.StatusCode != http.StatusOK {
 		message, _ := io.ReadAll(io.LimitReader(response.Body, 4096))
@@ -153,6 +155,7 @@ func (c *Client) Delete(ctx context.Context, keys []string) error {
 	if err != nil {
 		return fmt.Errorf("delete UploadThing files: %w", err)
 	}
+
 	defer response.Body.Close()
 	if response.StatusCode < 200 || response.StatusCode >= 300 {
 		message, _ := io.ReadAll(io.LimitReader(response.Body, 4096))

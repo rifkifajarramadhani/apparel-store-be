@@ -34,6 +34,7 @@ func NewAuthHandler(service AuthService, logger *slog.Logger, storefrontURL ...s
 	if len(storefrontURL) > 0 {
 		baseURL = storefrontURL[0]
 	}
+
 	return &AuthHandler{auth: service, logger: logger, storefrontURL: baseURL}
 }
 

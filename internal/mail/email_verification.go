@@ -36,6 +36,7 @@ func (m EmailVerification) Content() (Content, error) {
 	if err != nil {
 		return Content{}, err
 	}
+
 	html, err := renderVerificationHTMLTemplate("email-verification.html", emailVerificationHTMLTemplate, data)
 	if err != nil {
 		return Content{}, err

@@ -168,6 +168,7 @@ func loadDotEnv(filename string) error {
 	if err := godotenv.Load(filename); err != nil && !errors.Is(err, os.ErrNotExist) {
 		return fmt.Errorf("load dotenv file: %w", err)
 	}
+
 	return nil
 }
 
@@ -204,6 +205,7 @@ func validateConfig(config *Config) error {
 	if len(config.Queue.Queues) == 0 {
 		return fmt.Errorf("at least one queue must be configured")
 	}
+
 	for name, weight := range config.Queue.Queues {
 		if strings.TrimSpace(name) == "" || weight <= 0 {
 			return fmt.Errorf("queue names must be non-empty and weights must be positive")
@@ -284,10 +286,12 @@ func normalizeAbsoluteHTTPURL(value, fallback, name string) (string, error) {
 	if value == "" {
 		value = fallback
 	}
+
 	parsed, err := url.Parse(value)
 	if err != nil || (parsed.Scheme != "http" && parsed.Scheme != "https") || parsed.Host == "" || parsed.User != nil || parsed.RawQuery != "" || parsed.Fragment != "" {
 		return "", fmt.Errorf("%s must be an absolute HTTP(S) URL without credentials, query, or fragment", name)
 	}
+
 	return strings.TrimRight(parsed.String(), "/"), nil
 }
 
@@ -322,6 +326,7 @@ func normalizeMailConfig(mail *MailConfig) error {
 	if mail.Encryption == "" {
 		mail.Encryption = MailEncryptionNone
 	}
+
 	switch mail.Encryption {
 	case MailEncryptionNone, MailEncryptionStartTLS, MailEncryptionTLS:
 	default:
@@ -337,6 +342,7 @@ func normalizeMailConfig(mail *MailConfig) error {
 	if strings.TrimSpace(mail.FromName) == "" {
 		mail.FromName = "Golang Clean Architecture"
 	}
+
 	return nil
 }
 
@@ -360,5 +366,6 @@ func normalizeQueueConfig(queue *QueueConfig) error {
 	if queue.Database.ReservationSeconds <= 0 {
 		queue.Database.ReservationSeconds = 60
 	}
+
 	return nil
 }

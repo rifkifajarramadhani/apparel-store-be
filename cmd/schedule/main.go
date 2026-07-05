@@ -36,6 +36,7 @@ func newRootCommand() *cobra.Command {
 				if err != nil {
 					return err
 				}
+
 				now := time.Now()
 				if _, err := fmt.Fprintf(cmd.OutOrStdout(), "Default timezone: %s\n", cfg.Scheduler.Timezone); err != nil {
 					return err
@@ -43,6 +44,7 @@ func newRootCommand() *cobra.Command {
 				if _, err := fmt.Fprintln(cmd.OutOrStdout(), "NAME\tCRON\tTIMEZONE\tQUEUE\tNEXT RUN"); err != nil {
 					return err
 				}
+
 				for _, definition := range registry.Definitions() {
 					if _, err := fmt.Fprintf(cmd.OutOrStdout(), "%s\t%s\t%s\t%s\t%s\n",
 						definition.Name,
@@ -54,6 +56,7 @@ func newRootCommand() *cobra.Command {
 						return err
 					}
 				}
+
 				return nil
 			},
 		},
@@ -65,14 +68,17 @@ func newRootCommand() *cobra.Command {
 				if err != nil {
 					return err
 				}
+
 				var db *gorm.DB
 				if cfg.Queue.Driver == config.QueueDriverDatabase {
 					db, err = mysqladapter.Open(cmd.Context(), cfg.Database.DSN, slog.Default())
 					if err != nil {
 						return err
 					}
+
 					defer func() { _ = mysqladapter.Close(db) }()
 				}
+
 				dispatcher, err := bootstrap.Dispatcher(cfg, db)
 				if err != nil {
 					return err
@@ -83,6 +89,7 @@ func newRootCommand() *cobra.Command {
 				if err := scheduler.NewRunner(registry, dispatcher).Run(cmd.Context(), time.Now()); err != nil {
 					return err
 				}
+
 				log.Println("Schedule tick completed")
 				return nil
 			},
@@ -96,6 +103,7 @@ func loadRegistry() (*config.Config, *scheduler.Registry, error) {
 	if err != nil {
 		return nil, nil, err
 	}
+
 	registry, err := bootstrap.ScheduleRegistry(cfg)
 	return cfg, registry, err
 }

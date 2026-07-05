@@ -110,6 +110,7 @@ func (s *Service) validate(token, expectedType string, secret []byte) (auth.Clai
 	if err != nil {
 		return auth.Claims{}, auth.ErrInvalidToken
 	}
+
 	hash := hmac.New(sha256.New, secret)
 	_, _ = hash.Write([]byte(signingInput))
 	if !hmac.Equal(providedSignature, hash.Sum(nil)) {
@@ -120,6 +121,7 @@ func (s *Service) validate(token, expectedType string, secret []byte) (auth.Clai
 	if err != nil {
 		return auth.Claims{}, auth.ErrInvalidToken
 	}
+
 	var claims tokenClaims
 	if json.Unmarshal(payload, &claims) != nil || claims.TokenType != expectedType ||
 		claims.Issuer != s.issuer || claims.Audience != s.audience || claims.UserID <= 0 ||
@@ -140,6 +142,7 @@ func sign(claims tokenClaims, secret []byte) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	payload, err := json.Marshal(claims)
 	if err != nil {
 		return "", err
@@ -159,6 +162,7 @@ func generateJTI() (string, error) {
 	if _, err := rand.Read(buf); err != nil {
 		return "", err
 	}
+
 	return hex.EncodeToString(buf), nil
 }
 

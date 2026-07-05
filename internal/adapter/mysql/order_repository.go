@@ -45,6 +45,7 @@ func (r *OrderRepository) Create(ctx context.Context, userID int, lines []order.
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					return order.ErrNotFound
 				}
+
 				return err
 			}
 			if sku.OnHand-sku.Reserved < line.Qty {
@@ -66,6 +67,7 @@ func (r *OrderRepository) Create(ctx context.Context, userID int, lines []order.
 			UserID: userID, Status: order.StatusConfirmed, Total: total,
 			CreatedAt: time.Now().UTC(), Items: items,
 		}
+
 		return tx.Create(&created).Error
 	})
 	if err != nil {
@@ -82,6 +84,7 @@ func publicUint64(raw string) *uint64 {
 			value = value*10 + uint64(char-'0')
 		}
 	}
+
 	return &value
 }
 
@@ -107,8 +110,10 @@ func (r *OrderRepository) GetByIDForUser(ctx context.Context, userID, orderID in
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return order.Order{}, order.ErrNotFound
 		}
+
 		return order.Order{}, err
 	}
+
 	return toOrder(record), nil
 }
 

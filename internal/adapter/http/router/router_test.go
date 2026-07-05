@@ -27,6 +27,7 @@ func (u *usersFake) GetByID(_ context.Context, id int) (*user.User, error) {
 	if id == 1 {
 		role = user.RoleAdmin
 	}
+
 	return &user.User{
 		ID: id, Username: "user_name", Email: "user@example.com", Role: role,
 		TokenVersion: 1, EmailVerifiedAt: &u.verified,
@@ -55,6 +56,7 @@ func (tokensFake) ValidateAccessToken(token string) (appauth.Claims, error) {
 	if token == "admin" {
 		return appauth.Claims{UserID: 1, TokenVersion: 1}, nil
 	}
+
 	return appauth.Claims{UserID: 2, TokenVersion: 1}, nil
 }
 
@@ -75,6 +77,7 @@ func TestUserRouteAuthorizationMatrix(t *testing.T) {
 		{"admin list", "GET", "/api/users", "admin", "", fiber.StatusOK},
 		{"normal user self update", "PATCH", "/api/users/me", "user", `{"username":"new_name"}`, fiber.StatusOK},
 	}
+
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			request := httptest.NewRequest(test.method, test.path, bytes.NewBufferString(test.body))
@@ -84,10 +87,12 @@ func TestUserRouteAuthorizationMatrix(t *testing.T) {
 			if test.body != "" {
 				request.Header.Set("Content-Type", "application/json")
 			}
+
 			response, err := app.Test(request)
 			if err != nil {
 				t.Fatal(err)
 			}
+
 			defer func() { _ = response.Body.Close() }()
 			if response.StatusCode != test.want {
 				t.Fatalf("status = %d, want %d", response.StatusCode, test.want)

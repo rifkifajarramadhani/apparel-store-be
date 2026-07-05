@@ -66,6 +66,7 @@ func (s *Service) GetByID(ctx context.Context, id int) (*User, error) {
 	if id <= 0 {
 		return nil, ErrNotFound
 	}
+
 	return s.repo.GetByID(ctx, id)
 }
 
@@ -121,6 +122,7 @@ func (s *Service) ChangeRole(ctx context.Context, actorID, targetID int, role st
 	if err != nil || actor == nil || !actor.IsAdmin() {
 		return ErrForbidden
 	}
+
 	target, err := s.repo.GetByID(ctx, targetID)
 	if err != nil {
 		return err
@@ -156,6 +158,7 @@ func (s *Service) Delete(ctx context.Context, actorID, targetID int) error {
 	if err != nil || actor == nil || !actor.IsAdmin() {
 		return ErrForbidden
 	}
+
 	target, err := s.repo.GetByID(ctx, targetID)
 	if err != nil {
 		return err
@@ -193,6 +196,7 @@ func NormalizeAndValidate(account *User, requirePassword bool) error {
 	if !usernamePattern.MatchString(account.Username) {
 		return fmt.Errorf("%w: username must be 3-50 letters, digits, underscores, or hyphens", ErrInvalidInput)
 	}
+
 	address, err := mail.ParseAddress(account.Email)
 	if err != nil || address.Address != account.Email || !strings.Contains(account.Email, "@") {
 		return fmt.Errorf("%w: invalid email", ErrInvalidInput)
@@ -209,6 +213,7 @@ func ValidatePassword(password string) error {
 	if len(password) < 12 || len(password) > 72 {
 		return fmt.Errorf("%w: password must be 12-72 bytes", ErrInvalidInput)
 	}
+
 	return nil
 }
 
@@ -226,5 +231,6 @@ func NormalizePagination(page, limit int) (int, int) {
 	if limit > MaxLimit {
 		limit = MaxLimit
 	}
+
 	return page, limit
 }

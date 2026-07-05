@@ -121,6 +121,7 @@ func (s *Service) Register(ctx context.Context, account *user.User) error {
 	if err != nil {
 		return fmt.Errorf("generate verification token: %w", err)
 	}
+
 	verification := &EmailVerificationToken{
 		TokenHash: hashToken(token), ExpiresAt: s.clock.Now().Add(s.verificationTTL),
 	}
@@ -129,6 +130,7 @@ func (s *Service) Register(ctx context.Context, account *user.User) error {
 		if s.notifier == nil {
 			return nil
 		}
+
 		return s.notifier.NotifyVerification(ctx, *account, token)
 	}); err != nil {
 		return fmt.Errorf("register user: %w", err)
@@ -176,6 +178,7 @@ func (s *Service) VerifyEmail(ctx context.Context, token string) error {
 		if s.bootstrapEmail != "" && account.Email == s.bootstrapEmail && adminCount == 0 {
 			return user.RoleAdmin, nil
 		}
+
 		return account.Role, nil
 	}
 
@@ -184,6 +187,7 @@ func (s *Service) VerifyEmail(ctx context.Context, token string) error {
 		if errors.Is(err, ErrInvalidToken) {
 			return ErrInvalidToken
 		}
+
 		return fmt.Errorf("verify email: %w", err)
 	}
 
@@ -230,6 +234,7 @@ func (s *Service) Refresh(ctx context.Context, refreshToken string) (*Tokens, er
 		if errors.Is(err, ErrExpiredToken) {
 			return nil, ErrUnauthorized
 		}
+
 		return nil, ErrInvalidToken
 	}
 
@@ -275,6 +280,7 @@ func (s *Service) Logout(ctx context.Context, refreshToken string) error {
 	if err := s.refresh.RevokeRefreshTokenByHash(ctx, hashToken(refreshToken)); err != nil && !errors.Is(err, user.ErrNotFound) {
 		return fmt.Errorf("revoke refresh token: %w", err)
 	}
+
 	return nil
 }
 
@@ -286,6 +292,7 @@ func (s *Service) Me(ctx context.Context, userID int) (*user.User, error) {
 	if account == nil {
 		return nil, ErrUnauthorized
 	}
+
 	return account, nil
 }
 
@@ -348,6 +355,7 @@ func randomToken() (string, error) {
 	if _, err := rand.Read(buf); err != nil {
 		return "", err
 	}
+
 	return base64.RawURLEncoding.EncodeToString(buf), nil
 }
 

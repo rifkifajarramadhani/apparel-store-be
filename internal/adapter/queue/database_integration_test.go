@@ -30,10 +30,12 @@ func TestDatabaseQueueDispatchReserveAndComplete(t *testing.T) {
 	if dsn == "" {
 		t.Skip("QUEUE_TEST_MYSQL_DSN is not set")
 	}
+
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	for _, table := range []any{&databaseJob{}, &databaseLock{}, &databaseStat{}} {
 		if !db.Migrator().HasTable(table) {
 			t.Fatalf("required queue table for %T is missing; apply database migrations first", table)
@@ -60,6 +62,7 @@ func TestDatabaseQueueDispatchReserveAndComplete(t *testing.T) {
 	if err := registry.Register(integrationJob{}.Type(), func(context.Context, json.RawMessage) error { return nil }); err != nil {
 		t.Fatal(err)
 	}
+
 	worker := NewDatabaseWorker(db, config.QueueConfig{
 		Concurrency: 1, ShutdownSeconds: 1, Queues: map[string]int{"default": 1},
 		Database: config.DatabaseQueueConfig{PollIntervalMilliseconds: 10, ReservationSeconds: 5},

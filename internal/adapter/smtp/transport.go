@@ -21,6 +21,7 @@ func NewTransport(cfg config.MailConfig) (*Transport, error) {
 		gomail.WithPort(cfg.Port),
 		gomail.WithTLSConfig(&tls.Config{ServerName: cfg.Host, MinVersion: tls.VersionTLS12}),
 	}
+
 	switch cfg.Encryption {
 	case config.MailEncryptionTLS:
 		options = append(options, gomail.WithSSL(), gomail.WithTLSPolicy(gomail.TLSMandatory))
@@ -50,6 +51,7 @@ func (t *Transport) Send(ctx context.Context, message appmail.Message) error {
 	if err := outgoing.FromFormat(message.Envelope.From.Name, message.Envelope.From.Address); err != nil {
 		return fmt.Errorf("set sender: %w", err)
 	}
+
 	for _, recipient := range message.Envelope.To {
 		if err := outgoing.AddToFormat(recipient.Name, recipient.Address); err != nil {
 			return fmt.Errorf("set recipient: %w", err)

@@ -15,10 +15,12 @@ func TestLoggerWritesAndClosesFile(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	logger.Info("hello", "component", "test")
 	if err := logger.Close(); err != nil {
 		t.Fatal(err)
 	}
+
 	content, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatal(err)

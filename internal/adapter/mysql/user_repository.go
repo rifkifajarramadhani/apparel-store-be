@@ -116,6 +116,7 @@ func (r *UserRepository) GetUserByID(ctx context.Context, id int) (*user.User, e
 	if err := r.db.WithContext(ctx).First(&record, id).Error; err != nil {
 		return nil, mapUserNotFound(err)
 	}
+
 	return toUser(record), nil
 }
 
@@ -124,6 +125,7 @@ func (r *UserRepository) GetUserByEmail(ctx context.Context, email string) (*use
 	if err := r.db.WithContext(ctx).Where("email = ?", email).First(&record).Error; err != nil {
 		return nil, mapUserNotFound(err)
 	}
+
 	return toUser(record), nil
 }
 
@@ -132,6 +134,7 @@ func (r *UserRepository) GetUserByEmailOrPending(ctx context.Context, email stri
 	if err := r.db.WithContext(ctx).Where("email = ? OR pending_email = ?", email, email).First(&record).Error; err != nil {
 		return nil, mapUserNotFound(err)
 	}
+
 	return toUser(record), nil
 }
 
@@ -161,6 +164,7 @@ func (r *UserRepository) UpdateProfile(ctx context.Context, id int, username, em
 			}
 			updates["pending_email"] = email
 		}
+
 		return mapWriteError(tx.Model(&record).Updates(updates).Error)
 	})
 }
@@ -331,6 +335,7 @@ func (r *UserRepository) VerifyEmail(
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return auth.ErrInvalidToken
 			}
+
 			return err
 		}
 
@@ -406,6 +411,7 @@ func mapUserNotFound(err error) error {
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return user.ErrNotFound
 	}
+
 	return err
 }
 
@@ -415,8 +421,10 @@ func mapWriteError(err error) error {
 		if strings.Contains(mysqlErr.Message, "username") {
 			return user.ErrDuplicateUsername
 		}
+
 		return user.ErrDuplicateEmail
 	}
+
 	return err
 }
 
@@ -427,6 +435,7 @@ func requireAffected(result *gorm.DB) error {
 	if result.RowsAffected == 0 {
 		return user.ErrNotFound
 	}
+
 	return nil
 }
 

@@ -89,6 +89,7 @@ func (r *CatalogRepository) hydrateSkuAssets(ctx context.Context, skus []catalog
 	if err := r.db.WithContext(ctx).Raw(query, ids).Scan(&assets).Error; err != nil {
 		return err
 	}
+
 	for _, row := range assets {
 		i := positions[row.SkuID]
 		skus[i].Assets = append(skus[i].Assets, catalog.Asset{ID: row.PublicID, MediaType: row.MediaType, URL: row.URL, AltText: row.AltText, Role: row.Role, SortOrder: row.SortOrder})

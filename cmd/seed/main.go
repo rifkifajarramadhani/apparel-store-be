@@ -34,10 +34,12 @@ func run() error {
 	if len(os.Args) > 1 {
 		path = os.Args[1]
 	}
+
 	raw, err := os.ReadFile(path)
 	if err != nil {
 		return fmt.Errorf("read %s: %w", path, err)
 	}
+
 	var data catalogSeed
 	if err := json.Unmarshal(raw, &data); err != nil {
 		return fmt.Errorf("parse %s: %w", path, err)
@@ -47,11 +49,13 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("load config: %w", err)
 	}
+
 	ctx := context.Background()
 	db, err := mysqladapter.Open(ctx, cfg.Database.DSN, nil)
 	if err != nil {
 		return fmt.Errorf("connect to database: %w", err)
 	}
+
 	defer func() { _ = mysqladapter.Close(db) }()
 
 	repo := mysqladapter.NewCatalogRepository(db)
@@ -59,6 +63,7 @@ func run() error {
 		data.Categories, data.Collections, data.SizeScales); err != nil {
 		return fmt.Errorf("seed catalog: %w", err)
 	}
+
 	log.Printf("seeded %d products, %d colorways, %d skus, %d categories, %d collections, %d size scales",
 		len(data.Products), len(data.Colorways), len(data.Skus),
 		len(data.Categories), len(data.Collections), len(data.SizeScales))

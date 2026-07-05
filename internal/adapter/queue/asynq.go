@@ -94,6 +94,7 @@ func NewServer(redisOptions asynq.RedisClientOpt, cfg config.QueueConfig, regist
 			return handler(ctx, json.RawMessage(task.Payload()))
 		})
 	}
+
 	return server, mux
 }
 
@@ -166,6 +167,7 @@ func (i *RedisInspector) Retry(_ context.Context, queueName, id string) (int, er
 	if id == "all" {
 		return i.inspector.RunAllArchivedTasks(queueName)
 	}
+
 	return 1, i.inspector.RunTask(queueName, id)
 }
 
@@ -173,5 +175,6 @@ func (i *RedisInspector) Delete(_ context.Context, queueName, id string) (int, e
 	if id == "all" {
 		return i.inspector.DeleteAllArchivedTasks(queueName)
 	}
+
 	return 1, i.inspector.DeleteTask(queueName, id)
 }

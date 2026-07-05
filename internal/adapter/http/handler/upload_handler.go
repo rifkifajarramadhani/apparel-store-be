@@ -77,6 +77,7 @@ func (h *UploadHandler) ProductImages(c fiber.Ctx) error {
 			h.rollback(c.Context(), keys)
 			return h.uploadError(c, fmt.Errorf("open %s: %w", header.Filename, err))
 		}
+
 		uploaded, uploadErr := h.uploader.Upload(c.Context(), storage.File{
 			Name: header.Filename, Size: header.Size,
 			ContentType: header.Header.Get("Content-Type"), Content: file,

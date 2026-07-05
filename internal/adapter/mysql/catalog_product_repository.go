@@ -93,6 +93,7 @@ func (r *CatalogRepository) hydrateProducts(ctx context.Context, products []cata
 	if err := r.db.WithContext(ctx).Raw("SELECT pc.product_id, c.public_id, c.slug, c.name, parent.public_id parent_public_id FROM product_categories pc JOIN categories c ON c.id=pc.category_id AND c.archived_at IS NULL LEFT JOIN categories parent ON parent.id=c.parent_id WHERE pc.product_id IN ? ORDER BY pc.is_primary DESC,c.name", ids).Scan(&categories).Error; err != nil {
 		return err
 	}
+
 	for _, row := range categories {
 		i := positions[row.ProductID]
 		products[i].Categories = append(products[i].Categories, catalog.Category{ID: row.PublicID, ParentID: row.ParentPublicID, Slug: row.Slug, Name: row.Name})
@@ -102,6 +103,7 @@ func (r *CatalogRepository) hydrateProducts(ctx context.Context, products []cata
 	if err := r.db.WithContext(ctx).Raw("SELECT DISTINCT s.product_id,c.public_id,c.name,c.hex_code FROM skus s JOIN colourways c ON c.id=s.colourway_id AND c.archived_at IS NULL WHERE s.archived_at IS NULL AND s.product_id IN ? ORDER BY c.name", ids).Scan(&colours).Error; err != nil {
 		return err
 	}
+
 	for _, row := range colours {
 		i := positions[row.ProductID]
 		products[i].Colourways = append(products[i].Colourways, catalog.Colourway{ID: row.PublicID, Name: row.Name, HexCode: row.HexCode})
@@ -111,6 +113,7 @@ func (r *CatalogRepository) hydrateProducts(ctx context.Context, products []cata
 	if err := r.db.WithContext(ctx).Raw("SELECT DISTINCT s.product_id,sz.public_id,ss.code scale_code,sz.code,sz.name,sz.sort_order FROM skus s JOIN sizes sz ON sz.id=s.size_id AND sz.archived_at IS NULL JOIN size_scales ss ON ss.id=sz.size_scale_id AND ss.archived_at IS NULL WHERE s.archived_at IS NULL AND s.product_id IN ? ORDER BY sz.sort_order,sz.name", ids).Scan(&sizes).Error; err != nil {
 		return err
 	}
+
 	for _, row := range sizes {
 		i := positions[row.ProductID]
 		products[i].Sizes = append(products[i].Sizes, catalog.Size{ID: row.PublicID, ScaleCode: row.ScaleCode, Code: row.Code, Name: row.Name, SortOrder: row.SortOrder})
@@ -128,6 +131,7 @@ func (r *CatalogRepository) hydrateProducts(ctx context.Context, products []cata
 	if err := r.db.WithContext(ctx).Raw(assetSQL, ids, ids).Scan(&assets).Error; err != nil {
 		return err
 	}
+
 	for _, row := range assets {
 		i := positions[row.ProductID]
 		products[i].Assets = append(products[i].Assets, catalog.Asset{ID: row.PublicID, MediaType: row.MediaType, URL: row.URL, AltText: row.AltText, Role: row.Role, SortOrder: row.SortOrder, ColourwayID: row.ColourwayID, SkuID: row.SkuID})
@@ -139,6 +143,7 @@ func (r *CatalogRepository) hydrateProducts(ctx context.Context, products []cata
 	if err := r.db.WithContext(ctx).Raw(priceSQL, currency, now, now, currency, now, now, ids).Scan(&ranges).Error; err != nil {
 		return err
 	}
+
 	for _, row := range ranges {
 		i := positions[row.ProductID]
 		min, max := catalog.Money{Currency: currency, Amount: row.MinAmount}, catalog.Money{Currency: currency, Amount: row.MaxAmount}
@@ -204,10 +209,12 @@ func saveAggregate(tx *gorm.DB, in catalog.ProductAggregate) error {
 	if err != nil {
 		return err
 	}
+
 	categoryID, err := resolveCategory(tx, in.Product.CategorySlug)
 	if err != nil {
 		return err
 	}
+
 	published, _ := time.Parse("2006-01-02", in.Product.PublishedAt)
 
 	if err := tx.Exec(`INSERT INTO products(public_id,style_code,slug,brand_id,name,subtitle,gender,product_type,description,published_at)
@@ -216,6 +223,7 @@ func saveAggregate(tx *gorm.DB, in catalog.ProductAggregate) error {
 		seedPublicID("PR", in.Product.ID), in.Product.ID, in.Product.Slug, brandID, in.Product.Name, in.Product.Subtitle, in.Product.Gender, in.Product.ProductType, in.Product.Description, published).Error; err != nil {
 		return err
 	}
+
 	productID, err := seedRowID(tx, "products", "style_code", in.Product.ID)
 	if err != nil {
 		return err
@@ -260,6 +268,7 @@ func saveAggregate(tx *gorm.DB, in catalog.ProductAggregate) error {
 			seedPublicID("SK", sku.ID), sku.ID, productID, colourIDs[sku.ColourwayID], sizeID, sku.StockQty).Error; err != nil {
 			return err
 		}
+
 		skuID, err := seedRowID(tx, "skus", "sku_code", sku.ID)
 		if err != nil {
 			return err
@@ -279,6 +288,7 @@ func saveAggregate(tx *gorm.DB, in catalog.ProductAggregate) error {
 	if err := tx.Exec("DELETE FROM assets WHERE product_id=? OR sku_id IN (SELECT id FROM (SELECT id FROM skus WHERE product_id=?) t)", productID, productID).Error; err != nil {
 		return err
 	}
+
 	seen := make(map[string]struct{})
 	for order, image := range in.Images {
 		if image.URL == "" {
@@ -298,6 +308,7 @@ func saveAggregate(tx *gorm.DB, in catalog.ProductAggregate) error {
 			return err
 		}
 	}
+
 	return nil
 }
 
@@ -364,6 +375,7 @@ func resolveColourway(tx *gorm.DB, c catalog.ColourwayWrite) (uint64, error) {
 		if err := tx.Exec("UPDATE colourways SET hex_code=?,archived_at=NULL WHERE id=?", c.SwatchHex, id).Error; err != nil {
 			return 0, err
 		}
+
 		return id, nil
 	}
 

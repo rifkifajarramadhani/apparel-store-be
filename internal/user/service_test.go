@@ -24,6 +24,7 @@ func (r *repositoryFake) GetByID(context.Context, int) (*User, error) {
 	if r.account == nil {
 		return nil, ErrNotFound
 	}
+
 	copy := *r.account
 	return &copy, nil
 }
@@ -49,6 +50,7 @@ func (passwordFake) Compare(hashed, plain string) error {
 	if hashed == "stored" && plain == "current-password" {
 		return nil
 	}
+
 	return errors.New("mismatch")
 }
 

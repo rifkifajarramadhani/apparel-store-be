@@ -42,6 +42,7 @@ func statusCommand(factory inspectorFactory) *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			defer func() { _ = inspector.Close() }()
 			queues, err := inspector.Queues(cmd.Context())
 			if err != nil {
@@ -50,6 +51,7 @@ func statusCommand(factory inspectorFactory) *cobra.Command {
 			if _, err := fmt.Fprintln(cmd.OutOrStdout(), "QUEUE\tPENDING\tACTIVE\tSCHEDULED\tRETRY\tFAILED\tPROCESSED"); err != nil {
 				return err
 			}
+
 			for _, name := range queues {
 				info, err := inspector.Stats(cmd.Context(), name)
 				if err != nil {
@@ -60,6 +62,7 @@ func statusCommand(factory inspectorFactory) *cobra.Command {
 					return err
 				}
 			}
+
 			return nil
 		},
 	}
@@ -74,6 +77,7 @@ func failedCommand(factory inspectorFactory) *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			defer func() { _ = inspector.Close() }()
 			queues, err := inspector.Queues(cmd.Context())
 			if err != nil {
@@ -82,11 +86,13 @@ func failedCommand(factory inspectorFactory) *cobra.Command {
 			if _, err := fmt.Fprintln(cmd.OutOrStdout(), "ID\tQUEUE\tTYPE\tRETRIES\tFAILED AT\tERROR"); err != nil {
 				return err
 			}
+
 			for _, name := range queues {
 				tasks, err := inspector.Failed(cmd.Context(), name, 100)
 				if err != nil {
 					return err
 				}
+
 				for _, task := range tasks {
 					if _, err := fmt.Fprintf(cmd.OutOrStdout(), "%s\t%s\t%s\t%d/%d\t%s\t%s\n",
 						task.ID, task.Queue, task.Type, task.Retried, task.MaxRetry,
@@ -95,6 +101,7 @@ func failedCommand(factory inspectorFactory) *cobra.Command {
 					}
 				}
 			}
+
 			return nil
 		},
 	}
@@ -123,11 +130,13 @@ func operateArchivedCommand(factory inspectorFactory, use, short string, operati
 			if err != nil {
 				return err
 			}
+
 			defer func() { _ = inspector.Close() }()
 			id := args[0]
 			if id != "all" && queueName == "" {
 				return fmt.Errorf("--queue is required when operating on one job")
 			}
+
 			queues := []string{queueName}
 			if id == "all" && queueName == "" {
 				queues, err = inspector.Queues(cmd.Context())
@@ -135,6 +144,7 @@ func operateArchivedCommand(factory inspectorFactory, use, short string, operati
 					return err
 				}
 			}
+
 			total := 0
 			for _, name := range queues {
 				count, err := operation(cmd, inspector, name, id)
@@ -161,6 +171,7 @@ func dispatchDemoCommand() *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			db, err := openQueueDB(cmd.Context(), cfg)
 			if err != nil {
 				return err
@@ -168,6 +179,7 @@ func dispatchDemoCommand() *cobra.Command {
 			if db != nil {
 				defer func() { _ = mysqladapter.Close(db) }()
 			}
+
 			dispatcher, err := bootstrap.Dispatcher(cfg, db)
 			if err != nil {
 				return err
@@ -175,6 +187,7 @@ func dispatchDemoCommand() *cobra.Command {
 			if closer, ok := dispatcher.(interface{ Close() error }); ok {
 				defer func() { _ = closer.Close() }()
 			}
+
 			info, err := dispatcher.Dispatch(cmd.Context(), jobs.DemoLog{Message: message}, queue.DispatchOptions{Queue: "default", MaxRetry: 3})
 			if err != nil {
 				return err
@@ -192,15 +205,18 @@ func newInspector() (queue.Inspector, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	db, err := openQueueDB(context.Background(), cfg)
 	if err != nil {
 		return nil, err
 	}
+
 	inspector, err := bootstrap.Inspector(cfg, db)
 	if err != nil {
 		_ = mysqladapter.Close(db)
 		return nil, err
 	}
+
 	return &managedInspector{Inspector: inspector, db: db}, nil
 }
 
@@ -213,6 +229,7 @@ func (i *managedInspector) Close() error {
 	if err := i.Inspector.Close(); err != nil {
 		return err
 	}
+
 	return mysqladapter.Close(i.db)
 }
 
@@ -220,5 +237,6 @@ func openQueueDB(ctx context.Context, cfg *config.Config) (*gorm.DB, error) {
 	if cfg.Queue.Driver != config.QueueDriverDatabase {
 		return nil, nil
 	}
+
 	return mysqladapter.Open(ctx, cfg.Database.DSN, slog.Default())
 }

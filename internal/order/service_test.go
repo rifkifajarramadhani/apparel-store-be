@@ -17,6 +17,7 @@ func (f *fakeRepo) Create(_ context.Context, _ int, lines []Line) (Order, error)
 	if f.err != nil {
 		return Order{}, f.err
 	}
+
 	return Order{ID: 1, Items: []Item{}}, nil
 }
 func (f *fakeRepo) ListByUser(context.Context, int) ([]Order, error)        { return nil, nil }
@@ -45,6 +46,7 @@ func TestCreateMergesDuplicateSkus(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
+
 	want := []Line{{SkuID: "a", Qty: 4}, {SkuID: "b", Qty: 2}}
 	if !reflect.DeepEqual(repo.gotLines, want) {
 		t.Errorf("lines = %v, want %v", repo.gotLines, want)
