@@ -19,12 +19,15 @@ func (r *CatalogRepository) ListProducts(ctx context.Context, q catalog.ProductQ
 	if q.Cursor != "" {
 		query = query.Where("p.public_id > ?", q.Cursor)
 	}
+
 	if q.BrandSlug != "" {
 		query = query.Where("b.slug = ?", q.BrandSlug)
 	}
+
 	if q.CategorySlug != "" {
 		query = query.Joins("JOIN product_categories pc_filter ON pc_filter.product_id = p.id").Joins("JOIN categories c_filter ON c_filter.id = pc_filter.category_id AND c_filter.archived_at IS NULL").Where("c_filter.slug = ?", q.CategorySlug)
 	}
+
 	if q.Query != "" {
 		like := "%" + q.Query + "%"
 		query = query.Where("p.name LIKE ? OR p.subtitle LIKE ? OR p.style_code LIKE ?", like, like, like)
@@ -45,6 +48,7 @@ func (r *CatalogRepository) ListProducts(ctx context.Context, q catalog.ProductQ
 		products[i] = productFromRow(row)
 		ids[i] = parseUintID(row.ID)
 	}
+
 	if err := r.hydrateProducts(ctx, products, ids, q.Currency); err != nil {
 		return catalog.CursorPage[catalog.Product]{}, err
 	}
@@ -63,6 +67,7 @@ func (r *CatalogRepository) GetProduct(ctx context.Context, id, currency string)
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return catalog.Product{}, catalog.ErrNotFound
 	}
+
 	if err != nil {
 		return catalog.Product{}, err
 	}
@@ -159,6 +164,7 @@ func (r *CatalogRepository) CreateProduct(ctx context.Context, in catalog.Produc
 		if err != nil {
 			return err
 		}
+
 		if exists {
 			return catalog.ErrConflict
 		}
@@ -173,6 +179,7 @@ func (r *CatalogRepository) UpdateProduct(ctx context.Context, in catalog.Produc
 		if err != nil {
 			return err
 		}
+
 		if !exists {
 			return catalog.ErrNotFound
 		}
@@ -186,6 +193,7 @@ func (r *CatalogRepository) DeleteProduct(ctx context.Context, id string) error 
 	if result.Error != nil {
 		return result.Error
 	}
+
 	if result.RowsAffected == 0 {
 		return catalog.ErrNotFound
 	}
@@ -235,12 +243,14 @@ func saveAggregate(tx *gorm.DB, in catalog.ProductAggregate) error {
 		if err != nil {
 			return err
 		}
+
 		colourIDs[c.ID] = id
 	}
 
 	if err := tx.Exec("DELETE FROM product_categories WHERE product_id=?", productID).Error; err != nil {
 		return err
 	}
+
 	if categoryID != 0 {
 		if err := tx.Exec("INSERT INTO product_categories(product_id,category_id,is_primary) VALUES(?,?,TRUE)", productID, categoryID).Error; err != nil {
 			return err
@@ -252,6 +262,7 @@ func saveAggregate(tx *gorm.DB, in catalog.ProductAggregate) error {
 	if err := tx.Exec("DELETE FROM prices WHERE product_id=? OR sku_id IN (SELECT id FROM (SELECT id FROM skus WHERE product_id=?) t)", productID, productID).Error; err != nil {
 		return err
 	}
+
 	if err := tx.Exec("INSERT INTO prices(public_id,product_id,currency,amount,valid_from) VALUES(?,?,'IDR',?,'1970-01-01')", seedPublicID("PP", in.Product.ID), productID, in.Product.BasePrice).Error; err != nil {
 		return err
 	}
@@ -262,6 +273,7 @@ func saveAggregate(tx *gorm.DB, in catalog.ProductAggregate) error {
 		if err != nil {
 			return err
 		}
+
 		if err := tx.Exec(`INSERT INTO skus(public_id,sku_code,product_id,colourway_id,size_id,on_hand)
 			VALUES(?,?,?,?,?,?)
 			ON DUPLICATE KEY UPDATE product_id=VALUES(product_id),colourway_id=VALUES(colourway_id),size_id=VALUES(size_id),archived_at=NULL`,
@@ -273,13 +285,16 @@ func saveAggregate(tx *gorm.DB, in catalog.ProductAggregate) error {
 		if err != nil {
 			return err
 		}
+
 		if sku.Price > 0 {
 			if err := tx.Exec("INSERT INTO prices(public_id,sku_id,currency,amount,valid_from) VALUES(?,?,'IDR',?,'1970-01-01')", seedPublicID("SP", sku.ID), skuID, sku.Price).Error; err != nil {
 				return err
 			}
 		}
+
 		codes = append(codes, sku.ID)
 	}
+
 	// Archive SKUs the editor removed from the product.
 	if err := tx.Exec("UPDATE skus SET archived_at=NOW(6) WHERE product_id=? AND sku_code NOT IN ? AND archived_at IS NULL", productID, codes).Error; err != nil {
 		return err
@@ -294,9 +309,11 @@ func saveAggregate(tx *gorm.DB, in catalog.ProductAggregate) error {
 		if image.URL == "" {
 			continue
 		}
+
 		if _, dup := seen[image.URL]; dup {
 			continue
 		}
+
 		seen[image.URL] = struct{}{}
 		var colourwayID any
 		if image.ColourwayID != "" {
@@ -304,6 +321,7 @@ func saveAggregate(tx *gorm.DB, in catalog.ProductAggregate) error {
 				colourwayID = id
 			}
 		}
+
 		if err := tx.Exec("INSERT INTO assets(public_id,product_id,colourway_id,media_type,storage_provider,cdn_url,alt_text,role,sort_order) VALUES(?,?,?,'image','external',?,?,'product_image',?)", seedPublicID("AS", image.URL), productID, colourwayID, image.URL, "", order).Error; err != nil {
 			return err
 		}
@@ -320,6 +338,7 @@ func resolveBrand(tx *gorm.DB, name string) (uint64, error) {
 	if err != nil {
 		return 0, err
 	}
+
 	if id != 0 {
 		return id, nil
 	}
@@ -341,6 +360,7 @@ func resolveCategory(tx *gorm.DB, slug string) (uint64, error) {
 	if err != nil {
 		return 0, err
 	}
+
 	if id == 0 {
 		return 0, fmt.Errorf("%w: unknown category %q", catalog.ErrInvalidInput, slug)
 	}
@@ -353,6 +373,7 @@ func resolveSize(tx *gorm.DB, scaleCode, code string) (uint64, error) {
 	if err := tx.Raw("SELECT sz.id FROM sizes sz JOIN size_scales ss ON ss.id=sz.size_scale_id WHERE ss.code=? AND sz.code=?", scaleCode, code).Scan(&id).Error; err != nil {
 		return 0, err
 	}
+
 	if id == 0 {
 		return 0, fmt.Errorf("%w: unknown size %q in scale %q", catalog.ErrInvalidInput, code, scaleCode)
 	}
@@ -371,6 +392,7 @@ func resolveColourway(tx *gorm.DB, c catalog.ColourwayWrite) (uint64, error) {
 	if err != nil {
 		return 0, err
 	}
+
 	if id != 0 {
 		if err := tx.Exec("UPDATE colourways SET hex_code=?,archived_at=NULL WHERE id=?", c.SwatchHex, id).Error; err != nil {
 			return 0, err

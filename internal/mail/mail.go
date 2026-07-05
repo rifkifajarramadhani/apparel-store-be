@@ -102,6 +102,7 @@ func (m *Mailer) Render(mailable Mailable) (Message, error) {
 		Content:     content,
 		Attachments: mailable.Attachments(),
 	}
+
 	if err := validateMessage(message); err != nil {
 		return Message{}, err
 	}
@@ -135,9 +136,11 @@ func (m *Mailer) Queue(ctx context.Context, mailable Mailable, options QueueOpti
 	if options.Queue == "" {
 		options.Queue = "mail"
 	}
+
 	if options.MaxRetry <= 0 {
 		options.MaxRetry = 3
 	}
+
 	if options.Timeout <= 0 {
 		options.Timeout = 30 * time.Second
 	}
@@ -167,6 +170,7 @@ func validateMessage(message Message) error {
 	if strings.TrimSpace(message.Envelope.Subject) == "" {
 		return errors.New("mail subject is required")
 	}
+
 	if message.Content.Text == "" && message.Content.HTML == "" {
 		return errors.New("mail content is required")
 	}

@@ -15,14 +15,17 @@ func (r *CatalogRepository) ListSkus(ctx context.Context, q catalog.SkuQuery) (c
 		sql += " AND (p.public_id=? OR p.style_code=?)"
 		args = append(args, q.ProductID, q.ProductID)
 	}
+
 	if q.ColourwayID != "" {
 		sql += " AND c.public_id=?"
 		args = append(args, q.ColourwayID)
 	}
+
 	if q.Cursor != "" {
 		sql += " AND s.public_id>?"
 		args = append(args, q.Cursor)
 	}
+
 	sql += " ORDER BY s.public_id LIMIT ?"
 	args = append(args, q.Limit+1)
 
@@ -40,6 +43,7 @@ func (r *CatalogRepository) ListSkus(ctx context.Context, q catalog.SkuQuery) (c
 	for _, row := range rows {
 		items = append(items, catalog.Sku{ID: row.ID, Code: row.Code, Barcode: row.Barcode, ProductID: row.ProductID, Colourway: catalog.Colourway{ID: row.ColourwayID, Name: row.ColourwayName, HexCode: row.HexCode}, Size: catalog.Size{ID: row.SizeID, ScaleCode: row.ScaleCode, Code: row.SizeCode, Name: row.SizeName, SortOrder: row.SortOrder}, Price: catalog.Money{Currency: q.Currency, Amount: row.Amount, CompareAtAmount: row.CompareAtAmount}, OnHand: row.OnHand, Reserved: row.Reserved, Available: row.OnHand - row.Reserved, Assets: []catalog.Asset{}})
 	}
+
 	if err := r.hydrateSkuAssets(ctx, items); err != nil {
 		return catalog.CursorPage[catalog.Sku]{}, err
 	}
@@ -57,6 +61,7 @@ func (r *CatalogRepository) SetInventory(ctx context.Context, in catalog.Invento
 	if result.Error != nil {
 		return result.Error
 	}
+
 	if result.RowsAffected != 0 {
 		return nil
 	}
@@ -65,6 +70,7 @@ func (r *CatalogRepository) SetInventory(ctx context.Context, in catalog.Invento
 	if err := r.db.WithContext(ctx).Table("skus").Where("public_id=? AND archived_at IS NULL", in.SkuID).Count(&count).Error; err != nil {
 		return err
 	}
+
 	if count == 0 {
 		return catalog.ErrNotFound
 	}

@@ -83,6 +83,7 @@ func ScheduleRegistry(cfg *config.Config) (*scheduler.Registry, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	err = registry.Register(scheduler.Definition{
 		Name: "cleanup-refresh-tokens", Cron: "0 0 * * *", Timezone: cfg.Scheduler.Timezone,
 		Job:             func() queue.Job { return jobs.CleanupRefreshTokens{} },

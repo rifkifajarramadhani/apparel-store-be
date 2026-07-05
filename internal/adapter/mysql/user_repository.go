@@ -41,6 +41,7 @@ func (r *UserRepository) RegisterUser(
 			Where("pending_email = ?", account.Email).Count(&pending).Error; err != nil {
 			return err
 		}
+
 		if pending > 0 {
 			return user.ErrDuplicateEmail
 		}
@@ -49,6 +50,7 @@ func (r *UserRepository) RegisterUser(
 		if err := tx.Create(&model).Error; err != nil {
 			return mapWriteError(err)
 		}
+
 		account.ID = model.ID
 		token.UserID = model.ID
 
@@ -75,6 +77,7 @@ func (r *UserRepository) createUser(ctx context.Context, account *user.User) err
 			Where("pending_email = ?", account.Email).Count(&pending).Error; err != nil {
 			return err
 		}
+
 		if pending > 0 {
 			return user.ErrDuplicateEmail
 		}
@@ -83,6 +86,7 @@ func (r *UserRepository) createUser(ctx context.Context, account *user.User) err
 		if err := tx.Create(&model).Error; err != nil {
 			return mapWriteError(err)
 		}
+
 		account.ID = model.ID
 		return nil
 	})
@@ -159,9 +163,11 @@ func (r *UserRepository) UpdateProfile(ctx context.Context, id int, username, em
 			if err := tx.Model(&userModel{}).Where("(email = ? OR pending_email = ?) AND id <> ?", email, email, id).Count(&count).Error; err != nil {
 				return err
 			}
+
 			if count > 0 {
 				return user.ErrDuplicateEmail
 			}
+
 			updates["pending_email"] = email
 		}
 
@@ -192,6 +198,7 @@ func (r *UserRepository) ChangeRole(ctx context.Context, actorID, targetID int, 
 		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).First(&actor, actorID).Error; err != nil {
 			return mapUserNotFound(err)
 		}
+
 		if actor.Role != user.RoleAdmin {
 			return user.ErrForbidden
 		}
@@ -199,6 +206,7 @@ func (r *UserRepository) ChangeRole(ctx context.Context, actorID, targetID int, 
 		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).First(&target, targetID).Error; err != nil {
 			return mapUserNotFound(err)
 		}
+
 		if role == user.RoleAdmin && target.EmailVerifiedAt == nil {
 			return user.ErrForbidden
 		}
@@ -208,6 +216,7 @@ func (r *UserRepository) ChangeRole(ctx context.Context, actorID, targetID int, 
 			if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("role = ?", user.RoleAdmin).Find(&admins).Error; err != nil {
 				return err
 			}
+
 			if len(admins) <= 1 {
 				return user.ErrLastAdmin
 			}
@@ -238,6 +247,7 @@ func (r *UserRepository) Delete(ctx context.Context, id int) error {
 			if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("role = ?", user.RoleAdmin).Find(&admins).Error; err != nil {
 				return err
 			}
+
 			if len(admins) <= 1 {
 				return user.ErrLastAdmin
 			}
@@ -286,6 +296,7 @@ func (r *UserRepository) RotateRefreshToken(ctx context.Context, currentHash str
 		if result.Error != nil {
 			return result.Error
 		}
+
 		if result.RowsAffected != 1 {
 			return auth.ErrUnauthorized
 		}
@@ -293,6 +304,7 @@ func (r *UserRepository) RotateRefreshToken(ctx context.Context, currentHash str
 		record := refreshTokenModel{
 			UserID: replacement.UserID, TokenHash: replacement.TokenHash, ExpiresAt: replacement.ExpiresAt,
 		}
+
 		if err := tx.Create(&record).Error; err != nil {
 			return err
 		}
@@ -351,11 +363,13 @@ func (r *UserRepository) VerifyEmail(
 		if err := tx.Model(&userModel{}).Where("role = ?", user.RoleAdmin).Count(&admins).Error; err != nil {
 			return err
 		}
+
 		if rolePolicy != nil {
 			role, err := rolePolicy(*account, admins)
 			if err != nil {
 				return err
 			}
+
 			if err := account.AssignRole(role); err != nil {
 				return err
 			}
@@ -365,6 +379,7 @@ func (r *UserRepository) VerifyEmail(
 			"email": account.Email, "pending_email": account.PendingEmail, "email_verified_at": account.EmailVerifiedAt,
 			"role": account.Role, "token_version": account.TokenVersion,
 		}
+
 		if err := mapWriteError(tx.Model(&record).Updates(updates).Error); err != nil {
 			return err
 		}
@@ -372,10 +387,12 @@ func (r *UserRepository) VerifyEmail(
 		if err := tx.Where("user_id = ?", record.ID).Delete(&emailVerificationTokenModel{}).Error; err != nil {
 			return err
 		}
+
 		if err := tx.Model(&refreshTokenModel{}).Where("user_id = ? AND revoked_at IS NULL", record.ID).
 			Update("revoked_at", now).Error; err != nil {
 			return err
 		}
+
 		if err := tx.First(&record, record.ID).Error; err != nil {
 			return err
 		}
@@ -432,6 +449,7 @@ func requireAffected(result *gorm.DB) error {
 	if result.Error != nil {
 		return result.Error
 	}
+
 	if result.RowsAffected == 0 {
 		return user.ErrNotFound
 	}

@@ -48,6 +48,7 @@ func statusCommand(factory inspectorFactory) *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			if _, err := fmt.Fprintln(cmd.OutOrStdout(), "QUEUE\tPENDING\tACTIVE\tSCHEDULED\tRETRY\tFAILED\tPROCESSED"); err != nil {
 				return err
 			}
@@ -57,6 +58,7 @@ func statusCommand(factory inspectorFactory) *cobra.Command {
 				if err != nil {
 					return err
 				}
+
 				if _, err := fmt.Fprintf(cmd.OutOrStdout(), "%s\t%d\t%d\t%d\t%d\t%d\t%d\n",
 					name, info.Pending, info.Active, info.Scheduled, info.Retry, info.Failed, info.Processed); err != nil {
 					return err
@@ -83,6 +85,7 @@ func failedCommand(factory inspectorFactory) *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			if _, err := fmt.Fprintln(cmd.OutOrStdout(), "ID\tQUEUE\tTYPE\tRETRIES\tFAILED AT\tERROR"); err != nil {
 				return err
 			}
@@ -151,12 +154,15 @@ func operateArchivedCommand(factory inspectorFactory, use, short string, operati
 				if err != nil {
 					return err
 				}
+
 				total += count
 			}
+
 			_, err = fmt.Fprintf(cmd.OutOrStdout(), "Affected jobs: %d\n", total)
 			return err
 		},
 	}
+
 	command.Flags().StringVar(&queueName, "queue", "", "Queue name")
 	return command
 }
@@ -176,6 +182,7 @@ func dispatchDemoCommand() *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			if db != nil {
 				defer func() { _ = mysqladapter.Close(db) }()
 			}
@@ -184,6 +191,7 @@ func dispatchDemoCommand() *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			if closer, ok := dispatcher.(interface{ Close() error }); ok {
 				defer func() { _ = closer.Close() }()
 			}
@@ -192,10 +200,12 @@ func dispatchDemoCommand() *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			_, err = fmt.Fprintf(cmd.OutOrStdout(), "Dispatched job %s to %s\n", info.ID, info.Queue)
 			return err
 		},
 	}
+
 	command.Flags().StringVar(&message, "message", "Hello from the queue", "Demo log message")
 	return command
 }

@@ -53,10 +53,12 @@ func uploadRequest(t *testing.T, metadata string, files ...string) *http.Request
 		if err != nil {
 			t.Fatal(err)
 		}
+
 		if _, err := part.Write([]byte("image")); err != nil {
 			t.Fatal(err)
 		}
 	}
+
 	if err := writer.Close(); err != nil {
 		t.Fatal(err)
 	}
@@ -102,6 +104,7 @@ func TestUploadHandlerRollsBackPartialBatch(t *testing.T) {
 	if response.StatusCode != fiber.StatusBadGateway {
 		t.Fatalf("status = %d", response.StatusCode)
 	}
+
 	if len(uploader.deleted) != 1 || uploader.deleted[0] != "key-one.png" {
 		t.Fatalf("deleted = %v", uploader.deleted)
 	}

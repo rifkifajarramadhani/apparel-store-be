@@ -30,6 +30,7 @@ func NewTransport(cfg config.MailConfig) (*Transport, error) {
 	default:
 		options = append(options, gomail.WithTLSPolicy(gomail.NoTLS))
 	}
+
 	if cfg.Username != "" {
 		options = append(options,
 			gomail.WithSMTPAuth(gomail.SMTPAuthAutoDiscover),
@@ -62,6 +63,7 @@ func (t *Transport) Send(ctx context.Context, message appmail.Message) error {
 	if message.Content.Text != "" {
 		outgoing.SetBodyString(gomail.TypeTextPlain, message.Content.Text)
 	}
+
 	if message.Content.HTML != "" {
 		if message.Content.Text == "" {
 			outgoing.SetBodyString(gomail.TypeTextHTML, message.Content.HTML)
@@ -75,6 +77,7 @@ func (t *Transport) Send(ctx context.Context, message appmail.Message) error {
 		if attachment.ContentType != "" {
 			options = append(options, gomail.WithFileContentType(gomail.ContentType(attachment.ContentType)))
 		}
+
 		if err := outgoing.AttachReader(attachment.Filename, bytes.NewReader(attachment.Data), options...); err != nil {
 			return fmt.Errorf("attach %q: %w", attachment.Filename, err)
 		}

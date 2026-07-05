@@ -21,6 +21,7 @@ func bindJSON(c fiber.Ctx, destination any) error {
 	if err := decoder.Decode(destination); err != nil {
 		return fiber.ErrBadRequest
 	}
+
 	if err := decoder.Decode(&struct{}{}); !errors.Is(err, io.EOF) {
 		return fiber.ErrBadRequest
 	}

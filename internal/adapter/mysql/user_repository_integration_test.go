@@ -42,6 +42,7 @@ func TestUserSecurityTransactions(t *testing.T) {
 		if !errors.Is(err, dispatchErr) {
 			t.Fatalf("registration error = %v", err)
 		}
+
 		if _, err := repo.GetUserByEmail(ctx, account.Email); !errors.Is(err, user.ErrNotFound) {
 			t.Fatalf("rolled-back user lookup error = %v", err)
 		}
@@ -53,6 +54,7 @@ func TestUserSecurityTransactions(t *testing.T) {
 		if err := repo.Create(ctx, account); err != nil {
 			t.Fatal(err)
 		}
+
 		t.Cleanup(func() { _ = db.Where("id = ?", account.ID).Delete(&userModel{}).Error })
 	}
 
@@ -80,6 +82,7 @@ func TestUserSecurityTransactions(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
+
 		if !result.FirstVerification {
 			t.Fatal("initial verification was not marked as first verification")
 		}
@@ -89,9 +92,11 @@ func TestUserSecurityTransactions(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	if verifiedAdmin.Role != user.RoleAdmin || !verifiedAdmin.EmailVerified() {
 		t.Fatalf("admin = %+v", verifiedAdmin)
 	}
+
 	if _, err := repo.VerifyEmail(ctx, "admin-token-hash-"+suffix, time.Now(), nil); !errors.Is(err, auth.ErrInvalidToken) {
 		t.Fatalf("replayed verification error = %v", err)
 	}
@@ -112,6 +117,7 @@ func TestUserSecurityTransactions(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	if pendingResult.FirstVerification {
 		t.Fatal("pending email verification was marked as first verification")
 	}
@@ -119,12 +125,15 @@ func TestUserSecurityTransactions(t *testing.T) {
 	if err := repo.ChangeRole(ctx, admin.ID, member.ID, user.RoleAdmin); err != nil {
 		t.Fatal(err)
 	}
+
 	if err := repo.ChangeRole(ctx, member.ID, admin.ID, user.RoleUser); err != nil {
 		t.Fatal(err)
 	}
+
 	if err := repo.ChangeRole(ctx, admin.ID, member.ID, user.RoleUser); !errors.Is(err, user.ErrForbidden) {
 		t.Fatalf("non-admin actor error = %v", err)
 	}
+
 	if err := repo.ChangeRole(ctx, member.ID, member.ID, user.RoleUser); !errors.Is(err, user.ErrLastAdmin) {
 		t.Fatalf("last admin error = %v", err)
 	}

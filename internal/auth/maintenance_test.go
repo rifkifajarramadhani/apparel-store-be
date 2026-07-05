@@ -24,6 +24,7 @@ func TestCleanupRefreshTokens(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	if count != 4 || !repo.before.Equal(before) {
 		t.Fatalf("got count=%d before=%s", count, repo.before)
 	}

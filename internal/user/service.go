@@ -50,6 +50,7 @@ func (s *Service) Create(ctx context.Context, account *User) error {
 	if err != nil {
 		return fmt.Errorf("hash password: %w", err)
 	}
+
 	account.Password = hashedPassword
 	account.Role = RoleUser
 	account.TokenVersion = 1
@@ -75,6 +76,7 @@ func (s *Service) UpdateProfile(ctx context.Context, id int, username, email str
 	if err != nil {
 		return err
 	}
+
 	if err := account.UpdateProfile(username, email); err != nil {
 		return err
 	}
@@ -96,6 +98,7 @@ func (s *Service) ChangePassword(ctx context.Context, id int, currentPassword, n
 	if err != nil {
 		return err
 	}
+
 	if s.password.Compare(account.Password, currentPassword) != nil {
 		return ErrInvalidPassword
 	}
@@ -104,6 +107,7 @@ func (s *Service) ChangePassword(ctx context.Context, id int, currentPassword, n
 	if err != nil {
 		return fmt.Errorf("hash password: %w", err)
 	}
+
 	account.ChangePasswordHash(hashed)
 
 	return s.repo.ChangePassword(ctx, id, account.Password)
@@ -114,6 +118,7 @@ func (s *Service) ChangeRole(ctx context.Context, actorID, targetID int, role st
 	if err != nil {
 		return err
 	}
+
 	if actorID == targetID {
 		return ErrForbidden
 	}
@@ -127,6 +132,7 @@ func (s *Service) ChangeRole(ctx context.Context, actorID, targetID int, role st
 	if err != nil {
 		return err
 	}
+
 	if parsedRole == RoleAdmin && !target.CanPromote() {
 		return ErrForbidden
 	}
@@ -137,6 +143,7 @@ func (s *Service) ChangeRole(ctx context.Context, actorID, targetID int, role st
 		if err != nil {
 			return err
 		}
+
 		if count <= 1 {
 			return ErrLastAdmin
 		}
@@ -169,6 +176,7 @@ func (s *Service) Delete(ctx context.Context, actorID, targetID int) error {
 		if err != nil {
 			return err
 		}
+
 		if count <= 1 {
 			return ErrLastAdmin
 		}
@@ -182,6 +190,7 @@ func (s *Service) DeleteSelf(ctx context.Context, id int, currentPassword string
 	if err != nil {
 		return err
 	}
+
 	if s.password.Compare(account.Password, currentPassword) != nil {
 		return ErrInvalidPassword
 	}
@@ -225,9 +234,11 @@ func NormalizePagination(page, limit int) (int, int) {
 	if page < 1 {
 		page = DefaultPage
 	}
+
 	if limit < 1 {
 		limit = DefaultLimit
 	}
+
 	if limit > MaxLimit {
 		limit = MaxLimit
 	}

@@ -20,6 +20,7 @@ func (f *fakeRepo) Create(_ context.Context, _ int, lines []Line) (Order, error)
 
 	return Order{ID: 1, Items: []Item{}}, nil
 }
+
 func (f *fakeRepo) ListByUser(context.Context, int) ([]Order, error)        { return nil, nil }
 func (f *fakeRepo) GetByIDForUser(context.Context, int, int) (Order, error) { return Order{}, nil }
 

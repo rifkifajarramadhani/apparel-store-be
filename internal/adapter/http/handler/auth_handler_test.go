@@ -78,9 +78,11 @@ func TestVerifyEmailLinkRedirectsToStorefront(t *testing.T) {
 			if response.StatusCode != fiber.StatusSeeOther || response.Header.Get("Location") != test.location {
 				t.Fatalf("status/location = %d %q", response.StatusCode, response.Header.Get("Location"))
 			}
+
 			if response.Header.Get("Cache-Control") != "no-store" || response.Header.Get("Referrer-Policy") != "no-referrer" {
 				t.Fatalf("security headers = %+v", response.Header)
 			}
+
 			if service.token != test.token {
 				t.Fatalf("token = %q, want %q", service.token, test.token)
 			}
@@ -112,6 +114,7 @@ func TestRegisterResponseCompatibility(t *testing.T) {
 	if err := json.NewDecoder(response.Body).Decode(&body); err != nil {
 		t.Fatal(err)
 	}
+
 	if body["id"] != float64(42) || body["username"] != "rifki" || body["email"] != "rifki@example.com" {
 		t.Fatalf("response = %+v", body)
 	}

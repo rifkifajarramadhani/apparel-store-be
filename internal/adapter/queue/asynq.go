@@ -51,21 +51,27 @@ func (d *Dispatcher) Dispatch(ctx context.Context, job queue.Job, options queue.
 	if options.Queue != "" {
 		asynqOptions = append(asynqOptions, asynq.Queue(options.Queue))
 	}
+
 	if !options.ProcessAt.IsZero() {
 		asynqOptions = append(asynqOptions, asynq.ProcessAt(options.ProcessAt))
 	}
+
 	if options.MaxRetry > 0 {
 		asynqOptions = append(asynqOptions, asynq.MaxRetry(options.MaxRetry))
 	}
+
 	if options.Timeout > 0 {
 		asynqOptions = append(asynqOptions, asynq.Timeout(options.Timeout))
 	}
+
 	if options.UniqueFor > 0 {
 		asynqOptions = append(asynqOptions, asynq.Unique(options.UniqueFor))
 	}
+
 	if options.Retention > 0 {
 		asynqOptions = append(asynqOptions, asynq.Retention(options.Retention))
 	}
+
 	if options.TaskID != "" {
 		asynqOptions = append(asynqOptions, asynq.TaskID(options.TaskID))
 	}
@@ -74,6 +80,7 @@ func (d *Dispatcher) Dispatch(ctx context.Context, job queue.Job, options queue.
 	if errors.Is(err, asynq.ErrDuplicateTask) || errors.Is(err, asynq.ErrTaskIDConflict) {
 		return nil, queue.ErrDuplicateJob
 	}
+
 	if err != nil {
 		return nil, err
 	}

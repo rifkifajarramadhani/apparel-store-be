@@ -60,6 +60,7 @@ func run() error {
 		logger.ErrorContext(ctx, "build queue dispatcher failed", "error", err)
 		return fmt.Errorf("build queue dispatcher: %w", err)
 	}
+
 	if closer, ok := dispatcher.(interface{ Close() error }); ok {
 		defer func() { _ = closer.Close() }()
 	}

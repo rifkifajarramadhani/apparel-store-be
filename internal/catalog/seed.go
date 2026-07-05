@@ -6,6 +6,7 @@ type SeedProduct struct {
 	CollectionIDs                                                                                                []string `json:"collectionIds"`
 	BasePrice                                                                                                    int      `json:"basePrice"`
 }
+
 type SeedColourway struct {
 	ID         string `json:"id"`
 	ProductID  string `json:"productId"`
@@ -15,6 +16,7 @@ type SeedColourway struct {
 	Price      int
 	Images     []string
 }
+
 type SeedSKU struct {
 	ID          string `json:"id"`
 	ColourwayID string `json:"colorwayId"`
@@ -25,12 +27,15 @@ type SeedSKU struct {
 	StockQty    int    `json:"stockQty"`
 	Price       int    `json:"price"`
 }
+
 type SeedCategory struct {
 	ID, Slug, Name string
 	ParentID       *string
 	Gender         string
 }
+
 type SeedCollection struct{ ID, Slug, Name string }
+
 type SeedSizeScale struct {
 	ID    string
 	Sizes []string

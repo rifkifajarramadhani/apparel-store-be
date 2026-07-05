@@ -39,6 +39,7 @@ func NewClient(token string, httpClient *http.Client) (*Client, error) {
 	if err := json.Unmarshal(decoded, &payload); err != nil {
 		return nil, fmt.Errorf("parse UploadThing token: %w", err)
 	}
+
 	if !strings.HasPrefix(payload.APIKey, "sk_") || payload.AppID == "" || len(payload.Regions) == 0 {
 		return nil, fmt.Errorf("invalid UploadThing token payload")
 	}
@@ -62,9 +63,11 @@ func (c *Client) Upload(ctx context.Context, file storage.File) (storage.Uploade
 	if err != nil {
 		return storage.UploadedFile{}, fmt.Errorf("create upload body: %w", err)
 	}
+
 	if _, err := io.Copy(part, file.Content); err != nil {
 		return storage.UploadedFile{}, fmt.Errorf("read upload file: %w", err)
 	}
+
 	if err := writer.Close(); err != nil {
 		return storage.UploadedFile{}, fmt.Errorf("close upload body: %w", err)
 	}
@@ -73,6 +76,7 @@ func (c *Client) Upload(ctx context.Context, file storage.File) (storage.Uploade
 	if err != nil {
 		return storage.UploadedFile{}, fmt.Errorf("create UploadThing upload request: %w", err)
 	}
+
 	req.Header.Set("Content-Type", writer.FormDataContentType())
 	response, err := c.httpClient.Do(req)
 	if err != nil {
@@ -112,6 +116,7 @@ func (c *Client) prepare(ctx context.Context, file storage.File) (prepareRespons
 	if err != nil {
 		return prepareResponse{}, fmt.Errorf("create prepare upload request: %w", err)
 	}
+
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("x-uploadthing-api-key", c.apiKey)
 
@@ -148,6 +153,7 @@ func (c *Client) Delete(ctx context.Context, keys []string) error {
 	if err != nil {
 		return fmt.Errorf("create UploadThing deletion request: %w", err)
 	}
+
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("x-uploadthing-api-key", c.apiKey)
 

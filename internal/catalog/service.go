@@ -14,6 +14,7 @@ func normalizeLimit(limit int) int {
 	if limit <= 0 {
 		return DefaultLimit
 	}
+
 	if limit > MaxLimit {
 		return MaxLimit
 	}
@@ -26,6 +27,7 @@ func normalizeCurrency(currency string) (string, error) {
 	if currency == "" {
 		return "IDR", nil
 	}
+
 	if len(currency) != 3 {
 		return "", fmt.Errorf("%w: currency must be a three-letter code", ErrInvalidInput)
 	}
@@ -38,6 +40,7 @@ func (s *Service) ListProducts(ctx context.Context, q ProductQuery) (CursorPage[
 	if err != nil {
 		return CursorPage[Product]{}, err
 	}
+
 	q.Currency, q.Limit = currency, normalizeLimit(q.Limit)
 
 	return s.repo.ListProducts(ctx, q)
@@ -57,6 +60,7 @@ func (s *Service) ListSkus(ctx context.Context, q SkuQuery) (CursorPage[Sku], er
 	if err != nil {
 		return CursorPage[Sku]{}, err
 	}
+
 	q.Currency, q.Limit = currency, normalizeLimit(q.Limit)
 
 	return s.repo.ListSkus(ctx, q)
@@ -65,15 +69,19 @@ func (s *Service) ListSkus(ctx context.Context, q SkuQuery) (CursorPage[Sku], er
 func (s *Service) ListBrands(ctx context.Context) ([]Brand, error) {
 	return s.repo.ListBrands(ctx)
 }
+
 func (s *Service) ListCategories(ctx context.Context) ([]Category, error) {
 	return s.repo.ListCategories(ctx)
 }
+
 func (s *Service) ListCollections(ctx context.Context) ([]Collection, error) {
 	return s.repo.ListCollections(ctx)
 }
+
 func (s *Service) ListColourways(ctx context.Context) ([]Colourway, error) {
 	return s.repo.ListColourways(ctx)
 }
+
 func (s *Service) ListSizes(ctx context.Context) ([]Size, error) { return s.repo.ListSizes(ctx) }
 
 func (s *Service) SetInventory(ctx context.Context, in InventoryAdjustment) error {
@@ -129,11 +137,13 @@ func validateAggregate(in ProductAggregate) error {
 		if strings.TrimSpace(c.ID) == "" {
 			return fmt.Errorf("%w: every colourway needs an id", ErrInvalidInput)
 		}
+
 		colourways[c.ID] = struct{}{}
 		if c.IsDefault {
 			defaults++
 		}
 	}
+
 	if defaults != 1 {
 		return fmt.Errorf("%w: exactly one colourway must be the default", ErrInvalidInput)
 	}

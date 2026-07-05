@@ -62,6 +62,7 @@ func (u *User) AssignRole(role Role) error {
 	if role == RoleAdmin && !u.CanPromote() {
 		return ErrForbidden
 	}
+
 	u.Role = role
 	return nil
 }
@@ -73,6 +74,7 @@ func (u *User) VerifyEmail(at time.Time) bool {
 		u.Email = u.PendingEmail
 		u.PendingEmail = ""
 	}
+
 	u.EmailVerifiedAt = &at
 	u.TokenVersion++
 	return first

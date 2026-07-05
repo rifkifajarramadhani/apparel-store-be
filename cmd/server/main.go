@@ -58,6 +58,7 @@ func run() error {
 		appLogger.ErrorContext(ctx, "build queue dispatcher failed", "error", err)
 		return fmt.Errorf("build queue dispatcher: %w", err)
 	}
+
 	if closer, ok := dispatcher.(interface{ Close() error }); ok {
 		defer func() { _ = closer.Close() }()
 	}
@@ -78,6 +79,7 @@ func run() error {
 			if errors.As(err, &fiberErr) {
 				return c.Status(fiberErr.Code).JSON(fiber.Map{"error": fiberErr.Message})
 			}
+
 			appLogger.ErrorContext(c.Context(), "fiber error", "error", err)
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "internal server error"})
 		},

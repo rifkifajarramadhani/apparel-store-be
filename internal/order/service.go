@@ -30,9 +30,11 @@ func (s *Service) Create(ctx context.Context, userID int, lines []Line) (Order, 
 		if line.Qty <= 0 {
 			return Order{}, ErrInvalidQty
 		}
+
 		if _, seen := merged[line.SkuID]; !seen {
 			order = append(order, line.SkuID)
 		}
+
 		merged[line.SkuID] += line.Qty
 	}
 

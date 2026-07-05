@@ -40,6 +40,7 @@ func NewRegistry(defaultTimezone string, parser Parser) (*Registry, error) {
 	if err != nil {
 		return nil, fmt.Errorf("load scheduler timezone: %w", err)
 	}
+
 	if parser == nil {
 		return nil, errors.New("schedule parser is required")
 	}
@@ -71,6 +72,7 @@ func (r *Registry) Register(definition Definition) error {
 	if err != nil {
 		return fmt.Errorf("parse schedule %q: %w", definition.Name, err)
 	}
+
 	definition.Timezone = location.String()
 	definition.schedule = parsed
 	r.definitions = append(r.definitions, definition)

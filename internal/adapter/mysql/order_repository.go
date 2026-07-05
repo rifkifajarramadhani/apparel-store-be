@@ -48,9 +48,11 @@ func (r *OrderRepository) Create(ctx context.Context, userID int, lines []order.
 
 				return err
 			}
+
 			if sku.OnHand-sku.Reserved < line.Qty {
 				return order.ErrOutOfStock
 			}
+
 			if err := tx.Exec("UPDATE skus SET on_hand=on_hand-? WHERE id=?", line.Qty, sku.ID).Error; err != nil {
 				return err
 			}

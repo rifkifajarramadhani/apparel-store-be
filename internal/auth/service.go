@@ -113,6 +113,7 @@ func (s *Service) Register(ctx context.Context, account *user.User) error {
 	if err != nil {
 		return fmt.Errorf("hash password: %w", err)
 	}
+
 	account.Password = hashedPassword
 	account.Role = user.RoleUser
 	account.TokenVersion = 1
@@ -144,12 +145,15 @@ func (s *Service) ResendVerification(ctx context.Context, email string) error {
 	if errors.Is(err, user.ErrNotFound) {
 		return nil
 	}
+
 	if err != nil {
 		return fmt.Errorf("find user for verification: %w", err)
 	}
+
 	if account == nil {
 		return nil
 	}
+
 	if account.EmailVerified() && account.PendingEmail == "" {
 		return nil
 	}
@@ -162,6 +166,7 @@ func (s *Service) SendVerificationForUser(ctx context.Context, userID int) error
 	if err != nil {
 		return err
 	}
+
 	if account.EmailVerified() && account.PendingEmail == "" {
 		return nil
 	}
@@ -211,16 +216,20 @@ func (s *Service) Login(ctx context.Context, email, password string) (*Tokens, e
 		_ = s.password.Compare(dummyPasswordHash, password)
 		return nil, ErrInvalidCredentials
 	}
+
 	if err != nil {
 		return nil, fmt.Errorf("find user for login: %w", err)
 	}
+
 	if account == nil {
 		_ = s.password.Compare(dummyPasswordHash, password)
 		return nil, ErrInvalidCredentials
 	}
+
 	if s.password.Compare(account.Password, password) != nil {
 		return nil, ErrInvalidCredentials
 	}
+
 	if !account.EmailVerified() {
 		return nil, ErrEmailUnverified
 	}
@@ -253,6 +262,7 @@ func (s *Service) Refresh(ctx context.Context, refreshToken string) (*Tokens, er
 	if err != nil {
 		return nil, fmt.Errorf("generate access token: %w", err)
 	}
+
 	newRefreshToken, refreshExp, err := s.tokens.GenerateRefreshToken(account.ID, account.TokenVersion)
 	if err != nil {
 		return nil, fmt.Errorf("generate refresh token: %w", err)
@@ -277,6 +287,7 @@ func (s *Service) Logout(ctx context.Context, refreshToken string) error {
 	if refreshToken == "" {
 		return nil
 	}
+
 	if err := s.refresh.RevokeRefreshTokenByHash(ctx, hashToken(refreshToken)); err != nil && !errors.Is(err, user.ErrNotFound) {
 		return fmt.Errorf("revoke refresh token: %w", err)
 	}
@@ -289,6 +300,7 @@ func (s *Service) Me(ctx context.Context, userID int) (*user.User, error) {
 	if err != nil {
 		return nil, ErrUnauthorized
 	}
+
 	if account == nil {
 		return nil, ErrUnauthorized
 	}
@@ -301,6 +313,7 @@ func (s *Service) sendVerification(ctx context.Context, account *user.User) erro
 	if err != nil {
 		return fmt.Errorf("check verification rate: %w", err)
 	}
+
 	if !allowed {
 		return ErrVerificationRate
 	}
@@ -309,6 +322,7 @@ func (s *Service) sendVerification(ctx context.Context, account *user.User) erro
 	if err != nil {
 		return fmt.Errorf("generate verification token: %w", err)
 	}
+
 	if err := s.verification.ReplaceEmailVerificationToken(ctx, &EmailVerificationToken{
 		UserID: account.ID, TokenHash: hashToken(token), ExpiresAt: s.clock.Now().Add(s.verificationTTL),
 	}); err != nil {
@@ -320,6 +334,7 @@ func (s *Service) sendVerification(ctx context.Context, account *user.User) erro
 		if recipient.PendingEmail != "" {
 			recipient.Email = recipient.PendingEmail
 		}
+
 		if err := s.notifier.NotifyVerification(ctx, recipient, token); err != nil {
 			return fmt.Errorf("notify verification: %w", err)
 		}
@@ -333,6 +348,7 @@ func (s *Service) issueTokens(ctx context.Context, account *user.User) (*Tokens,
 	if err != nil {
 		return nil, fmt.Errorf("generate access token: %w", err)
 	}
+
 	refreshToken, refreshExp, err := s.tokens.GenerateRefreshToken(account.ID, account.TokenVersion)
 	if err != nil {
 		return nil, fmt.Errorf("generate refresh token: %w", err)

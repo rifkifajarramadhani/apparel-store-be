@@ -13,6 +13,7 @@ func TestServiceTokenTypesVersionsAndValidation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	refresh, _, err := service.GenerateRefreshToken(42, 3)
 	if err != nil {
 		t.Fatal(err)
@@ -22,9 +23,11 @@ func TestServiceTokenTypesVersionsAndValidation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	if claims.UserID != 42 || claims.TokenVersion != 3 {
 		t.Fatalf("claims = %+v", claims)
 	}
+
 	if _, err := service.ValidateRefreshToken(access); !errors.Is(err, auth.ErrInvalidToken) {
 		t.Fatalf("access token as refresh token error = %v", err)
 	}
@@ -37,6 +40,7 @@ func TestServiceRejectsDifferentIssuerAndAudience(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	if _, err := issuerB.ValidateAccessToken(token); !errors.Is(err, auth.ErrInvalidToken) {
 		t.Fatalf("error = %v", err)
 	}

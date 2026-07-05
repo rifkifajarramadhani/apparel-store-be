@@ -13,11 +13,13 @@ func TestLoadDotEnvLoadsValues(t *testing.T) {
 	if err := os.Unsetenv(key); err != nil {
 		t.Fatal(err)
 	}
+
 	t.Cleanup(func() {
 		if existed {
 			_ = os.Setenv(key, original)
 			return
 		}
+
 		_ = os.Unsetenv(key)
 	})
 
@@ -25,9 +27,11 @@ func TestLoadDotEnvLoadsValues(t *testing.T) {
 	if err := os.WriteFile(filename, []byte(key+"=from-dotenv\n"), 0o600); err != nil {
 		t.Fatal(err)
 	}
+
 	if err := loadDotEnv(filename); err != nil {
 		t.Fatal(err)
 	}
+
 	if got := os.Getenv(key); got != "from-dotenv" {
 		t.Fatalf("%s = %q, want %q", key, got, "from-dotenv")
 	}
@@ -40,9 +44,11 @@ func TestLoadDotEnvDoesNotOverrideEnvironment(t *testing.T) {
 	if err := os.WriteFile(filename, []byte(key+"=from-dotenv\n"), 0o600); err != nil {
 		t.Fatal(err)
 	}
+
 	if err := loadDotEnv(filename); err != nil {
 		t.Fatal(err)
 	}
+
 	if got := os.Getenv(key); got != "from-environment" {
 		t.Fatalf("%s = %q, want %q", key, got, "from-environment")
 	}
@@ -60,11 +66,13 @@ func TestLoadUsesDotEnvAndEnvironmentPrecedence(t *testing.T) {
 	if err := os.Unsetenv(redisPasswordKey); err != nil {
 		t.Fatal(err)
 	}
+
 	t.Cleanup(func() {
 		if existed {
 			_ = os.Setenv(redisPasswordKey, originalRedisPassword)
 			return
 		}
+
 		_ = os.Unsetenv(redisPasswordKey)
 	})
 	t.Setenv("DATABASE_PASSWORD", "from-environment")
@@ -93,6 +101,7 @@ queue:
 	if err := os.WriteFile(filepath.Join(directory, "configs", "config.yaml"), []byte(configFile), 0o600); err != nil {
 		t.Fatal(err)
 	}
+
 	if err := os.WriteFile(
 		filepath.Join(directory, ".env"),
 		[]byte("DATABASE_PASSWORD=from-dotenv\nREDIS_PASSWORD=redis-from-dotenv\n"),
@@ -105,18 +114,22 @@ queue:
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	if err := os.Chdir(directory); err != nil {
 		t.Fatal(err)
 	}
+
 	t.Cleanup(func() { _ = os.Chdir(originalDirectory) })
 
 	cfg, err := Load()
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	if cfg.Database.Password != "from-environment" {
 		t.Fatalf("database password = %q, want environment value", cfg.Database.Password)
 	}
+
 	if cfg.Redis.Password != "redis-from-dotenv" {
 		t.Fatalf("redis password = %q, want dotenv value", cfg.Redis.Password)
 	}
@@ -127,12 +140,15 @@ func TestNormalizeQueueConfigDefaultsToRedis(t *testing.T) {
 	if err := normalizeQueueConfig(&cfg); err != nil {
 		t.Fatal(err)
 	}
+
 	if cfg.Driver != QueueDriverRedis {
 		t.Fatalf("driver = %q, want %q", cfg.Driver, QueueDriverRedis)
 	}
+
 	if cfg.Concurrency != 1 || cfg.ShutdownSeconds != 30 {
 		t.Fatalf("unexpected worker defaults: %+v", cfg)
 	}
+
 	if cfg.Database.PollIntervalMilliseconds != 500 || cfg.Database.ReservationSeconds != 60 {
 		t.Fatalf("unexpected database queue defaults: %+v", cfg.Database)
 	}
@@ -143,6 +159,7 @@ func TestNormalizeQueueConfigKeepsDatabaseDriver(t *testing.T) {
 	if err := normalizeQueueConfig(&cfg); err != nil {
 		t.Fatal(err)
 	}
+
 	if cfg.Driver != QueueDriverDatabase {
 		t.Fatalf("driver = %q, want %q", cfg.Driver, QueueDriverDatabase)
 	}
@@ -160,9 +177,11 @@ func TestNormalizeMailConfigDefaults(t *testing.T) {
 	if err := normalizeMailConfig(&cfg); err != nil {
 		t.Fatal(err)
 	}
+
 	if cfg.Host != "localhost" || cfg.Port != 1025 || cfg.Encryption != MailEncryptionNone {
 		t.Fatalf("unexpected SMTP defaults: %+v", cfg)
 	}
+
 	if cfg.FromAddress != "hello@example.com" || cfg.FromName == "" {
 		t.Fatalf("unexpected sender defaults: %+v", cfg)
 	}
@@ -172,6 +191,7 @@ func TestNormalizeMailConfigRejectsInvalidValues(t *testing.T) {
 	if err := normalizeMailConfig(&MailConfig{Encryption: "ssl"}); err == nil {
 		t.Fatal("expected unsupported encryption error")
 	}
+
 	if err := normalizeMailConfig(&MailConfig{FromAddress: "not-an-email"}); err == nil {
 		t.Fatal("expected invalid from address error")
 	}
@@ -212,6 +232,7 @@ func TestNormalizeAuthConfigDefaults(t *testing.T) {
 	if err := normalizeAuthConfig(&app, &auth); err != nil {
 		t.Fatal(err)
 	}
+
 	if app.Environment != "development" || auth.Issuer == "" || auth.Audience == "" ||
 		auth.VerificationTTLHours != 24 || auth.AccessTTLMinutes != 15 || auth.RefreshTTLHours != 168 ||
 		app.PublicURL != "http://localhost:8080" || app.StorefrontURL != "http://localhost:3000" {
@@ -259,6 +280,7 @@ func TestProductionSecretErrorsDoNotExposeValues(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected unsafe production secret error")
 	}
+
 	if strings.Contains(err.Error(), secret) {
 		t.Fatal("validation error exposed a secret value")
 	}

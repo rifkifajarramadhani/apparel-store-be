@@ -45,6 +45,7 @@ func (h *UserHandler) GetUsers(c fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
+
 	if limit > user.MaxLimit {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "limit must not exceed 100"})
 	}
@@ -270,6 +271,7 @@ func profileValues(req dto.UpdateUserRequest, account *user.User) (string, strin
 	if req.Username != nil {
 		username = *req.Username
 	}
+
 	if req.Email != nil {
 		email = *req.Email
 	}

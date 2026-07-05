@@ -18,6 +18,7 @@ func Setup(app *fiber.App, users handler.UserService, auth handler.AuthService, 
 		if requestID == "" {
 			requestID = uuid.NewString()
 		}
+
 		c.Set("X-Request-ID", requestID)
 
 		started := time.Now()

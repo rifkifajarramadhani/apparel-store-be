@@ -220,6 +220,7 @@ func (h *CatalogHandler) UpdateProduct(c fiber.Ctx) error {
 	if err := bindJSON(c, &dto); err != nil {
 		return writeBindError(c, err)
 	}
+
 	if dto.Product.ID != c.Params("id") {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "product id mismatch"})
 	}

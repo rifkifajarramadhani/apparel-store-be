@@ -51,6 +51,7 @@ func (h *UploadHandler) ProductImages(c fiber.Ctx) error {
 	if err := json.Unmarshal([]byte(c.FormValue("metadata")), &metadata); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid upload metadata"})
 	}
+
 	if len(files) == 0 || len(files) != len(metadata) || len(files) > maxBatchFiles {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "files and metadata must contain the same number of entries"})
 	}
@@ -60,9 +61,11 @@ func (h *UploadHandler) ProductImages(c fiber.Ctx) error {
 		if strings.TrimSpace(metadata[i].ClientID) == "" {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "every file requires a clientId"})
 		}
+
 		if _, exists := seen[metadata[i].ClientID]; exists {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "clientId values must be unique"})
 		}
+
 		seen[metadata[i].ClientID] = struct{}{}
 		if err := validateImage(file); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
@@ -87,10 +90,12 @@ func (h *UploadHandler) ProductImages(c fiber.Ctx) error {
 			h.rollback(c.Context(), keys)
 			return h.uploadError(c, uploadErr)
 		}
+
 		if closeErr != nil {
 			h.rollback(c.Context(), append(keys, uploaded.Key))
 			return h.uploadError(c, closeErr)
 		}
+
 		keys = append(keys, uploaded.Key)
 		result = append(result, uploadedImageResponse{
 			ClientID: metadata[i].ClientID, Key: uploaded.Key, URL: uploaded.URL,
@@ -105,6 +110,7 @@ func validateImage(file *multipart.FileHeader) error {
 	if !strings.HasPrefix(contentType, "image/") {
 		return fmt.Errorf("%s is not an image", file.Filename)
 	}
+
 	if file.Size <= 0 || file.Size > maxImageSize {
 		return fmt.Errorf("%s must be between 1 byte and 8 MB", file.Filename)
 	}

@@ -65,6 +65,7 @@ func (h *AuthHandler) Register(c fiber.Ctx) error {
 		if errors.Is(err, user.ErrInvalidInput) || errors.Is(err, user.ErrDuplicateEmail) || errors.Is(err, user.ErrDuplicateUsername) {
 			return writeDomainError(c, err)
 		}
+
 		h.logger.ErrorContext(c.Context(), "register failed", "error", err)
 		return writeDomainError(c, err)
 	}
@@ -108,6 +109,7 @@ func (h *AuthHandler) Refresh(c fiber.Ctx) error {
 		if errors.Is(err, appauth.ErrInvalidToken) || errors.Is(err, appauth.ErrUnauthorized) {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "invalid refresh token"})
 		}
+
 		h.logger.ErrorContext(c.Context(), "refresh failed", "error", err)
 		return writeDomainError(c, err)
 	}
@@ -139,6 +141,7 @@ func (h *AuthHandler) VerifyEmail(c fiber.Ctx) error {
 		if errors.Is(err, appauth.ErrInvalidToken) {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid or expired verification token"})
 		}
+
 		h.logger.ErrorContext(c.Context(), "verify email failed", "error", err)
 		return writeDomainError(c, err)
 	}

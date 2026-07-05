@@ -32,6 +32,7 @@ func Open(ctx context.Context, dsn string, logger *slog.Logger) (*gorm.DB, error
 				err = sqlErr
 			}
 		}
+
 		if err == nil {
 			return db, nil
 		}

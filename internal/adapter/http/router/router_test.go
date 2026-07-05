@@ -22,6 +22,7 @@ func (*usersFake) Create(context.Context, *user.User) error { return nil }
 func (u *usersFake) List(context.Context, int, int) ([]*user.User, int64, error) {
 	return []*user.User{{ID: 2, Role: user.RoleUser, EmailVerifiedAt: &u.verified}}, 1, nil
 }
+
 func (u *usersFake) GetByID(_ context.Context, id int) (*user.User, error) {
 	role := user.Role(user.RoleUser)
 	if id == 1 {
@@ -33,6 +34,7 @@ func (u *usersFake) GetByID(_ context.Context, id int) (*user.User, error) {
 		TokenVersion: 1, EmailVerifiedAt: &u.verified,
 	}, nil
 }
+
 func (*usersFake) UpdateProfile(context.Context, int, string, string) error  { return nil }
 func (*usersFake) ChangePassword(context.Context, int, string, string) error { return nil }
 func (*usersFake) ChangeRole(context.Context, int, int, string) error        { return nil }
@@ -84,6 +86,7 @@ func TestUserRouteAuthorizationMatrix(t *testing.T) {
 			if test.token != "" {
 				request.Header.Set("Authorization", "Bearer "+test.token)
 			}
+
 			if test.body != "" {
 				request.Header.Set("Content-Type", "application/json")
 			}

@@ -23,6 +23,7 @@ func (r *userStoreFake) RegisterUser(_ context.Context, account *user.User, toke
 	r.created = &copy
 	return dispatch()
 }
+
 func (r *userStoreFake) GetUserByID(context.Context, int) (*user.User, error) {
 	if r.account == nil {
 		return nil, user.ErrNotFound
@@ -31,9 +32,11 @@ func (r *userStoreFake) GetUserByID(context.Context, int) (*user.User, error) {
 	copy := *r.account
 	return &copy, nil
 }
+
 func (r *userStoreFake) GetUserByEmail(context.Context, string) (*user.User, error) {
 	return r.GetUserByID(context.Background(), 1)
 }
+
 func (r *userStoreFake) GetUserByEmailOrPending(context.Context, string) (*user.User, error) {
 	return r.GetUserByID(context.Background(), 1)
 }
@@ -48,6 +51,7 @@ func (r *refreshTokenRepoFake) CreateRefreshToken(_ context.Context, token *Refr
 	r.stored = token
 	return nil
 }
+
 func (r *refreshTokenRepoFake) GetActiveRefreshTokenByHash(context.Context, string) (*RefreshToken, error) {
 	if r.stored == nil {
 		return nil, errors.New("not found")
@@ -55,13 +59,16 @@ func (r *refreshTokenRepoFake) GetActiveRefreshTokenByHash(context.Context, stri
 
 	return r.stored, nil
 }
+
 func (r *refreshTokenRepoFake) RevokeRefreshTokenByHash(context.Context, string) error {
 	if r.revokeErr != nil {
 		return r.revokeErr
 	}
+
 	r.revoked = true
 	return nil
 }
+
 func (r *refreshTokenRepoFake) RotateRefreshToken(_ context.Context, _ string, token *RefreshToken) error {
 	r.revoked = true
 	r.stored = token
@@ -78,9 +85,11 @@ func (r *verificationRepoFake) ReplaceEmailVerificationToken(_ context.Context, 
 	r.token = token
 	return nil
 }
+
 func (r *verificationRepoFake) VerifyEmail(context.Context, string, time.Time, VerificationRolePolicy) (*EmailVerificationResult, error) {
 	return r.result, r.err
 }
+
 func (*verificationRepoFake) CanIssueEmailVerification(context.Context, int, time.Time) (bool, error) {
 	return true, nil
 }
@@ -97,9 +106,11 @@ type tokenServiceFake struct {
 func (tokenServiceFake) GenerateAccessToken(int, int) (string, time.Time, error) {
 	return "access", time.Now().Add(time.Minute), nil
 }
+
 func (tokenServiceFake) GenerateRefreshToken(int, int) (string, time.Time, error) {
 	return "refresh", time.Now().Add(time.Hour), nil
 }
+
 func (t tokenServiceFake) ValidateRefreshToken(string) (Claims, error) { return t.claims, nil }
 
 type notifierFake struct {
@@ -134,6 +145,7 @@ func TestResendVerificationTargetsPendingEmail(t *testing.T) {
 	if err := service.ResendVerification(context.Background(), "new@example.com"); err != nil {
 		t.Fatal(err)
 	}
+
 	if notifier.email != "new@example.com" {
 		t.Fatalf("verification sent to %q", notifier.email)
 	}
@@ -152,9 +164,11 @@ func TestRegisterHashesPasswordAndSendsSingleUseVerification(t *testing.T) {
 	if err := service.Register(context.Background(), account); err != nil {
 		t.Fatal(err)
 	}
+
 	if users.created == nil || account.Password != "hashed" || account.Role != user.RoleUser || !notifier.called {
 		t.Fatalf("unexpected registration: account=%+v notified=%v", account, notifier.called)
 	}
+
 	if users.token == nil || users.token.TokenHash == notifier.token {
 		t.Fatal("verification token was not stored as a hash")
 	}
@@ -184,6 +198,7 @@ func TestVerifyEmailSendsWelcomeOnlyForFirstVerification(t *testing.T) {
 			if err := service.VerifyEmail(context.Background(), "token"); err != nil {
 				t.Fatal(err)
 			}
+
 			if welcome.called != test.wantWelcome {
 				t.Fatalf("welcome calls = %d, want %d", welcome.called, test.wantWelcome)
 			}
@@ -221,6 +236,7 @@ func TestLoginComparesPasswordForUnknownUser(t *testing.T) {
 	if _, err := service.Login(context.Background(), "unknown@example.com", "password"); !errors.Is(err, ErrInvalidCredentials) {
 		t.Fatalf("error = %v", err)
 	}
+
 	if spy.compares != 1 {
 		t.Fatalf("password compares = %d, want 1 (timing-equalizing dummy compare)", spy.compares)
 	}
@@ -258,6 +274,7 @@ func TestLogoutRevokesTokenAndIsIdempotent(t *testing.T) {
 			if (err != nil) != test.wantErr {
 				t.Fatalf("error = %v, wantErr %v", err, test.wantErr)
 			}
+
 			if refresh.revoked != test.wantRevoked {
 				t.Fatalf("revoked = %v, want %v", refresh.revoked, test.wantRevoked)
 			}
@@ -277,6 +294,7 @@ func TestRefreshUsesStableUserIDAndRejectsStaleTokenVersion(t *testing.T) {
 	if _, err := service.Refresh(context.Background(), "old-refresh"); !errors.Is(err, ErrUnauthorized) {
 		t.Fatalf("stale token error = %v", err)
 	}
+
 	if refresh.revoked {
 		t.Fatal("stale token should not be rotated")
 	}
@@ -285,6 +303,7 @@ func TestRefreshUsesStableUserIDAndRejectsStaleTokenVersion(t *testing.T) {
 	if _, err := service.Refresh(context.Background(), "valid-refresh"); err != nil {
 		t.Fatal(err)
 	}
+
 	if !refresh.revoked {
 		t.Fatal("refresh token was not rotated")
 	}

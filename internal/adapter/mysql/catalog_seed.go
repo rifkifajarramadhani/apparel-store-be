@@ -32,6 +32,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 				return err
 			}
 		}
+
 		if err := tx.Exec("SET FOREIGN_KEY_CHECKS=1").Error; err != nil {
 			return err
 		}
@@ -52,6 +53,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 			if err != nil {
 				return err
 			}
+
 			brandIDs[key] = id
 		}
 
@@ -65,6 +67,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 			if err != nil {
 				return err
 			}
+
 			categoryIDs[c.ID] = id
 		}
 
@@ -86,6 +89,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 			if err != nil {
 				return err
 			}
+
 			collectionIDs[c.ID] = id
 		}
 
@@ -99,6 +103,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 			if err != nil {
 				return err
 			}
+
 			scaleIDs[scale.ID] = id
 			for order, size := range scale.Sizes {
 				key := scale.ID + ":" + size
@@ -110,6 +115,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 				if err := tx.Raw("SELECT id FROM sizes WHERE size_scale_id=? AND code=?", scaleIDs[scale.ID], size).Scan(&sizeID).Error; err != nil {
 					return err
 				}
+
 				sizeIDs[key] = sizeID
 			}
 		}
@@ -125,6 +131,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 				colourIDs[colour.ID] = id
 				continue
 			}
+
 			if err := tx.Exec("INSERT INTO colourways(public_id,name,hex_code) VALUES(?,?,?)", seedPublicID("CO", key), colour.Name, colour.SwatchHex).Error; err != nil {
 				return err
 			}
@@ -133,6 +140,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 			if err != nil {
 				return err
 			}
+
 			colourIDs[colour.ID] = id
 			colourRowByName[key] = id
 		}
@@ -148,6 +156,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 			if err != nil {
 				return err
 			}
+
 			productIDs[p.ID] = id
 			if categoryIDs[p.CategoryID] != 0 {
 				if err := tx.Exec("INSERT INTO product_categories(product_id,category_id,is_primary) VALUES(?,?,TRUE)", productIDs[p.ID], categoryIDs[p.CategoryID]).Error; err != nil {
@@ -162,6 +171,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 					}
 				}
 			}
+
 			if err := tx.Exec("INSERT INTO prices(public_id,product_id,currency,amount,valid_from) VALUES(?,?,'IDR',?,'1970-01-01')", seedPublicID("PP", p.ID), productIDs[p.ID], p.BasePrice).Error; err != nil {
 				return err
 			}
@@ -189,6 +199,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 				if imageURL == "" {
 					continue
 				}
+
 				if err := tx.Exec("INSERT IGNORE INTO assets(public_id,product_id,media_type,storage_provider,cdn_url,alt_text,role,sort_order) VALUES(?,?,'image','external',?,?,'product_image',?)", seedPublicID("AS", imageURL), productIDs[colour.ProductID], imageURL, colour.Name, order).Error; err != nil {
 					return err
 				}

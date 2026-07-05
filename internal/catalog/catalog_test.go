@@ -17,31 +17,38 @@ type repositoryFake struct {
 func (f *repositoryFake) ListProducts(context.Context, ProductQuery) (CursorPage[Product], error) {
 	return CursorPage[Product]{}, f.err
 }
+
 func (f *repositoryFake) GetProduct(context.Context, string, string) (Product, error) {
 	return Product{}, f.err
 }
+
 func (f *repositoryFake) ListSkus(context.Context, SkuQuery) (CursorPage[Sku], error) {
 	return CursorPage[Sku]{}, f.err
 }
+
 func (f *repositoryFake) ListBrands(context.Context) ([]Brand, error)           { return nil, f.err }
 func (f *repositoryFake) ListCategories(context.Context) ([]Category, error)    { return nil, f.err }
 func (f *repositoryFake) ListCollections(context.Context) ([]Collection, error) { return nil, f.err }
 func (f *repositoryFake) ListColourways(context.Context) ([]Colourway, error) {
 	return nil, f.err
 }
+
 func (f *repositoryFake) ListSizes(context.Context) ([]Size, error) { return nil, f.err }
 func (f *repositoryFake) SetInventory(_ context.Context, in InventoryAdjustment) error {
 	f.inventory = in
 	return f.err
 }
+
 func (f *repositoryFake) CreateProduct(_ context.Context, in ProductAggregate) error {
 	f.saved = &in
 	return f.err
 }
+
 func (f *repositoryFake) UpdateProduct(_ context.Context, in ProductAggregate) error {
 	f.saved = &in
 	return f.err
 }
+
 func (f *repositoryFake) DeleteProduct(_ context.Context, id string) error {
 	f.deleted = id
 	return f.err
@@ -86,6 +93,7 @@ func TestCreateProductPassesValidAggregateToRepo(t *testing.T) {
 	if err := svc.CreateProduct(context.Background(), validAggregate()); err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
+
 	if repo.saved == nil || repo.saved.Product.ID != "STYLE-1" {
 		t.Fatalf("aggregate not forwarded to repo: %+v", repo.saved)
 	}
@@ -112,6 +120,7 @@ func TestActiveAtUsesHalfOpenInterval(t *testing.T) {
 	if !ActiveAt(from, &to, from) {
 		t.Fatal("valid_from should be inclusive")
 	}
+
 	if ActiveAt(from, &to, to) {
 		t.Fatal("valid_to should be exclusive")
 	}

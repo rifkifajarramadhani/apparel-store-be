@@ -8,9 +8,11 @@ func TestBcryptRoundTrip(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	if err := hasher.Compare(hash, "secret"); err != nil {
 		t.Fatal(err)
 	}
+
 	if err := hasher.Compare(hash, "wrong"); err == nil {
 		t.Fatal("expected comparison failure")
 	}

@@ -21,7 +21,7 @@ This guide instructs agents how to write Go code that mirrors community best pra
 - **Names:** Package names are short and lower case. Avoid stutter (`bytes.Buffer`). Use common initialisms (`ID`, `HTTP`).
 - **Declarations:** Use `:=` for locals; let zero values work; composite literals with field names when many fields.
 - **Control:** Prefer `switch` over long `if/else`; range over slices/maps. Watch range variable capture when spawning goroutines.
-- **Logic-block spacing:** Add a blank line after a completed logic block when the following code begins a distinct logical step. Keep tightly coupled clauses, such as `if`/`else`, together.
+- **Declaration and logic-block spacing:** Separate top-level `type`, `struct`, `const`, `var`, and `func` declarations with exactly one blank line. Inside functions, add exactly one blank line after a completed `if`, `switch`, `select`, or loop block when execution continues with another logical step. Keep coupled syntax such as `if`/`else`, `switch` cases, chained clauses, and comments attached to the following declaration or statement together.
 - **Functions:** Return multiple values instead of out parameters. Keep receiver choice intentional (pointer to mutate or avoid copies; value otherwise).
 - **Interfaces:** Define small, behavior-first interfaces at the consumption site. Accept interfaces, return concrete types. Interface satisfaction is implicit.
 - **Errors:** Return errors as last value; wrap with `%w` for context; avoid panics for expected problems.

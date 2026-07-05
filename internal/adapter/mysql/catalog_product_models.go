@@ -13,15 +13,18 @@ type categoryLinkRow struct {
 	PublicID, Slug, Name string
 	ParentPublicID       *string
 }
+
 type colourLinkRow struct {
 	ProductID               uint64
 	PublicID, Name, HexCode string
 }
+
 type sizeLinkRow struct {
 	ProductID                       uint64
 	PublicID, ScaleCode, Code, Name string
 	SortOrder                       int
 }
+
 type assetLinkRow struct {
 	ProductID                               uint64
 	PublicID, MediaType, URL, AltText, Role string
@@ -29,6 +32,7 @@ type assetLinkRow struct {
 	ColourwayID                             string
 	SkuID                                   string
 }
+
 type priceRangeRow struct {
 	ProductID            uint64
 	MinAmount, MaxAmount int64

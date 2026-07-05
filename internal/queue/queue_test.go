@@ -13,6 +13,7 @@ func TestHandlerRegistryRejectsDuplicateTypes(t *testing.T) {
 	if err := registry.Register("example", handler); err != nil {
 		t.Fatalf("register first handler: %v", err)
 	}
+
 	if err := registry.Register("example", handler); err == nil {
 		t.Fatal("expected duplicate registration error")
 	}

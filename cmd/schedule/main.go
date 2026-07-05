@@ -27,6 +27,7 @@ func newRootCommand() *cobra.Command {
 		Short:        "Inspect and run application schedules",
 		SilenceUsage: true,
 	}
+
 	root.AddCommand(
 		&cobra.Command{
 			Use:   "list",
@@ -41,6 +42,7 @@ func newRootCommand() *cobra.Command {
 				if _, err := fmt.Fprintf(cmd.OutOrStdout(), "Default timezone: %s\n", cfg.Scheduler.Timezone); err != nil {
 					return err
 				}
+
 				if _, err := fmt.Fprintln(cmd.OutOrStdout(), "NAME\tCRON\tTIMEZONE\tQUEUE\tNEXT RUN"); err != nil {
 					return err
 				}
@@ -83,9 +85,11 @@ func newRootCommand() *cobra.Command {
 				if err != nil {
 					return err
 				}
+
 				if closer, ok := dispatcher.(interface{ Close() error }); ok {
 					defer func() { _ = closer.Close() }()
 				}
+
 				if err := scheduler.NewRunner(registry, dispatcher).Run(cmd.Context(), time.Now()); err != nil {
 					return err
 				}

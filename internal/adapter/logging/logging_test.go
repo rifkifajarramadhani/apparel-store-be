@@ -25,6 +25,7 @@ func TestLoggerWritesAndClosesFile(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	if !strings.Contains(string(content), `"msg":"hello"`) {
 		t.Fatalf("log content = %s", content)
 	}

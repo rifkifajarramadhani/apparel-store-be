@@ -54,6 +54,7 @@ func TestDatabaseQueueDispatchReserveAndComplete(t *testing.T) {
 	if _, err := dispatcher.Dispatch(ctx, integrationJob{Message: "hello"}, options); err != nil {
 		t.Fatal(err)
 	}
+
 	if _, err := dispatcher.Dispatch(ctx, integrationJob{Message: "hello"}, options); !errors.Is(err, queue.ErrDuplicateJob) {
 		t.Fatalf("duplicate dispatch error = %v, want ErrDuplicateJob", err)
 	}
@@ -76,9 +77,11 @@ func TestDatabaseQueueDispatchReserveAndComplete(t *testing.T) {
 	if err != nil {
 		t.Fatalf("reserve empty queue: %v", err)
 	}
+
 	if emptyJob != nil {
 		t.Fatalf("reserved job from empty queue = %#v, want nil", emptyJob)
 	}
+
 	if strings.Contains(databaseLogs.String(), gorm.ErrRecordNotFound.Error()) {
 		t.Fatalf("empty queue logged an expected not-found result: %s", databaseLogs.String())
 	}
@@ -87,9 +90,11 @@ func TestDatabaseQueueDispatchReserveAndComplete(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	if job == nil || job.ID != taskID {
 		t.Fatalf("reserved job = %#v, want %s", job, taskID)
 	}
+
 	if err := worker.complete(job); err != nil {
 		t.Fatal(err)
 	}
@@ -98,6 +103,7 @@ func TestDatabaseQueueDispatchReserveAndComplete(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	if stats.Processed < 1 {
 		t.Fatalf("processed = %d, want at least 1", stats.Processed)
 	}
@@ -107,6 +113,7 @@ func TestDatabaseQueueDispatchReserveAndComplete(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	t.Cleanup(func() {
 		db.Where("job_id = ?", uniqueInfo.ID).Delete(&databaseLock{})
 		db.Where("id = ?", uniqueInfo.ID).Delete(&databaseJob{})
@@ -115,12 +122,15 @@ func TestDatabaseQueueDispatchReserveAndComplete(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	if uniqueJob == nil || uniqueJob.ID != uniqueInfo.ID {
 		t.Fatalf("reserved unique job = %#v, want %s", uniqueJob, uniqueInfo.ID)
 	}
+
 	if err := worker.complete(uniqueJob); err != nil {
 		t.Fatal(err)
 	}
+
 	if _, err := dispatcher.Dispatch(ctx, integrationJob{Message: "unique"}, uniqueOptions); !errors.Is(err, queue.ErrDuplicateJob) {
 		t.Fatalf("post-completion unique dispatch error = %v, want ErrDuplicateJob", err)
 	}

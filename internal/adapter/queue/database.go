@@ -112,6 +112,7 @@ func (d *DatabaseDispatcher) Dispatch(ctx context.Context, job queue.Job, option
 				}
 			}
 		}
+
 		if err := tx.Create(&record).Error; err != nil {
 			return err
 		}
@@ -127,6 +128,7 @@ func (d *DatabaseDispatcher) Dispatch(ctx context.Context, job queue.Job, option
 	if isDuplicateKey(err) {
 		return nil, queue.ErrDuplicateJob
 	}
+
 	if err != nil {
 		return nil, err
 	}
@@ -209,6 +211,7 @@ func (w *DatabaseWorker) runLoop(ctx context.Context, offset int) {
 			if err != nil && !errors.Is(err, context.Canceled) {
 				w.logger.ErrorContext(ctx, "database queue reservation failed", "error", err)
 			}
+
 			emptyReserves++
 			// Only sleep once every weighted queue slot came up empty in a
 			// row; sleeping after any single empty reserve would delay ready
@@ -217,6 +220,7 @@ func (w *DatabaseWorker) runLoop(ctx context.Context, offset int) {
 			if err == nil && emptyReserves < len(w.weightedQueues) {
 				continue
 			}
+
 			emptyReserves = 0
 			timer := time.NewTimer(w.pollInterval)
 			select {
@@ -225,8 +229,10 @@ func (w *DatabaseWorker) runLoop(ctx context.Context, offset int) {
 				return
 			case <-timer.C:
 			}
+
 			continue
 		}
+
 		emptyReserves = 0
 		w.process(ctx, job)
 	}
@@ -247,9 +253,11 @@ func (w *DatabaseWorker) reserve(ctx context.Context, queueName string) (*databa
 		if result.Error != nil {
 			return result.Error
 		}
+
 		if result.RowsAffected == 0 {
 			return nil
 		}
+
 		found = true
 		token := uuid.NewString()
 		leasedUntil := now.Add(w.reservation)
@@ -261,6 +269,7 @@ func (w *DatabaseWorker) reserve(ctx context.Context, queueName string) (*databa
 		}).Error; err != nil {
 			return err
 		}
+
 		job.Status = jobStatusActive
 		job.Attempts++
 		job.LeaseToken = &token
@@ -299,6 +308,7 @@ func (w *DatabaseWorker) process(workerCtx context.Context, job *databaseJob) {
 	if err == nil {
 		err = handlerCtx.Err()
 	}
+
 	if err != nil {
 		if updateErr := w.fail(job, err); updateErr != nil {
 			w.logger.ErrorContext(workerCtx, "database queue failure transition failed", "job_id", job.ID, "error", updateErr)
@@ -306,6 +316,7 @@ func (w *DatabaseWorker) process(workerCtx context.Context, job *databaseJob) {
 
 		return
 	}
+
 	if err := w.complete(job); err != nil {
 		w.logger.ErrorContext(workerCtx, "database queue completion failed", "job_id", job.ID, "error", err)
 	}
@@ -360,9 +371,11 @@ func (w *DatabaseWorker) complete(job *databaseJob) error {
 				"leased_until": nil,
 			})
 		}
+
 		if result.Error != nil || result.RowsAffected == 0 {
 			return result.Error
 		}
+
 		if job.RetentionSecs <= 0 {
 			if err := tx.Where("job_id = ? AND expires_at IS NULL", job.ID).Delete(&databaseLock{}).Error; err != nil {
 				return err
@@ -384,6 +397,7 @@ func (w *DatabaseWorker) maybeCleanup(ctx context.Context, now time.Time) {
 		w.cleanupMu.Unlock()
 		return
 	}
+
 	w.nextCleanup = now.Add(cleanupInterval)
 	w.cleanupMu.Unlock()
 	w.cleanup(ctx, now)
@@ -404,6 +418,7 @@ func (w *DatabaseWorker) cleanup(ctx context.Context, now time.Time) {
 
 		return
 	}
+
 	if err := w.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		if err := tx.Where("job_id IN ? AND expires_at IS NULL", ids).Delete(&databaseLock{}).Error; err != nil {
 			return err
@@ -463,6 +478,7 @@ func (i *DatabaseInspector) Queues(ctx context.Context) ([]string, error) {
 	for _, name := range stored {
 		names[name] = struct{}{}
 	}
+
 	if err := i.db.WithContext(ctx).Model(&databaseStat{}).Distinct().Pluck("queue", &stored).Error; err != nil {
 		return nil, err
 	}
@@ -475,6 +491,7 @@ func (i *DatabaseInspector) Queues(ctx context.Context) ([]string, error) {
 	for name := range names {
 		result = append(result, name)
 	}
+
 	sort.Strings(result)
 
 	return result, nil
@@ -531,6 +548,7 @@ func (i *DatabaseInspector) Failed(ctx context.Context, queueName string, limit 
 		if job.LastError != nil {
 			lastError = *job.LastError
 		}
+
 		result = append(result, queue.FailedJob{
 			ID: job.ID, Queue: job.Queue, Type: job.Type, Retried: max(job.Attempts-1, 0),
 			MaxRetry: job.MaxRetry, LastFailedAt: failedAt, LastError: lastError,
@@ -570,6 +588,7 @@ func (i *DatabaseInspector) Delete(ctx context.Context, queueName, id string) (i
 		for _, job := range jobs {
 			ids = append(ids, job.ID)
 		}
+
 		if err := tx.Where("job_id IN ?", ids).Delete(&databaseLock{}).Error; err != nil {
 			return err
 		}
@@ -594,6 +613,7 @@ func dispatchLocks(jobID, queueName, jobType string, payload []byte, options que
 	if options.TaskID != "" {
 		locks = append(locks, databaseLock{LockKey: hashLockKey("task", []byte(options.TaskID)), JobID: jobID})
 	}
+
 	if options.UniqueFor > 0 {
 		expiresAt := now.Add(options.UniqueFor)
 		locks = append(locks, databaseLock{
@@ -628,6 +648,7 @@ func weightedQueueNames(queues map[string]int) []string {
 	for name := range queues {
 		names = append(names, name)
 	}
+
 	sort.Strings(names)
 
 	weighted := make([]string, 0)
