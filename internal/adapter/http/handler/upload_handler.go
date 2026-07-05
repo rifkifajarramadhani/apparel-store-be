@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/gofiber/fiber/v3"
+	uploaddto "github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/http/dto/upload"
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/storage"
 )
 
@@ -28,12 +29,6 @@ func NewUploadHandler(uploader storage.ImageUploader, logger *slog.Logger) *Uplo
 
 type uploadMetadata struct {
 	ClientID string `json:"clientId"`
-}
-
-type uploadedImageResponse struct {
-	ClientID string `json:"clientId"`
-	Key      string `json:"key"`
-	URL      string `json:"url"`
 }
 
 func (h *UploadHandler) ProductImages(c fiber.Ctx) error {
@@ -72,7 +67,7 @@ func (h *UploadHandler) ProductImages(c fiber.Ctx) error {
 		}
 	}
 
-	result := make([]uploadedImageResponse, 0, len(files))
+	result := make([]uploaddto.UploadedImageResponse, 0, len(files))
 	keys := make([]string, 0, len(files))
 	for i, header := range files {
 		file, err := header.Open()
@@ -97,12 +92,12 @@ func (h *UploadHandler) ProductImages(c fiber.Ctx) error {
 		}
 
 		keys = append(keys, uploaded.Key)
-		result = append(result, uploadedImageResponse{
+		result = append(result, uploaddto.UploadedImageResponse{
 			ClientID: metadata[i].ClientID, Key: uploaded.Key, URL: uploaded.URL,
 		})
 	}
 
-	return c.JSON(fiber.Map{"files": result})
+	return c.JSON(uploaddto.UploadBatchResponse{Files: result})
 }
 
 func validateImage(file *multipart.FileHeader) error {

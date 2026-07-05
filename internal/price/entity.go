@@ -3,9 +3,9 @@ package price
 import "time"
 
 type Money struct {
-	Currency        string `json:"currency"`
-	Amount          int64  `json:"amount"`
-	CompareAtAmount *int64 `json:"compareAtAmount,omitempty"`
+	Currency        string
+	Amount          int64
+	CompareAtAmount *int64
 }
 
 // ActiveAt reports whether a price applies at the supplied instant using a

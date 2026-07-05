@@ -24,21 +24,21 @@ var (
 )
 
 type Product struct {
-	ID          string                `json:"id"`
-	StyleCode   string                `json:"styleCode"`
-	Slug        string                `json:"slug"`
-	Name        string                `json:"name"`
-	Subtitle    string                `json:"subtitle"`
-	Gender      string                `json:"gender,omitempty"`
-	ProductType string                `json:"productType,omitempty"`
-	Description string                `json:"description,omitempty"`
-	Brand       brand.Brand           `json:"brand"`
-	Categories  []category.Category   `json:"categories"`
-	Colourways  []colourway.Colourway `json:"colourways"`
-	Sizes       []appsize.Size        `json:"sizes"`
-	Assets      []asset.Asset         `json:"assets"`
-	MinPrice    *price.Money          `json:"minPrice,omitempty"`
-	MaxPrice    *price.Money          `json:"maxPrice,omitempty"`
+	ID          string
+	StyleCode   string
+	Slug        string
+	Name        string
+	Subtitle    string
+	Gender      string
+	ProductType string
+	Description string
+	Brand       brand.Brand
+	Categories  []category.Category
+	Colourways  []colourway.Colourway
+	Sizes       []appsize.Size
+	Assets      []asset.Asset
+	MinPrice    *price.Money
+	MaxPrice    *price.Money
 }
 
 type Query struct {

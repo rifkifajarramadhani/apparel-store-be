@@ -19,17 +19,17 @@ var (
 )
 
 type SKU struct {
-	ID        string              `json:"id"`
-	Code      string              `json:"code"`
-	Barcode   string              `json:"barcode,omitempty"`
-	ProductID string              `json:"productId"`
-	Colourway colourway.Colourway `json:"colourway"`
-	Size      appsize.Size        `json:"size"`
-	Price     price.Money         `json:"price"`
-	OnHand    int                 `json:"onHand"`
-	Reserved  int                 `json:"reserved"`
-	Available int                 `json:"available"`
-	Assets    []asset.Asset       `json:"assets"`
+	ID        string
+	Code      string
+	Barcode   string
+	ProductID string
+	Colourway colourway.Colourway
+	Size      appsize.Size
+	Price     price.Money
+	OnHand    int
+	Reserved  int
+	Available int
+	Assets    []asset.Asset
 }
 
 type Query struct {

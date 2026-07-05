@@ -53,7 +53,7 @@ func (h *OrderHandler) Create(c fiber.Ctx) error {
 		return writeOrderError(c, h.logger, err)
 	}
 
-	return c.Status(fiber.StatusCreated).JSON(created)
+	return c.Status(fiber.StatusCreated).JSON(toOrderResponse(created))
 }
 
 func (h *OrderHandler) List(c fiber.Ctx) error {
@@ -67,7 +67,7 @@ func (h *OrderHandler) List(c fiber.Ctx) error {
 		return writeOrderError(c, h.logger, err)
 	}
 
-	return c.JSON(orders)
+	return c.JSON(toOrderResponses(orders))
 }
 
 func (h *OrderHandler) Get(c fiber.Ctx) error {
@@ -86,7 +86,7 @@ func (h *OrderHandler) Get(c fiber.Ctx) error {
 		return writeOrderError(c, h.logger, err)
 	}
 
-	return c.JSON(found)
+	return c.JSON(toOrderResponse(found))
 }
 
 func writeOrderError(c fiber.Ctx, logger *slog.Logger, err error) error {

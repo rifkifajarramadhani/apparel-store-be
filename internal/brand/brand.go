@@ -3,9 +3,9 @@ package brand
 import "context"
 
 type Brand struct {
-	ID   string `json:"id"`
-	Slug string `json:"slug"`
-	Name string `json:"name"`
+	ID   string
+	Slug string
+	Name string
 }
 
 type Repository interface {

@@ -3,11 +3,11 @@ package size
 import "context"
 
 type Size struct {
-	ID        string `json:"id"`
-	ScaleCode string `json:"scaleCode"`
-	Code      string `json:"code"`
-	Name      string `json:"name"`
-	SortOrder int    `json:"sortOrder"`
+	ID        string
+	ScaleCode string
+	Code      string
+	Name      string
+	SortOrder int
 }
 
 type Repository interface {

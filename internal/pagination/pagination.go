@@ -6,8 +6,8 @@ const (
 )
 
 type CursorPage[T any] struct {
-	Items      []T    `json:"items"`
-	NextCursor string `json:"nextCursor,omitempty"`
+	Items      []T
+	NextCursor string
 }
 
 func NormalizeLimit(limit int) int {

@@ -32,7 +32,7 @@ func (h *SKUHandler) SKUs(c fiber.Ctx) error {
 		return writeMerchandisingError(c, h.logger, err)
 	}
 
-	return c.JSON(page)
+	return c.JSON(toSKUPageResponse(page))
 }
 
 func (h *SKUHandler) SetInventory(c fiber.Ctx) error {

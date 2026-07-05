@@ -39,7 +39,7 @@ func (h *ProductHandler) Products(c fiber.Ctx) error {
 		return writeMerchandisingError(c, h.logger, err)
 	}
 
-	return c.JSON(page)
+	return c.JSON(toProductPageResponse(page))
 }
 
 func (h *ProductHandler) Product(c fiber.Ctx) error {
@@ -48,7 +48,7 @@ func (h *ProductHandler) Product(c fiber.Ctx) error {
 		return writeMerchandisingError(c, h.logger, err)
 	}
 
-	return c.JSON(item)
+	return c.JSON(toProductResponse(item))
 }
 
 func (h *ProductHandler) Create(c fiber.Ctx) error {
@@ -61,7 +61,7 @@ func (h *ProductHandler) Create(c fiber.Ctx) error {
 		return writeMerchandisingError(c, h.logger, err)
 	}
 
-	return c.Status(fiber.StatusCreated).JSON(input)
+	return c.Status(fiber.StatusCreated).JSON(toProductMutationResponse(input))
 }
 
 func (h *ProductHandler) Update(c fiber.Ctx) error {
@@ -78,7 +78,7 @@ func (h *ProductHandler) Update(c fiber.Ctx) error {
 		return writeMerchandisingError(c, h.logger, err)
 	}
 
-	return c.JSON(input)
+	return c.JSON(toProductMutationResponse(input))
 }
 
 func (h *ProductHandler) Delete(c fiber.Ctx) error {

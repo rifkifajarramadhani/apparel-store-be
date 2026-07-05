@@ -43,7 +43,7 @@ func (h *BrandHandler) List(c fiber.Ctx) error {
 		return writeMerchandisingError(c, h.logger, err)
 	}
 
-	return c.JSON(items)
+	return c.JSON(mapResponses(items, toBrandResponse))
 }
 
 type CategoryHandler struct {
@@ -61,7 +61,7 @@ func (h *CategoryHandler) List(c fiber.Ctx) error {
 		return writeMerchandisingError(c, h.logger, err)
 	}
 
-	return c.JSON(items)
+	return c.JSON(mapResponses(items, toCategoryResponse))
 }
 
 type CollectionHandler struct {
@@ -79,7 +79,7 @@ func (h *CollectionHandler) List(c fiber.Ctx) error {
 		return writeMerchandisingError(c, h.logger, err)
 	}
 
-	return c.JSON(items)
+	return c.JSON(mapResponses(items, toCollectionResponse))
 }
 
 type ColourwayHandler struct {
@@ -97,7 +97,7 @@ func (h *ColourwayHandler) List(c fiber.Ctx) error {
 		return writeMerchandisingError(c, h.logger, err)
 	}
 
-	return c.JSON(items)
+	return c.JSON(mapResponses(items, toColourwayResponse))
 }
 
 type SizeHandler struct {
@@ -115,5 +115,5 @@ func (h *SizeHandler) List(c fiber.Ctx) error {
 		return writeMerchandisingError(c, h.logger, err)
 	}
 
-	return c.JSON(items)
+	return c.JSON(mapResponses(items, toSizeResponse))
 }

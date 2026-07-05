@@ -3,9 +3,9 @@ package colourway
 import "context"
 
 type Colourway struct {
-	ID      string `json:"id"`
-	Name    string `json:"name"`
-	HexCode string `json:"hexCode"`
+	ID      string
+	Name    string
+	HexCode string
 }
 
 type Write struct {

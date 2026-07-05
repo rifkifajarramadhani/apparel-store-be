@@ -3,10 +3,10 @@ package category
 import "context"
 
 type Category struct {
-	ID       string  `json:"id"`
-	ParentID *string `json:"parentId"`
-	Slug     string  `json:"slug"`
-	Name     string  `json:"name"`
+	ID       string
+	ParentID *string
+	Slug     string
+	Name     string
 }
 
 type Repository interface {

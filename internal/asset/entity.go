@@ -1,14 +1,14 @@
 package asset
 
 type Asset struct {
-	ID          string `json:"id"`
-	MediaType   string `json:"mediaType"`
-	URL         string `json:"url"`
-	AltText     string `json:"altText,omitempty"`
-	Role        string `json:"role"`
-	SortOrder   int    `json:"sortOrder"`
-	ColourwayID string `json:"colourwayId,omitempty"`
-	SkuID       string `json:"skuId,omitempty"`
+	ID          string
+	MediaType   string
+	URL         string
+	AltText     string
+	Role        string
+	SortOrder   int
+	ColourwayID string
+	SkuID       string
 }
 
 type Write struct {
