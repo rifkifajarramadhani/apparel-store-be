@@ -20,10 +20,19 @@ func seedPublicID(prefix, value string) string {
 // the normalized schema and is safe to rerun on a clean development database.
 func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.SeedProduct, colourways []catalog.SeedColourway, skus []catalog.SeedSKU, categories []catalog.SeedCategory, collections []catalog.SeedCollection, scales []catalog.SeedSizeScale) error {
 	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		// categories self-references via parent_id, so a plain per-table
+		// DELETE can trip the FK constraint on a non-empty reseed depending
+		// on row order; disable checks for the wipe only.
+		if err := tx.Exec("SET FOREIGN_KEY_CHECKS=0").Error; err != nil {
+			return err
+		}
 		for _, table := range []string{"assets", "prices", "skus", "product_collections", "product_categories", "products", "colourways", "sizes", "size_scales", "collections", "categories", "brands"} {
 			if err := tx.Exec("DELETE FROM " + table).Error; err != nil {
 				return err
 			}
+		}
+		if err := tx.Exec("SET FOREIGN_KEY_CHECKS=1").Error; err != nil {
+			return err
 		}
 		brandIDs := map[string]uint64{}
 		for _, p := range products {
@@ -92,17 +101,26 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 				sizeIDs[key] = sizeID
 			}
 		}
-		colourIDs := map[string]uint64{}
+		// colourways are a global lookup: multiple seed entries sharing the
+		// same plain colour name (e.g. "Black" on several products) resolve
+		// to a single DB row, first-seen-in-file wins on hex.
+		colourIDs := map[string]uint64{}       // seed entry ID -> DB row id
+		colourRowByName := map[string]uint64{} // lower(name) -> DB row id
 		for _, colour := range colourways {
-			slug := strings.ToLower(strings.ReplaceAll(colour.ID, " ", "-"))
-			if err := tx.Exec("INSERT INTO colourways(public_id,slug,name,colour_family,hex_code) VALUES(?,?,?,?,?)", seedPublicID("CO", colour.ID), slug, colour.Name, colour.ColorFamily, colour.SwatchHex).Error; err != nil {
+			key := strings.ToLower(strings.TrimSpace(colour.Name))
+			if id, ok := colourRowByName[key]; ok {
+				colourIDs[colour.ID] = id
+				continue
+			}
+			if err := tx.Exec("INSERT INTO colourways(public_id,name,hex_code) VALUES(?,?,?)", seedPublicID("CO", key), colour.Name, colour.SwatchHex).Error; err != nil {
 				return err
 			}
-			id, err := seedRowID(tx, "colourways", "slug", slug)
+			id, err := seedRowID(tx, "colourways", "name", colour.Name)
 			if err != nil {
 				return err
 			}
 			colourIDs[colour.ID] = id
+			colourRowByName[key] = id
 		}
 		productIDs := map[string]uint64{}
 		for _, p := range products {

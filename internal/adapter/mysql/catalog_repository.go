@@ -99,8 +99,8 @@ type categoryLinkRow struct {
 	ParentPublicID       *string
 }
 type colourLinkRow struct {
-	ProductID                                   uint64
-	PublicID, Slug, Name, ColourFamily, HexCode string
+	ProductID               uint64
+	PublicID, Name, HexCode string
 }
 type sizeLinkRow struct {
 	ProductID                       uint64
@@ -136,12 +136,12 @@ func (r *CatalogRepository) hydrateProducts(ctx context.Context, products []cata
 		products[i].Categories = append(products[i].Categories, catalog.Category{ID: row.PublicID, ParentID: row.ParentPublicID, Slug: row.Slug, Name: row.Name})
 	}
 	var colours []colourLinkRow
-	if err := r.db.WithContext(ctx).Raw("SELECT DISTINCT s.product_id,c.public_id,c.slug,c.name,c.colour_family,c.hex_code FROM skus s JOIN colourways c ON c.id=s.colourway_id AND c.archived_at IS NULL WHERE s.archived_at IS NULL AND s.product_id IN ? ORDER BY c.name", ids).Scan(&colours).Error; err != nil {
+	if err := r.db.WithContext(ctx).Raw("SELECT DISTINCT s.product_id,c.public_id,c.name,c.hex_code FROM skus s JOIN colourways c ON c.id=s.colourway_id AND c.archived_at IS NULL WHERE s.archived_at IS NULL AND s.product_id IN ? ORDER BY c.name", ids).Scan(&colours).Error; err != nil {
 		return err
 	}
 	for _, row := range colours {
 		i := positions[row.ProductID]
-		products[i].Colourways = append(products[i].Colourways, catalog.Colourway{ID: row.PublicID, Slug: row.Slug, Name: row.Name, ColourFamily: row.ColourFamily, HexCode: row.HexCode})
+		products[i].Colourways = append(products[i].Colourways, catalog.Colourway{ID: row.PublicID, Name: row.Name, HexCode: row.HexCode})
 	}
 	var sizes []sizeLinkRow
 	if err := r.db.WithContext(ctx).Raw("SELECT DISTINCT s.product_id,sz.public_id,ss.code scale_code,sz.code,sz.name,sz.sort_order FROM skus s JOIN sizes sz ON sz.id=s.size_id AND sz.archived_at IS NULL JOIN size_scales ss ON ss.id=sz.size_scale_id AND ss.archived_at IS NULL WHERE s.archived_at IS NULL AND s.product_id IN ? ORDER BY sz.sort_order,sz.name", ids).Scan(&sizes).Error; err != nil {
@@ -198,7 +198,7 @@ func (r *CatalogRepository) ListCollections(ctx context.Context) ([]catalog.Coll
 }
 func (r *CatalogRepository) ListColourways(ctx context.Context) ([]catalog.Colourway, error) {
 	var out []catalog.Colourway
-	err := r.db.WithContext(ctx).Table("colourways").Select("public_id id,slug,name,colour_family,hex_code").Where("archived_at IS NULL").Order("name").Scan(&out).Error
+	err := r.db.WithContext(ctx).Table("colourways").Select("public_id id,name,hex_code").Where("archived_at IS NULL").Order("name").Scan(&out).Error
 	return out, err
 }
 func (r *CatalogRepository) ListSizes(ctx context.Context) ([]catalog.Size, error) {
@@ -208,17 +208,17 @@ func (r *CatalogRepository) ListSizes(ctx context.Context) ([]catalog.Size, erro
 }
 
 type skuRow struct {
-	ID, Code, Barcode, ProductID                                     string
-	ColourwayID, ColourwaySlug, ColourwayName, ColourFamily, HexCode string
-	SizeID, ScaleCode, SizeCode, SizeName                            string
-	SortOrder, OnHand, Reserved                                      int
-	Amount                                                           int64
-	CompareAtAmount                                                  *int64
+	ID, Code, Barcode, ProductID          string
+	ColourwayID, ColourwayName, HexCode   string
+	SizeID, ScaleCode, SizeCode, SizeName string
+	SortOrder, OnHand, Reserved           int
+	Amount                                int64
+	CompareAtAmount                       *int64
 }
 
 func (r *CatalogRepository) ListSkus(ctx context.Context, q catalog.SkuQuery) (catalog.CursorPage[catalog.Sku], error) {
 	now := time.Now().UTC()
-	sql := `SELECT s.public_id id,s.sku_code code,COALESCE(s.barcode,'') barcode,p.style_code product_id,c.public_id colourway_id,c.slug colourway_slug,c.name colourway_name,COALESCE(c.colour_family,'') colour_family,c.hex_code,sz.public_id size_id,ss.code scale_code,sz.code size_code,sz.name size_name,sz.sort_order,s.on_hand,s.reserved,COALESCE((SELECT sp.amount FROM prices sp WHERE sp.sku_id=s.id AND sp.currency=? AND sp.archived_at IS NULL AND sp.valid_from<=? AND (sp.valid_to IS NULL OR sp.valid_to>?) ORDER BY sp.valid_from DESC LIMIT 1),(SELECT pp.amount FROM prices pp WHERE pp.product_id=s.product_id AND pp.currency=? AND pp.archived_at IS NULL AND pp.valid_from<=? AND (pp.valid_to IS NULL OR pp.valid_to>?) ORDER BY pp.valid_from DESC LIMIT 1),0) amount FROM skus s JOIN products p ON p.id=s.product_id AND p.archived_at IS NULL JOIN colourways c ON c.id=s.colourway_id AND c.archived_at IS NULL JOIN sizes sz ON sz.id=s.size_id AND sz.archived_at IS NULL JOIN size_scales ss ON ss.id=sz.size_scale_id WHERE s.archived_at IS NULL`
+	sql := `SELECT s.public_id id,s.sku_code code,COALESCE(s.barcode,'') barcode,p.style_code product_id,c.public_id colourway_id,c.name colourway_name,c.hex_code,sz.public_id size_id,ss.code scale_code,sz.code size_code,sz.name size_name,sz.sort_order,s.on_hand,s.reserved,COALESCE((SELECT sp.amount FROM prices sp WHERE sp.sku_id=s.id AND sp.currency=? AND sp.archived_at IS NULL AND sp.valid_from<=? AND (sp.valid_to IS NULL OR sp.valid_to>?) ORDER BY sp.valid_from DESC LIMIT 1),(SELECT pp.amount FROM prices pp WHERE pp.product_id=s.product_id AND pp.currency=? AND pp.archived_at IS NULL AND pp.valid_from<=? AND (pp.valid_to IS NULL OR pp.valid_to>?) ORDER BY pp.valid_from DESC LIMIT 1),0) amount FROM skus s JOIN products p ON p.id=s.product_id AND p.archived_at IS NULL JOIN colourways c ON c.id=s.colourway_id AND c.archived_at IS NULL JOIN sizes sz ON sz.id=s.size_id AND sz.archived_at IS NULL JOIN size_scales ss ON ss.id=sz.size_scale_id WHERE s.archived_at IS NULL`
 	args := []any{q.Currency, now, now, q.Currency, now, now}
 	if q.ProductID != "" {
 		sql += " AND (p.public_id=? OR p.style_code=?)"
@@ -244,7 +244,7 @@ func (r *CatalogRepository) ListSkus(ctx context.Context, q catalog.SkuQuery) (c
 	}
 	items := make([]catalog.Sku, 0, len(rows))
 	for _, row := range rows {
-		items = append(items, catalog.Sku{ID: row.ID, Code: row.Code, Barcode: row.Barcode, ProductID: row.ProductID, Colourway: catalog.Colourway{ID: row.ColourwayID, Slug: row.ColourwaySlug, Name: row.ColourwayName, ColourFamily: row.ColourFamily, HexCode: row.HexCode}, Size: catalog.Size{ID: row.SizeID, ScaleCode: row.ScaleCode, Code: row.SizeCode, Name: row.SizeName, SortOrder: row.SortOrder}, Price: catalog.Money{Currency: q.Currency, Amount: row.Amount, CompareAtAmount: row.CompareAtAmount}, OnHand: row.OnHand, Reserved: row.Reserved, Available: row.OnHand - row.Reserved, Assets: []catalog.Asset{}})
+		items = append(items, catalog.Sku{ID: row.ID, Code: row.Code, Barcode: row.Barcode, ProductID: row.ProductID, Colourway: catalog.Colourway{ID: row.ColourwayID, Name: row.ColourwayName, HexCode: row.HexCode}, Size: catalog.Size{ID: row.SizeID, ScaleCode: row.ScaleCode, Code: row.SizeCode, Name: row.SizeName, SortOrder: row.SortOrder}, Price: catalog.Money{Currency: q.Currency, Amount: row.Amount, CompareAtAmount: row.CompareAtAmount}, OnHand: row.OnHand, Reserved: row.Reserved, Available: row.OnHand - row.Reserved, Assets: []catalog.Asset{}})
 	}
 	if err := r.hydrateSkuAssets(ctx, items); err != nil {
 		return catalog.CursorPage[catalog.Sku]{}, err
@@ -494,22 +494,26 @@ func resolveSize(tx *gorm.DB, scaleCode, code string) (uint64, error) {
 	return id, nil
 }
 
+// resolveColourway resolves a colourway by its plain name, globally shared
+// across products: two products submitting the same colour name resolve to
+// the same DB row, and editing that name's hex from any product updates the
+// shared row for every product referencing it.
 func resolveColourway(tx *gorm.DB, c catalog.ColourwayWrite) (uint64, error) {
-	slug := strings.ToLower(strings.TrimSpace(c.ID))
-	id, err := seedRowID(tx, "colourways", "slug", slug)
+	name := strings.TrimSpace(c.Name)
+	id, err := seedRowID(tx, "colourways", "name", name)
 	if err != nil {
 		return 0, err
 	}
 	if id != 0 {
-		if err := tx.Exec("UPDATE colourways SET name=?,colour_family=?,hex_code=?,archived_at=NULL WHERE id=?", c.Name, c.ColorFamily, c.SwatchHex, id).Error; err != nil {
+		if err := tx.Exec("UPDATE colourways SET hex_code=?,archived_at=NULL WHERE id=?", c.SwatchHex, id).Error; err != nil {
 			return 0, err
 		}
 		return id, nil
 	}
-	if err := tx.Exec("INSERT INTO colourways(public_id,slug,name,colour_family,hex_code) VALUES(?,?,?,?,?)", seedPublicID("CO", c.ID), slug, c.Name, c.ColorFamily, c.SwatchHex).Error; err != nil {
+	if err := tx.Exec("INSERT INTO colourways(public_id,name,hex_code) VALUES(?,?,?)", seedPublicID("CO", name), name, c.SwatchHex).Error; err != nil {
 		return 0, err
 	}
-	return seedRowID(tx, "colourways", "slug", slug)
+	return seedRowID(tx, "colourways", "name", name)
 }
 
 var _ catalog.Repository = (*CatalogRepository)(nil)

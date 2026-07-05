@@ -122,15 +122,14 @@ type productAggregateDTO struct {
 		PublishedAt   string   `json:"publishedAt"`
 	} `json:"product"`
 	Colorways []struct {
-		ID          string `json:"id"`
-		ProductID   string `json:"productId"`
-		StyleColor  string `json:"styleColor"`
-		Name        string `json:"name"`
-		ColorFamily string `json:"colorFamily"`
-		SwatchHex   string `json:"swatchHex"`
-		Price       int64  `json:"price"`
-		IsDefault   bool   `json:"isDefault"`
-		OnSale      bool   `json:"onSale"`
+		ID         string `json:"id"`
+		ProductID  string `json:"productId"`
+		StyleColor string `json:"styleColor"`
+		Name       string `json:"name"`
+		SwatchHex  string `json:"swatchHex"`
+		Price      int64  `json:"price"`
+		IsDefault  bool   `json:"isDefault"`
+		OnSale     bool   `json:"onSale"`
 	} `json:"colorways"`
 	Skus []struct {
 		ID         string `json:"id"`
@@ -164,7 +163,7 @@ func (d productAggregateDTO) toDomain() catalog.ProductAggregate {
 	}
 	for _, c := range d.Colorways {
 		agg.Colourways = append(agg.Colourways, catalog.ColourwayWrite{
-			ID: c.ID, Name: c.Name, ColorFamily: c.ColorFamily, SwatchHex: c.SwatchHex,
+			ID: c.ID, Name: c.Name, SwatchHex: c.SwatchHex,
 			Price: c.Price, IsDefault: c.IsDefault,
 		})
 	}

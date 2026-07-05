@@ -35,11 +35,9 @@ type Collection struct {
 }
 
 type Colourway struct {
-	ID           string `json:"id"`
-	Slug         string `json:"slug"`
-	Name         string `json:"name"`
-	ColourFamily string `json:"colourFamily,omitempty"`
-	HexCode      string `json:"hexCode"`
+	ID      string `json:"id"`
+	Name    string `json:"name"`
+	HexCode string `json:"hexCode"`
 }
 
 type Size struct {
@@ -153,12 +151,11 @@ type ProductWrite struct {
 }
 
 type ColourwayWrite struct {
-	ID          string // slug (upper-cased business id)
-	Name        string
-	ColorFamily string
-	SwatchHex   string
-	Price       int64
-	IsDefault   bool
+	ID        string // within-payload correlation key, not persisted
+	Name      string
+	SwatchHex string
+	Price     int64
+	IsDefault bool
 }
 
 // ImageWrite is one product image; ColourwayID (a business-style colourway

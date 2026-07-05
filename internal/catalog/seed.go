@@ -7,14 +7,13 @@ type SeedProduct struct {
 	BasePrice                                                                                                    int      `json:"basePrice"`
 }
 type SeedColourway struct {
-	ID          string `json:"id"`
-	ProductID   string `json:"productId"`
-	StyleColor  string `json:"styleColor"`
-	Name        string `json:"name"`
-	ColorFamily string `json:"colorFamily"`
-	SwatchHex   string `json:"swatchHex"`
-	Price       int
-	Images      []string
+	ID         string `json:"id"`
+	ProductID  string `json:"productId"`
+	StyleColor string `json:"styleColor"`
+	Name       string `json:"name"`
+	SwatchHex  string `json:"swatchHex"`
+	Price      int
+	Images     []string
 }
 type SeedSKU struct {
 	ID          string `json:"id"`
