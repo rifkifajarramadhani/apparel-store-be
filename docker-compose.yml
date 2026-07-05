@@ -5,6 +5,9 @@ networks:
   shared:
     name: apparel-store-shared
     external: true
+  edge:
+    name: edge
+    external: true
 
 services:
   server:
@@ -13,8 +16,6 @@ services:
       dockerfile: Dockerfile
       target: development
     command: air -c .air.toml
-    ports:
-      - "8080:8080"
     volumes:
       - .:/app
     env_file:
@@ -31,10 +32,23 @@ services:
       redis:
         condition: service_healthy
     networks:
+      # Private network to reach db/redis by service name
       default:
+      # Internal network shared with the frontend (SSR calls apparel-store-backend:8080)
       shared:
         aliases:
           - apparel-store-backend
+      # Public edge network: Traefik routes /api traffic here
+      edge: {}
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=edge
+      # Only /api on these hosts hits the backend; the longer rule out-prioritizes the frontend catch-all
+      - "traefik.http.routers.apparel-api.rule=(Host(`apparel-store.rifkiramadhani.my.id`) || Host(`www.apparel-store.rifkiramadhani.my.id`)) && PathPrefix(`/api`)"
+      - traefik.http.routers.apparel-api.entrypoints=websecure
+      - traefik.http.routers.apparel-api.tls=true
+      - traefik.http.routers.apparel-api.tls.certresolver=letsencrypt
+      - traefik.http.services.apparel-api.loadbalancer.server.port=8080
 
   worker:
     build:
@@ -81,8 +95,7 @@ services:
   db:
     image: mysql:8.4
     container_name: mysql
-    ports:
-      - "3306:3306"
+    # No host port: reached internally as "db:3306". To inspect with a GUI, tunnel via SSH.
     environment:
       MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD:?DATABASE_PASSWORD must be set in .env}
       MYSQL_ROOT_HOST: "%"
@@ -97,8 +110,7 @@ services:
 
   redis:
     image: redis:7.4-alpine
-    ports:
-      - "6379:6379"
+    # No host port: reached internally as "redis:6379".
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
@@ -107,9 +119,8 @@ services:
 
   mailpit:
     image: axllent/mailpit:v1.27.8
-    ports:
-      - "1025:1025"
-      - "8025:8025"
+    # No host ports: SMTP reached internally as "mailpit:1025". Expose the UI (8025)
+    # via Traefik on its own subdomain later if you need it.
     healthcheck:
       test: ["CMD", "/mailpit", "readyz"]
       interval: 5s
