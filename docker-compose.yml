@@ -22,9 +22,9 @@ services:
     environment:
       DATABASE_HOST: db
       REDIS_ADDRESS: redis:6379
-      APP_PUBLIC_URL: https://dev.apparel-store.com
-      APP_STOREFRONT_URL: https://dev.apparel-store.com
-      APP_CORS_ORIGINS: https://dev.apparel-store.com
+      APP_PUBLIC_URL: ${APP_PUBLIC_URL:-https://dev.apparel-store.com}
+      APP_STOREFRONT_URL: ${APP_STOREFRONT_URL:-https://dev.apparel-store.com}
+      APP_CORS_ORIGINS: ${APP_CORS_ORIGINS:-https://dev.apparel-store.com}
     depends_on:
       db:
         condition: service_healthy
