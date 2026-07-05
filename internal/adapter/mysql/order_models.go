@@ -17,21 +17,6 @@ type orderModel struct {
 
 func (orderModel) TableName() string { return "orders" }
 
-type orderItemModel struct {
-	ID           int `gorm:"primaryKey"`
-	OrderID      int `gorm:"index"`
-	SkuID        string
-	ProductID    string
-	SkuRefID     *uint64
-	ProductRefID *uint64
-	Name         string
-	Size         string
-	UnitPrice    int
-	Qty          int
-}
-
-func (orderItemModel) TableName() string { return "order_items" }
-
 func toOrder(m orderModel) order.Order {
 	items := make([]order.Item, 0, len(m.Items))
 	for _, item := range m.Items {
