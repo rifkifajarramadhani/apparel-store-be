@@ -9,17 +9,17 @@ import (
 	"os"
 
 	mysqladapter "github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/mysql"
-	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/catalog"
+	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/catalogseed"
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/config"
 )
 
 type catalogSeed struct {
-	Products    []catalog.SeedProduct    `json:"products"`
-	Colorways   []catalog.SeedColourway  `json:"colorways"`
-	Skus        []catalog.SeedSKU        `json:"skus"`
-	Categories  []catalog.SeedCategory   `json:"categories"`
-	Collections []catalog.SeedCollection `json:"collections"`
-	SizeScales  []catalog.SeedSizeScale  `json:"sizeScales"`
+	Products    []catalogseed.Product    `json:"products"`
+	Colorways   []catalogseed.Colourway  `json:"colorways"`
+	Skus        []catalogseed.SKU        `json:"skus"`
+	Categories  []catalogseed.Category   `json:"categories"`
+	Collections []catalogseed.Collection `json:"collections"`
+	SizeScales  []catalogseed.SizeScale  `json:"sizeScales"`
 }
 
 func main() {
@@ -58,7 +58,7 @@ func run() error {
 
 	defer func() { _ = mysqladapter.Close(db) }()
 
-	repo := mysqladapter.NewCatalogRepository(db)
+	repo := mysqladapter.NewCatalogSeeder(db)
 	if err := repo.SeedCatalog(ctx, data.Products, data.Colorways, data.Skus,
 		data.Categories, data.Collections, data.SizeScales); err != nil {
 		return fmt.Errorf("seed catalog: %w", err)

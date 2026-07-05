@@ -1,13 +1,12 @@
-package catalog
+package catalogseed
 
-// Seed records describe the source fixture only; they are not runtime catalog entities.
-type SeedProduct struct {
+type Product struct {
 	ID, Slug, Name, Subtitle, Brand, Gender, Type, CategoryID, CategorySlug, SizeScale, Description, PublishedAt string
 	CollectionIDs                                                                                                []string `json:"collectionIds"`
 	BasePrice                                                                                                    int      `json:"basePrice"`
 }
 
-type SeedColourway struct {
+type Colourway struct {
 	ID         string `json:"id"`
 	ProductID  string `json:"productId"`
 	StyleColor string `json:"styleColor"`
@@ -17,7 +16,7 @@ type SeedColourway struct {
 	Images     []string
 }
 
-type SeedSKU struct {
+type SKU struct {
 	ID          string `json:"id"`
 	ColourwayID string `json:"colorwayId"`
 	ProductID   string `json:"productId"`
@@ -28,15 +27,15 @@ type SeedSKU struct {
 	Price       int    `json:"price"`
 }
 
-type SeedCategory struct {
+type Category struct {
 	ID, Slug, Name string
 	ParentID       *string
 	Gender         string
 }
 
-type SeedCollection struct{ ID, Slug, Name string }
+type Collection struct{ ID, Slug, Name string }
 
-type SeedSizeScale struct {
+type SizeScale struct {
 	ID    string
 	Sizes []string
 }

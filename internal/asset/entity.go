@@ -1,4 +1,4 @@
-package catalog
+package asset
 
 type Asset struct {
 	ID          string `json:"id"`
@@ -9,4 +9,9 @@ type Asset struct {
 	SortOrder   int    `json:"sortOrder"`
 	ColourwayID string `json:"colourwayId,omitempty"`
 	SkuID       string `json:"skuId,omitempty"`
+}
+
+type Write struct {
+	URL         string `json:"url"`
+	ColourwayID string `json:"colorwayId,omitempty"`
 }

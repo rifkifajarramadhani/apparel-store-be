@@ -4,10 +4,15 @@ import (
 	"context"
 	"time"
 
-	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/catalog"
+	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/asset"
+	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/colourway"
+	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/pagination"
+	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/price"
+	appsize "github.com/rifkifajarramadhani/golang-clean-architecture/internal/size"
+	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/sku"
 )
 
-func (r *CatalogRepository) ListSkus(ctx context.Context, q catalog.SkuQuery) (catalog.CursorPage[catalog.Sku], error) {
+func (r *SKURepository) List(ctx context.Context, q sku.Query) (pagination.CursorPage[sku.SKU], error) {
 	now := time.Now().UTC()
 	sql := `SELECT s.public_id id,s.sku_code code,COALESCE(s.barcode,'') barcode,p.style_code product_id,c.public_id colourway_id,c.name colourway_name,c.hex_code,sz.public_id size_id,ss.code scale_code,sz.code size_code,sz.name size_name,sz.sort_order,s.on_hand,s.reserved,COALESCE((SELECT sp.amount FROM prices sp WHERE sp.sku_id=s.id AND sp.currency=? AND sp.archived_at IS NULL AND sp.valid_from<=? AND (sp.valid_to IS NULL OR sp.valid_to>?) ORDER BY sp.valid_from DESC LIMIT 1),(SELECT pp.amount FROM prices pp WHERE pp.product_id=s.product_id AND pp.currency=? AND pp.archived_at IS NULL AND pp.valid_from<=? AND (pp.valid_to IS NULL OR pp.valid_to>?) ORDER BY pp.valid_from DESC LIMIT 1),0) amount FROM skus s JOIN products p ON p.id=s.product_id AND p.archived_at IS NULL JOIN colourways c ON c.id=s.colourway_id AND c.archived_at IS NULL JOIN sizes sz ON sz.id=s.size_id AND sz.archived_at IS NULL JOIN size_scales ss ON ss.id=sz.size_scale_id WHERE s.archived_at IS NULL`
 	args := []any{q.Currency, now, now, q.Currency, now, now}
@@ -31,7 +36,7 @@ func (r *CatalogRepository) ListSkus(ctx context.Context, q catalog.SkuQuery) (c
 
 	var rows []skuRow
 	if err := r.db.WithContext(ctx).Raw(sql, args...).Scan(&rows).Error; err != nil {
-		return catalog.CursorPage[catalog.Sku]{}, err
+		return pagination.CursorPage[sku.SKU]{}, err
 	}
 
 	hasMore := len(rows) > q.Limit
@@ -39,16 +44,16 @@ func (r *CatalogRepository) ListSkus(ctx context.Context, q catalog.SkuQuery) (c
 		rows = rows[:q.Limit]
 	}
 
-	items := make([]catalog.Sku, 0, len(rows))
+	items := make([]sku.SKU, 0, len(rows))
 	for _, row := range rows {
-		items = append(items, catalog.Sku{ID: row.ID, Code: row.Code, Barcode: row.Barcode, ProductID: row.ProductID, Colourway: catalog.Colourway{ID: row.ColourwayID, Name: row.ColourwayName, HexCode: row.HexCode}, Size: catalog.Size{ID: row.SizeID, ScaleCode: row.ScaleCode, Code: row.SizeCode, Name: row.SizeName, SortOrder: row.SortOrder}, Price: catalog.Money{Currency: q.Currency, Amount: row.Amount, CompareAtAmount: row.CompareAtAmount}, OnHand: row.OnHand, Reserved: row.Reserved, Available: row.OnHand - row.Reserved, Assets: []catalog.Asset{}})
+		items = append(items, sku.SKU{ID: row.ID, Code: row.Code, Barcode: row.Barcode, ProductID: row.ProductID, Colourway: colourway.Colourway{ID: row.ColourwayID, Name: row.ColourwayName, HexCode: row.HexCode}, Size: appsize.Size{ID: row.SizeID, ScaleCode: row.ScaleCode, Code: row.SizeCode, Name: row.SizeName, SortOrder: row.SortOrder}, Price: price.Money{Currency: q.Currency, Amount: row.Amount, CompareAtAmount: row.CompareAtAmount}, OnHand: row.OnHand, Reserved: row.Reserved, Available: row.OnHand - row.Reserved, Assets: []asset.Asset{}})
 	}
 
 	if err := r.hydrateSkuAssets(ctx, items); err != nil {
-		return catalog.CursorPage[catalog.Sku]{}, err
+		return pagination.CursorPage[sku.SKU]{}, err
 	}
 
-	page := catalog.CursorPage[catalog.Sku]{Items: items}
+	page := pagination.CursorPage[sku.SKU]{Items: items}
 	if hasMore {
 		page.NextCursor = items[len(items)-1].ID
 	}
@@ -56,8 +61,8 @@ func (r *CatalogRepository) ListSkus(ctx context.Context, q catalog.SkuQuery) (c
 	return page, nil
 }
 
-func (r *CatalogRepository) SetInventory(ctx context.Context, in catalog.InventoryAdjustment) error {
-	result := r.db.WithContext(ctx).Exec("UPDATE skus SET on_hand=?, reserved=? WHERE public_id=? AND archived_at IS NULL", in.OnHand, in.Reserved, in.SkuID)
+func (r *SKURepository) SetInventory(ctx context.Context, in sku.InventoryAdjustment) error {
+	result := r.db.WithContext(ctx).Exec("UPDATE skus SET on_hand=?, reserved=? WHERE public_id=? AND archived_at IS NULL", in.OnHand, in.Reserved, in.SKUID)
 	if result.Error != nil {
 		return result.Error
 	}
@@ -67,18 +72,18 @@ func (r *CatalogRepository) SetInventory(ctx context.Context, in catalog.Invento
 	}
 
 	var count int64
-	if err := r.db.WithContext(ctx).Table("skus").Where("public_id=? AND archived_at IS NULL", in.SkuID).Count(&count).Error; err != nil {
+	if err := r.db.WithContext(ctx).Table("skus").Where("public_id=? AND archived_at IS NULL", in.SKUID).Count(&count).Error; err != nil {
 		return err
 	}
 
 	if count == 0 {
-		return catalog.ErrNotFound
+		return sku.ErrNotFound
 	}
 
 	return nil
 }
 
-func (r *CatalogRepository) hydrateSkuAssets(ctx context.Context, skus []catalog.Sku) error {
+func (r *SKURepository) hydrateSkuAssets(ctx context.Context, skus []sku.SKU) error {
 	if len(skus) == 0 {
 		return nil
 	}
@@ -98,7 +103,7 @@ func (r *CatalogRepository) hydrateSkuAssets(ctx context.Context, skus []catalog
 
 	for _, row := range assets {
 		i := positions[row.SkuID]
-		skus[i].Assets = append(skus[i].Assets, catalog.Asset{ID: row.PublicID, MediaType: row.MediaType, URL: row.URL, AltText: row.AltText, Role: row.Role, SortOrder: row.SortOrder})
+		skus[i].Assets = append(skus[i].Assets, asset.Asset{ID: row.PublicID, MediaType: row.MediaType, URL: row.URL, AltText: row.AltText, Role: row.Role, SortOrder: row.SortOrder})
 	}
 
 	return nil

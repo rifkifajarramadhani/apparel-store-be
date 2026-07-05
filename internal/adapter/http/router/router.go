@@ -12,7 +12,7 @@ import (
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/storage"
 )
 
-func Setup(app *fiber.App, users handler.UserService, auth handler.AuthService, catalogService handler.CatalogService, orders handler.OrderService, tokens middleware.AccessTokenValidator, uploader storage.ImageUploader, logger *slog.Logger, storefrontURL ...string) {
+func Setup(app *fiber.App, users handler.UserService, auth handler.AuthService, merchandising handler.MerchandisingServices, orders handler.OrderService, tokens middleware.AccessTokenValidator, uploader storage.ImageUploader, logger *slog.Logger, storefrontURL ...string) {
 	app.Use(func(c fiber.Ctx) error {
 		requestID := c.Get("X-Request-ID")
 		if requestID == "" {
@@ -46,16 +46,17 @@ func Setup(app *fiber.App, users handler.UserService, auth handler.AuthService, 
 	authGroup.Get("/verify-email", authHandler.VerifyEmailLink)
 	authGroup.Post("/resend-verification", authHandler.ResendVerification)
 
-	// Public catalog reads (no auth) — the storefront browses signed-out.
-	catalogHandler := handler.NewCatalogHandler(catalogService, logger)
-	api.Get("/products", catalogHandler.Products)
-	api.Get("/products/:id", catalogHandler.Product)
-	api.Get("/skus", catalogHandler.Skus)
-	api.Get("/brands", catalogHandler.Brands)
-	api.Get("/categories", catalogHandler.Categories)
-	api.Get("/collections", catalogHandler.Collections)
-	api.Get("/colourways", catalogHandler.Colourways)
-	api.Get("/sizes", catalogHandler.Sizes)
+	// Public merchandising reads (no auth) — the storefront browses signed-out.
+	productHandler := handler.NewProductHandler(merchandising.Products, logger)
+	skuHandler := handler.NewSKUHandler(merchandising.SKUs, logger)
+	api.Get("/products", productHandler.Products)
+	api.Get("/products/:id", productHandler.Product)
+	api.Get("/skus", skuHandler.SKUs)
+	api.Get("/brands", handler.NewBrandHandler(merchandising.Brands, logger).List)
+	api.Get("/categories", handler.NewCategoryHandler(merchandising.Categories, logger).List)
+	api.Get("/collections", handler.NewCollectionHandler(merchandising.Collections, logger).List)
+	api.Get("/colourways", handler.NewColourwayHandler(merchandising.Colourways, logger).List)
+	api.Get("/sizes", handler.NewSizeHandler(merchandising.Sizes, logger).List)
 
 	protected := api.Group("", middleware.JWTAuth(tokens, users))
 	protected.Get("/auth/me", authHandler.Me)
@@ -79,12 +80,12 @@ func Setup(app *fiber.App, users handler.UserService, auth handler.AuthService, 
 	admin.Put("/:id/role", userHandler.ChangeRole)
 	admin.Delete("/:id", userHandler.DeleteUser)
 
-	// Admin-only catalog writes.
+	// Admin-only merchandising writes.
 	adminCatalog := protected.Group("", middleware.AdminOnly)
-	adminCatalog.Put("/inventory", catalogHandler.SetInventory)
+	adminCatalog.Put("/admin/skus/:id/inventory", skuHandler.SetInventory)
 	uploadHandler := handler.NewUploadHandler(uploader, logger)
 	adminCatalog.Post("/admin/products/assets/batch", uploadHandler.ProductImages)
-	adminCatalog.Post("/admin/products", catalogHandler.CreateProduct)
-	adminCatalog.Put("/admin/products/:id", catalogHandler.UpdateProduct)
-	adminCatalog.Delete("/admin/products/:id", catalogHandler.DeleteProduct)
+	adminCatalog.Post("/admin/products", productHandler.Create)
+	adminCatalog.Put("/admin/products/:id", productHandler.Update)
+	adminCatalog.Delete("/admin/products/:id", productHandler.Delete)
 }

@@ -8,6 +8,13 @@ from commands and adapters toward core capabilities.
 - `cmd/<app>` owns process lifecycle and wires dependencies.
 - `internal/auth` owns authentication rules, refresh tokens, and required ports.
 - `internal/user` owns the user entity, CRUD rules, and required ports.
+- `internal/product` owns product reads and the atomic product-editor aggregate.
+- `internal/sku` owns SKU reads and inventory adjustments.
+- `internal/brand`, `category`, `collection`, `colourway`, and `size` own
+  independently queried merchandising dimensions.
+- `internal/asset` and `price` own shared merchandising entities and value
+  semantics used by product and SKU projections.
+- `internal/pagination` owns the shared cursor-page transport-neutral primitive.
 - `internal/mail`, `internal/queue`, and `internal/scheduler` own framework-neutral capabilities.
 - `internal/adapter/http` translates Fiber requests and responses.
 - `internal/adapter/mysql`, `jwt`, `password`, `smtp`, `queue`, and `cron` implement core ports.

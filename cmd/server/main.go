@@ -15,6 +15,7 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/cors"
 	"github.com/gofiber/fiber/v3/middleware/helmet"
+	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/http/handler"
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/http/router"
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/logging"
 	mysqladapter "github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/mysql"
@@ -92,7 +93,11 @@ func run() error {
 		ExposeHeaders:    []string{"X-Total-Count"},
 		AllowCredentials: false,
 	}))
-	router.Setup(app, services.Users, services.Auth, services.Catalog, services.Orders, services.Tokens, imageUploader, appLogger.Logger, cfg.App.StorefrontURL)
+	router.Setup(app, services.Users, services.Auth, handler.MerchandisingServices{
+		Products: services.Products, SKUs: services.SKUs, Brands: services.Brands,
+		Categories: services.Categories, Collections: services.Collections,
+		Colourways: services.Colourways, Sizes: services.Sizes,
+	}, services.Orders, services.Tokens, imageUploader, appLogger.Logger, cfg.App.StorefrontURL)
 	app.Get("/health/live", func(c fiber.Ctx) error {
 		return c.JSON(fiber.Map{"status": "ok"})
 	})

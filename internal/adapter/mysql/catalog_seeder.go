@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/catalog"
+	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/catalogseed"
 	"gorm.io/gorm"
 )
 
@@ -18,7 +18,7 @@ func seedPublicID(prefix, value string) string {
 
 // SeedCatalog replaces catalog fixture data in one transaction. It targets only
 // the normalized schema and is safe to rerun on a clean development database.
-func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.SeedProduct, colourways []catalog.SeedColourway, skus []catalog.SeedSKU, categories []catalog.SeedCategory, collections []catalog.SeedCollection, scales []catalog.SeedSizeScale) error {
+func (r *CatalogSeeder) SeedCatalog(ctx context.Context, products []catalogseed.Product, colourways []catalogseed.Colourway, skus []catalogseed.SKU, categories []catalogseed.Category, collections []catalogseed.Collection, scales []catalogseed.SizeScale) error {
 	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		// categories self-references via parent_id, so a plain per-table
 		// DELETE can trip the FK constraint on a non-empty reseed depending

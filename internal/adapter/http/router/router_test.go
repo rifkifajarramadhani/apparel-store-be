@@ -10,7 +10,10 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v3"
+	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/adapter/http/handler"
 	appauth "github.com/rifkifajarramadhani/golang-clean-architecture/internal/auth"
+	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/pagination"
+	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/sku"
 	"github.com/rifkifajarramadhani/golang-clean-architecture/internal/user"
 )
 
@@ -62,9 +65,21 @@ func (tokensFake) ValidateAccessToken(token string) (appauth.Claims, error) {
 	return appauth.Claims{UserID: 2, TokenVersion: 1}, nil
 }
 
+type skuFake struct{ adjustment sku.InventoryAdjustment }
+
+func (*skuFake) List(context.Context, sku.Query) (pagination.CursorPage[sku.SKU], error) {
+	return pagination.CursorPage[sku.SKU]{}, nil
+}
+
+func (f *skuFake) SetInventory(_ context.Context, adjustment sku.InventoryAdjustment) error {
+	f.adjustment = adjustment
+	return nil
+}
+
 func TestUserRouteAuthorizationMatrix(t *testing.T) {
 	app := fiber.New()
-	Setup(app, &usersFake{verified: time.Now()}, authFake{}, nil, nil, tokensFake{}, nil, slog.New(slog.NewTextHandler(io.Discard, nil)))
+	skus := &skuFake{}
+	Setup(app, &usersFake{verified: time.Now()}, authFake{}, handler.MerchandisingServices{SKUs: skus}, nil, tokensFake{}, nil, slog.New(slog.NewTextHandler(io.Discard, nil)))
 	tests := []struct {
 		name   string
 		method string
@@ -78,6 +93,9 @@ func TestUserRouteAuthorizationMatrix(t *testing.T) {
 		{"normal user admin list", "GET", "/api/users", "user", "", fiber.StatusForbidden},
 		{"admin list", "GET", "/api/users", "admin", "", fiber.StatusOK},
 		{"normal user self update", "PATCH", "/api/users/me", "user", `{"username":"new_name"}`, fiber.StatusOK},
+		{"anonymous inventory update", "PUT", "/api/admin/skus/SK-1/inventory", "", `{"onHand":2,"reserved":1}`, fiber.StatusUnauthorized},
+		{"admin inventory update", "PUT", "/api/admin/skus/SK-1/inventory", "admin", `{"onHand":2,"reserved":1}`, fiber.StatusNoContent},
+		{"legacy inventory route removed", "PUT", "/api/inventory", "admin", `{"skuId":"SK-1","onHand":2,"reserved":1}`, fiber.StatusNotFound},
 	}
 
 	for _, test := range tests {
@@ -101,5 +119,9 @@ func TestUserRouteAuthorizationMatrix(t *testing.T) {
 				t.Fatalf("status = %d, want %d", response.StatusCode, test.want)
 			}
 		})
+	}
+
+	if skus.adjustment != (sku.InventoryAdjustment{SKUID: "SK-1", OnHand: 2, Reserved: 1}) {
+		t.Fatalf("inventory route did not use path id: %+v", skus.adjustment)
 	}
 }
