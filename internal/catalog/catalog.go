@@ -51,12 +51,14 @@ type Size struct {
 }
 
 type Asset struct {
-	ID        string `json:"id"`
-	MediaType string `json:"mediaType"`
-	URL       string `json:"url"`
-	AltText   string `json:"altText,omitempty"`
-	Role      string `json:"role"`
-	SortOrder int    `json:"sortOrder"`
+	ID          string `json:"id"`
+	MediaType   string `json:"mediaType"`
+	URL         string `json:"url"`
+	AltText     string `json:"altText,omitempty"`
+	Role        string `json:"role"`
+	SortOrder   int    `json:"sortOrder"`
+	ColourwayID string `json:"colourwayId,omitempty"`
+	SkuID       string `json:"skuId,omitempty"`
 }
 
 type Money struct {
@@ -132,6 +134,7 @@ type ProductAggregate struct {
 	Product    ProductWrite
 	Colourways []ColourwayWrite
 	Skus       []SkuWrite
+	Images     []ImageWrite
 }
 
 type ProductWrite struct {
@@ -156,7 +159,14 @@ type ColourwayWrite struct {
 	SwatchHex   string
 	Price       int64
 	IsDefault   bool
-	Images      []string
+}
+
+// ImageWrite is one product image; ColourwayID (a business-style colourway
+// id), when set, scopes the image to that colourway. Empty means the image
+// is shared across all of the product's colourways.
+type ImageWrite struct {
+	URL         string
+	ColourwayID string
 }
 
 type SkuWrite struct {
@@ -307,6 +317,13 @@ func validateAggregate(in ProductAggregate) error {
 	for _, sku := range in.Skus {
 		if _, ok := colourways[sku.ColourwayID]; !ok {
 			return fmt.Errorf("%w: sku %q references an unknown colourway", ErrInvalidInput, sku.ID)
+		}
+	}
+	for _, image := range in.Images {
+		if image.ColourwayID != "" {
+			if _, ok := colourways[image.ColourwayID]; !ok {
+				return fmt.Errorf("%w: image %q references an unknown colourway", ErrInvalidInput, image.URL)
+			}
 		}
 	}
 	return nil

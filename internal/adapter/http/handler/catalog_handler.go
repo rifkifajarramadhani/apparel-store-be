@@ -122,16 +122,15 @@ type productAggregateDTO struct {
 		PublishedAt   string   `json:"publishedAt"`
 	} `json:"product"`
 	Colorways []struct {
-		ID          string   `json:"id"`
-		ProductID   string   `json:"productId"`
-		StyleColor  string   `json:"styleColor"`
-		Name        string   `json:"name"`
-		ColorFamily string   `json:"colorFamily"`
-		SwatchHex   string   `json:"swatchHex"`
-		Price       int64    `json:"price"`
-		IsDefault   bool     `json:"isDefault"`
-		OnSale      bool     `json:"onSale"`
-		Images      []string `json:"images"`
+		ID          string `json:"id"`
+		ProductID   string `json:"productId"`
+		StyleColor  string `json:"styleColor"`
+		Name        string `json:"name"`
+		ColorFamily string `json:"colorFamily"`
+		SwatchHex   string `json:"swatchHex"`
+		Price       int64  `json:"price"`
+		IsDefault   bool   `json:"isDefault"`
+		OnSale      bool   `json:"onSale"`
 	} `json:"colorways"`
 	Skus []struct {
 		ID         string `json:"id"`
@@ -144,6 +143,10 @@ type productAggregateDTO struct {
 		StockQty   int    `json:"stockQty"`
 		Price      int64  `json:"price"`
 	} `json:"skus"`
+	Images []struct {
+		URL        string `json:"url"`
+		ColorwayID string `json:"colorwayId"`
+	} `json:"images"`
 }
 
 func (d productAggregateDTO) toDomain() catalog.ProductAggregate {
@@ -157,11 +160,12 @@ func (d productAggregateDTO) toDomain() catalog.ProductAggregate {
 		},
 		Colourways: make([]catalog.ColourwayWrite, 0, len(d.Colorways)),
 		Skus:       make([]catalog.SkuWrite, 0, len(d.Skus)),
+		Images:     make([]catalog.ImageWrite, 0, len(d.Images)),
 	}
 	for _, c := range d.Colorways {
 		agg.Colourways = append(agg.Colourways, catalog.ColourwayWrite{
 			ID: c.ID, Name: c.Name, ColorFamily: c.ColorFamily, SwatchHex: c.SwatchHex,
-			Price: c.Price, IsDefault: c.IsDefault, Images: c.Images,
+			Price: c.Price, IsDefault: c.IsDefault,
 		})
 	}
 	for _, s := range d.Skus {
@@ -169,6 +173,9 @@ func (d productAggregateDTO) toDomain() catalog.ProductAggregate {
 			ID: s.ID, ColourwayID: s.ColorwayID, Size: s.Size, SizeScale: s.SizeScale,
 			StockQty: s.StockQty, Price: s.Price,
 		})
+	}
+	for _, img := range d.Images {
+		agg.Images = append(agg.Images, catalog.ImageWrite{URL: img.URL, ColourwayID: img.ColorwayID})
 	}
 	return agg
 }

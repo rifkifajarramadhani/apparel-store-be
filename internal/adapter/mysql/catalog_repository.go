@@ -111,6 +111,8 @@ type assetLinkRow struct {
 	ProductID                               uint64
 	PublicID, MediaType, URL, AltText, Role string
 	SortOrder                               int
+	ColourwayID                             string
+	SkuID                                   string
 }
 type priceRangeRow struct {
 	ProductID            uint64
@@ -150,12 +152,20 @@ func (r *CatalogRepository) hydrateProducts(ctx context.Context, products []cata
 		products[i].Sizes = append(products[i].Sizes, catalog.Size{ID: row.PublicID, ScaleCode: row.ScaleCode, Code: row.Code, Name: row.Name, SortOrder: row.SortOrder})
 	}
 	var assets []assetLinkRow
-	if err := r.db.WithContext(ctx).Raw("SELECT a.product_id,a.public_id,a.media_type,a.cdn_url url,COALESCE(a.alt_text,'') alt_text,a.role,a.sort_order FROM assets a WHERE a.archived_at IS NULL AND a.product_id IN ? ORDER BY a.role,a.sort_order", ids).Scan(&assets).Error; err != nil {
+	assetSQL := `SELECT COALESCE(a.product_id, sk.product_id) product_id, a.public_id, a.media_type, a.cdn_url url,
+		COALESCE(a.alt_text,'') alt_text, a.role, a.sort_order,
+		COALESCE(c.public_id,'') colourway_id, COALESCE(sk.public_id,'') sku_id
+	FROM assets a
+	LEFT JOIN colourways c ON c.id=a.colourway_id AND c.archived_at IS NULL
+	LEFT JOIN skus sk ON sk.id=a.sku_id AND sk.archived_at IS NULL
+	WHERE a.archived_at IS NULL AND (a.product_id IN ? OR sk.product_id IN ?)
+	ORDER BY a.role,a.sort_order`
+	if err := r.db.WithContext(ctx).Raw(assetSQL, ids, ids).Scan(&assets).Error; err != nil {
 		return err
 	}
 	for _, row := range assets {
 		i := positions[row.ProductID]
-		products[i].Assets = append(products[i].Assets, catalog.Asset{ID: row.PublicID, MediaType: row.MediaType, URL: row.URL, AltText: row.AltText, Role: row.Role, SortOrder: row.SortOrder})
+		products[i].Assets = append(products[i].Assets, catalog.Asset{ID: row.PublicID, MediaType: row.MediaType, URL: row.URL, AltText: row.AltText, Role: row.Role, SortOrder: row.SortOrder, ColourwayID: row.ColourwayID, SkuID: row.SkuID})
 	}
 	var ranges []priceRangeRow
 	now := time.Now().UTC()
@@ -417,24 +427,26 @@ func saveAggregate(tx *gorm.DB, in catalog.ProductAggregate) error {
 		return err
 	}
 
-	if err := tx.Exec("DELETE FROM assets WHERE product_id=?", productID).Error; err != nil {
+	if err := tx.Exec("DELETE FROM assets WHERE product_id=? OR sku_id IN (SELECT id FROM (SELECT id FROM skus WHERE product_id=?) t)", productID, productID).Error; err != nil {
 		return err
 	}
 	seen := make(map[string]struct{})
-	order := 0
-	for _, c := range in.Colourways {
-		for _, imageURL := range c.Images {
-			if imageURL == "" {
-				continue
+	for order, image := range in.Images {
+		if image.URL == "" {
+			continue
+		}
+		if _, dup := seen[image.URL]; dup {
+			continue
+		}
+		seen[image.URL] = struct{}{}
+		var colourwayID any
+		if image.ColourwayID != "" {
+			if id, ok := colourIDs[image.ColourwayID]; ok {
+				colourwayID = id
 			}
-			if _, dup := seen[imageURL]; dup {
-				continue
-			}
-			seen[imageURL] = struct{}{}
-			if err := tx.Exec("INSERT INTO assets(public_id,product_id,media_type,storage_provider,cdn_url,alt_text,role,sort_order) VALUES(?,?,'image','external',?,?,'product_image',?)", seedPublicID("AS", imageURL), productID, imageURL, c.Name, order).Error; err != nil {
-				return err
-			}
-			order++
+		}
+		if err := tx.Exec("INSERT INTO assets(public_id,product_id,colourway_id,media_type,storage_provider,cdn_url,alt_text,role,sort_order) VALUES(?,?,?,'image','external',?,?,'product_image',?)", seedPublicID("AS", image.URL), productID, colourwayID, image.URL, "", order).Error; err != nil {
+			return err
 		}
 	}
 	return nil
