@@ -22,6 +22,7 @@ func (s *Service) Create(ctx context.Context, userID int, lines []Line) (Order, 
 	if len(lines) == 0 {
 		return Order{}, ErrEmptyOrder
 	}
+
 	// Collapse duplicate SKUs and validate quantities.
 	merged := make(map[string]int)
 	order := make([]string, 0, len(lines))
@@ -34,10 +35,12 @@ func (s *Service) Create(ctx context.Context, userID int, lines []Line) (Order, 
 		}
 		merged[line.SkuID] += line.Qty
 	}
+
 	deduped := make([]Line, 0, len(order))
 	for _, skuID := range order {
 		deduped = append(deduped, Line{SkuID: skuID, Qty: merged[skuID]})
 	}
+
 	return s.repo.Create(ctx, userID, deduped)
 }
 

@@ -19,6 +19,7 @@ func Setup(app *fiber.App, users handler.UserService, auth handler.AuthService, 
 			requestID = uuid.NewString()
 		}
 		c.Set("X-Request-ID", requestID)
+
 		started := time.Now()
 		err := c.Next()
 		logger.InfoContext(c.Context(), "http request",
@@ -27,6 +28,7 @@ func Setup(app *fiber.App, users handler.UserService, auth handler.AuthService, 
 		)
 		return err
 	})
+
 	api := app.Group("/api")
 	authGroup := api.Group("/auth", limiter.New(limiter.Config{
 		Max: 20, Expiration: time.Minute,

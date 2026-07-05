@@ -43,6 +43,7 @@ func NewRegistry(defaultTimezone string, parser Parser) (*Registry, error) {
 	if parser == nil {
 		return nil, errors.New("schedule parser is required")
 	}
+
 	return &Registry{defaultLocation: location, parser: parser}, nil
 }
 
@@ -75,6 +76,7 @@ func (r *Registry) Register(definition Definition) error {
 	sort.Slice(r.definitions, func(i, j int) bool {
 		return r.definitions[i].Name < r.definitions[j].Name
 	})
+
 	return nil
 }
 
@@ -85,12 +87,14 @@ func (r *Registry) Definitions() []Definition {
 func (r *Registry) Due(at time.Time) []Definition {
 	minute := at.UTC().Truncate(time.Minute)
 	previous := minute.Add(-time.Minute)
+
 	var due []Definition
 	for _, definition := range r.definitions {
 		if definition.schedule.Next(previous).Equal(minute) {
 			due = append(due, definition)
 		}
 	}
+
 	return due
 }
 
@@ -109,6 +113,7 @@ func NewRunner(registry *Registry, dispatcher queue.Dispatcher) *Runner {
 
 func (r *Runner) Run(ctx context.Context, at time.Time) error {
 	minute := at.UTC().Truncate(time.Minute)
+
 	var dispatchErrors []error
 	for _, definition := range r.registry.Due(minute) {
 		options := definition.DispatchOptions
@@ -116,11 +121,13 @@ func (r *Runner) Run(ctx context.Context, at time.Time) error {
 		if options.Retention < 2*time.Minute {
 			options.Retention = 2 * time.Minute
 		}
+
 		_, err := r.dispatcher.Dispatch(ctx, definition.Job(), options)
 		if err != nil && !errors.Is(err, queue.ErrDuplicateJob) {
 			dispatchErrors = append(dispatchErrors, fmt.Errorf("dispatch schedule %q: %w", definition.Name, err))
 		}
 	}
+
 	return errors.Join(dispatchErrors...)
 }
 

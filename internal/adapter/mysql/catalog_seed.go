@@ -34,6 +34,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 		if err := tx.Exec("SET FOREIGN_KEY_CHECKS=1").Error; err != nil {
 			return err
 		}
+
 		brandIDs := map[string]uint64{}
 		for _, p := range products {
 			key := strings.TrimSpace(p.Brand)
@@ -50,6 +51,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 			}
 			brandIDs[key] = id
 		}
+
 		categoryIDs := map[string]uint64{}
 		for _, c := range categories {
 			if err := tx.Exec("INSERT INTO categories(public_id,slug,name,gender) VALUES(?,?,?,?)", seedPublicID("CA", c.ID), c.Slug, c.Name, c.Gender).Error; err != nil {
@@ -61,6 +63,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 			}
 			categoryIDs[c.ID] = id
 		}
+
 		for _, c := range categories {
 			if c.ParentID != nil {
 				if err := tx.Exec("UPDATE categories SET parent_id=? WHERE id=?", categoryIDs[*c.ParentID], categoryIDs[c.ID]).Error; err != nil {
@@ -68,6 +71,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 				}
 			}
 		}
+
 		collectionIDs := map[string]uint64{}
 		for _, c := range collections {
 			if err := tx.Exec("INSERT INTO collections(public_id,slug,name) VALUES(?,?,?)", seedPublicID("CL", c.ID), c.Slug, c.Name).Error; err != nil {
@@ -79,6 +83,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 			}
 			collectionIDs[c.ID] = id
 		}
+
 		scaleIDs, sizeIDs := map[string]uint64{}, map[string]uint64{}
 		for _, scale := range scales {
 			if err := tx.Exec("INSERT INTO size_scales(public_id,code,name) VALUES(?,?,?)", seedPublicID("SC", scale.ID), scale.ID, scale.ID).Error; err != nil {
@@ -101,6 +106,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 				sizeIDs[key] = sizeID
 			}
 		}
+
 		// colourways are a global lookup: multiple seed entries sharing the
 		// same plain colour name (e.g. "Black" on several products) resolve
 		// to a single DB row, first-seen-in-file wins on hex.
@@ -122,6 +128,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 			colourIDs[colour.ID] = id
 			colourRowByName[key] = id
 		}
+
 		productIDs := map[string]uint64{}
 		for _, p := range products {
 			published, _ := time.Parse("2006-01-02", p.PublishedAt)
@@ -149,6 +156,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 				return err
 			}
 		}
+
 		for _, sku := range skus {
 			if err := tx.Exec("INSERT INTO skus(public_id,sku_code,product_id,colourway_id,size_id,on_hand) VALUES(?,?,?,?,?,?)", seedPublicID("SK", sku.ID), sku.ID, productIDs[sku.ProductID], colourIDs[sku.ColourwayID], sizeIDs[sku.SizeScale+":"+sku.Size], sku.StockQty).Error; err != nil {
 				return err
@@ -157,12 +165,14 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 			if err := tx.Raw("SELECT id FROM skus WHERE sku_code=?", sku.ID).Scan(&skuID).Error; err != nil {
 				return err
 			}
+
 			if sku.Price > 0 {
 				if err := tx.Exec("INSERT INTO prices(public_id,sku_id,currency,amount,valid_from) VALUES(?,?,'IDR',?,'1970-01-01')", seedPublicID("SP", sku.ID), skuID, sku.Price).Error; err != nil {
 					return err
 				}
 			}
 		}
+
 		for _, colour := range colourways {
 			for order, imageURL := range colour.Images {
 				if imageURL == "" {
@@ -173,6 +183,7 @@ func (r *CatalogRepository) SeedCatalog(ctx context.Context, products []catalog.
 				}
 			}
 		}
+
 		return nil
 	})
 }

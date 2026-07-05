@@ -77,6 +77,7 @@ func (d *Dispatcher) Dispatch(ctx context.Context, job queue.Job, options queue.
 	if err != nil {
 		return nil, err
 	}
+
 	return &queue.JobInfo{ID: info.ID, Queue: info.Queue}, nil
 }
 
@@ -105,6 +106,7 @@ func (w *RedisWorker) Run(ctx context.Context) error {
 	if err := w.server.Start(w.mux); err != nil {
 		return err
 	}
+
 	<-ctx.Done()
 	w.server.Shutdown()
 	return nil
@@ -127,6 +129,7 @@ func (i *RedisInspector) Stats(_ context.Context, queueName string) (queue.Queue
 	if err != nil {
 		return queue.QueueStats{}, err
 	}
+
 	return queue.QueueStats{
 		Pending:   int64(info.Pending),
 		Active:    int64(info.Active),
@@ -142,6 +145,7 @@ func (i *RedisInspector) Failed(_ context.Context, queueName string, limit int) 
 	if err != nil {
 		return nil, err
 	}
+
 	failed := make([]queue.FailedJob, 0, len(tasks))
 	for _, task := range tasks {
 		failed = append(failed, queue.FailedJob{
@@ -154,6 +158,7 @@ func (i *RedisInspector) Failed(_ context.Context, queueName string, limit int) 
 			LastError:    task.LastErr,
 		})
 	}
+
 	return failed, nil
 }
 

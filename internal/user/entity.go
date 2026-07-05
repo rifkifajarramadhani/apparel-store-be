@@ -46,12 +46,14 @@ func (u *User) UpdateProfile(username, email string) error {
 	if err := NormalizeAndValidate(candidate, false); err != nil {
 		return err
 	}
+
 	u.Username = candidate.Username
 	if candidate.Email == u.Email {
 		u.PendingEmail = ""
 	} else {
 		u.PendingEmail = candidate.Email
 	}
+
 	return nil
 }
 

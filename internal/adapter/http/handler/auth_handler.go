@@ -43,11 +43,13 @@ func (h *AuthHandler) VerifyEmailLink(c fiber.Ctx) error {
 	if token == "" || h.auth.VerifyEmail(c.Context(), token) != nil {
 		destination = h.storefrontURL + "/login?verification=invalid"
 	}
+
 	c.Set(fiber.HeaderCacheControl, "no-store")
 	c.Set("Referrer-Policy", "no-referrer")
 	if _, err := url.ParseRequestURI(destination); err != nil {
 		return err
 	}
+
 	return c.Redirect().Status(fiber.StatusSeeOther).To(destination)
 }
 
@@ -56,6 +58,7 @@ func (h *AuthHandler) Register(c fiber.Ctx) error {
 	if err := bindJSON(c, &req); err != nil {
 		return writeBindError(c, err)
 	}
+
 	account := user.User{Username: req.Username, Email: req.Email, Password: req.Password}
 	if err := h.auth.Register(c.Context(), &account); err != nil {
 		if errors.Is(err, user.ErrInvalidInput) || errors.Is(err, user.ErrDuplicateEmail) || errors.Is(err, user.ErrDuplicateUsername) {
@@ -64,6 +67,7 @@ func (h *AuthHandler) Register(c fiber.Ctx) error {
 		h.logger.ErrorContext(c.Context(), "register failed", "error", err)
 		return writeDomainError(c, err)
 	}
+
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
 		"id": account.ID, "username": account.Username, "email": account.Email,
 		"message": "check your email to verify your account",
@@ -75,6 +79,7 @@ func (h *AuthHandler) Login(c fiber.Ctx) error {
 	if err := bindJSON(c, &req); err != nil {
 		return writeBindError(c, err)
 	}
+
 	tokens, err := h.auth.Login(c.Context(), req.Email, req.Password)
 	if err != nil {
 		switch {
@@ -87,6 +92,7 @@ func (h *AuthHandler) Login(c fiber.Ctx) error {
 			return writeDomainError(c, err)
 		}
 	}
+
 	return c.JSON(toAuthResponse(tokens))
 }
 
@@ -95,6 +101,7 @@ func (h *AuthHandler) Refresh(c fiber.Ctx) error {
 	if err := bindJSON(c, &req); err != nil {
 		return writeBindError(c, err)
 	}
+
 	tokens, err := h.auth.Refresh(c.Context(), req.RefreshToken)
 	if err != nil {
 		if errors.Is(err, appauth.ErrInvalidToken) || errors.Is(err, appauth.ErrUnauthorized) {
@@ -103,6 +110,7 @@ func (h *AuthHandler) Refresh(c fiber.Ctx) error {
 		h.logger.ErrorContext(c.Context(), "refresh failed", "error", err)
 		return writeDomainError(c, err)
 	}
+
 	return c.JSON(toAuthResponse(tokens))
 }
 
@@ -111,10 +119,12 @@ func (h *AuthHandler) Logout(c fiber.Ctx) error {
 	if err := bindJSON(c, &req); err != nil {
 		return writeBindError(c, err)
 	}
+
 	if err := h.auth.Logout(c.Context(), req.RefreshToken); err != nil {
 		h.logger.ErrorContext(c.Context(), "logout failed", "error", err)
 		return writeDomainError(c, err)
 	}
+
 	return c.JSON(fiber.Map{"message": "logged out"})
 }
 
@@ -123,6 +133,7 @@ func (h *AuthHandler) VerifyEmail(c fiber.Ctx) error {
 	if err := bindJSON(c, &req); err != nil {
 		return writeBindError(c, err)
 	}
+
 	if err := h.auth.VerifyEmail(c.Context(), req.Token); err != nil {
 		if errors.Is(err, appauth.ErrInvalidToken) {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid or expired verification token"})
@@ -130,6 +141,7 @@ func (h *AuthHandler) VerifyEmail(c fiber.Ctx) error {
 		h.logger.ErrorContext(c.Context(), "verify email failed", "error", err)
 		return writeDomainError(c, err)
 	}
+
 	return c.JSON(fiber.Map{"message": "email verified"})
 }
 
@@ -138,9 +150,11 @@ func (h *AuthHandler) ResendVerification(c fiber.Ctx) error {
 	if err := bindJSON(c, &req); err != nil {
 		return writeBindError(c, err)
 	}
+
 	if err := h.auth.ResendVerification(c.Context(), req.Email); err != nil {
 		h.logger.ErrorContext(c.Context(), "resend verification failed", "error", err)
 	}
+
 	return c.JSON(fiber.Map{"message": "if the account requires verification, an email has been sent"})
 }
 
@@ -149,6 +163,7 @@ func (h *AuthHandler) Me(c fiber.Ctx) error {
 	if !ok {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "unauthorized"})
 	}
+
 	return c.JSON(dto.MeResponse{
 		ID: account.ID, Username: account.Username, Email: account.Email, Role: string(account.Role),
 		EmailVerified: account.EmailVerified(), PendingEmail: account.PendingEmail,

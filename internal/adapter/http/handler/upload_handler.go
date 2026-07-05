@@ -40,10 +40,12 @@ func (h *UploadHandler) ProductImages(c fiber.Ctx) error {
 	if h.uploader == nil {
 		return c.Status(fiber.StatusServiceUnavailable).JSON(fiber.Map{"error": "image uploads are not configured"})
 	}
+
 	form, err := c.MultipartForm()
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid multipart upload"})
 	}
+
 	files := form.File["files"]
 	var metadata []uploadMetadata
 	if err := json.Unmarshal([]byte(c.FormValue("metadata")), &metadata); err != nil {
@@ -52,6 +54,7 @@ func (h *UploadHandler) ProductImages(c fiber.Ctx) error {
 	if len(files) == 0 || len(files) != len(metadata) || len(files) > maxBatchFiles {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "files and metadata must contain the same number of entries"})
 	}
+
 	seen := make(map[string]struct{}, len(metadata))
 	for i, file := range files {
 		if strings.TrimSpace(metadata[i].ClientID) == "" {
@@ -92,6 +95,7 @@ func (h *UploadHandler) ProductImages(c fiber.Ctx) error {
 			ClientID: metadata[i].ClientID, Key: uploaded.Key, URL: uploaded.URL,
 		})
 	}
+
 	return c.JSON(fiber.Map{"files": result})
 }
 
@@ -103,6 +107,7 @@ func validateImage(file *multipart.FileHeader) error {
 	if file.Size <= 0 || file.Size > maxImageSize {
 		return fmt.Errorf("%s must be between 1 byte and 8 MB", file.Filename)
 	}
+
 	return nil
 }
 

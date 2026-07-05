@@ -53,6 +53,7 @@ func (r *OrderRepository) Create(ctx context.Context, userID int, lines []order.
 			if err := tx.Exec("UPDATE skus SET on_hand=on_hand-? WHERE id=?", line.Qty, sku.ID).Error; err != nil {
 				return err
 			}
+
 			items = append(items, orderItemModel{
 				SkuID: sku.PublicID, ProductID: sku.ProductPublicID, Name: sku.ProductName,
 				SkuRefID: publicUint64(sku.ID), ProductRefID: &sku.ProductRefID,
@@ -60,6 +61,7 @@ func (r *OrderRepository) Create(ctx context.Context, userID int, lines []order.
 			})
 			total += sku.Amount * line.Qty
 		}
+
 		created = orderModel{
 			UserID: userID, Status: order.StatusConfirmed, Total: total,
 			CreatedAt: time.Now().UTC(), Items: items,
@@ -69,6 +71,7 @@ func (r *OrderRepository) Create(ctx context.Context, userID int, lines []order.
 	if err != nil {
 		return order.Order{}, err
 	}
+
 	return toOrder(created), nil
 }
 
@@ -88,10 +91,12 @@ func (r *OrderRepository) ListByUser(ctx context.Context, userID int) ([]order.O
 		Where("user_id = ?", userID).Order("id DESC").Find(&records).Error; err != nil {
 		return nil, err
 	}
+
 	orders := make([]order.Order, 0, len(records))
 	for _, record := range records {
 		orders = append(orders, toOrder(record))
 	}
+
 	return orders, nil
 }
 

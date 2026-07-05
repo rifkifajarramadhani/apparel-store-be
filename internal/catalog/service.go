@@ -37,6 +37,7 @@ func (s *Service) ListProducts(ctx context.Context, q ProductQuery) (CursorPage[
 		return CursorPage[Product]{}, err
 	}
 	q.Currency, q.Limit = currency, normalizeLimit(q.Limit)
+
 	return s.repo.ListProducts(ctx, q)
 }
 
@@ -45,6 +46,7 @@ func (s *Service) GetProduct(ctx context.Context, id, currency string) (Product,
 	if err != nil {
 		return Product{}, err
 	}
+
 	return s.repo.GetProduct(ctx, id, currency)
 }
 
@@ -54,6 +56,7 @@ func (s *Service) ListSkus(ctx context.Context, q SkuQuery) (CursorPage[Sku], er
 		return CursorPage[Sku]{}, err
 	}
 	q.Currency, q.Limit = currency, normalizeLimit(q.Limit)
+
 	return s.repo.ListSkus(ctx, q)
 }
 
@@ -75,6 +78,7 @@ func (s *Service) SetInventory(ctx context.Context, in InventoryAdjustment) erro
 	if in.SkuID == "" || in.OnHand < 0 || in.Reserved < 0 || in.Reserved > in.OnHand {
 		return fmt.Errorf("%w: inventory requires a valid sku id and 0 <= reserved <= onHand", ErrInvalidInput)
 	}
+
 	return s.repo.SetInventory(ctx, in)
 }
 
@@ -82,6 +86,7 @@ func (s *Service) CreateProduct(ctx context.Context, in ProductAggregate) error 
 	if err := validateAggregate(in); err != nil {
 		return err
 	}
+
 	return s.repo.CreateProduct(ctx, in)
 }
 
@@ -89,6 +94,7 @@ func (s *Service) UpdateProduct(ctx context.Context, in ProductAggregate) error 
 	if err := validateAggregate(in); err != nil {
 		return err
 	}
+
 	return s.repo.UpdateProduct(ctx, in)
 }
 
@@ -96,6 +102,7 @@ func (s *Service) DeleteProduct(ctx context.Context, id string) error {
 	if strings.TrimSpace(id) == "" {
 		return fmt.Errorf("%w: product id is required", ErrInvalidInput)
 	}
+
 	return s.repo.DeleteProduct(ctx, id)
 }
 
@@ -113,6 +120,7 @@ func validateAggregate(in ProductAggregate) error {
 	case len(in.Skus) == 0:
 		return fmt.Errorf("%w: at least one sku is required", ErrInvalidInput)
 	}
+
 	defaults := 0
 	colourways := make(map[string]struct{}, len(in.Colourways))
 	for _, c := range in.Colourways {
@@ -127,6 +135,7 @@ func validateAggregate(in ProductAggregate) error {
 	if defaults != 1 {
 		return fmt.Errorf("%w: exactly one colourway must be the default", ErrInvalidInput)
 	}
+
 	for _, sku := range in.Skus {
 		if _, ok := colourways[sku.ColourwayID]; !ok {
 			return fmt.Errorf("%w: sku %q references an unknown colourway", ErrInvalidInput, sku.ID)
@@ -139,5 +148,6 @@ func validateAggregate(in ProductAggregate) error {
 			}
 		}
 	}
+
 	return nil
 }

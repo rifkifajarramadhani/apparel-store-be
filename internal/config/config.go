@@ -196,9 +196,11 @@ func validateConfig(config *Config) error {
 	if isProduction(config.App.Environment) && strings.TrimSpace(config.Database.Password) == "" {
 		return fmt.Errorf("DATABASE_PASSWORD is required in production")
 	}
+
 	if _, _, err := net.SplitHostPort(config.Redis.Address); err != nil {
 		return fmt.Errorf("redis address must be host:port")
 	}
+
 	if len(config.Queue.Queues) == 0 {
 		return fmt.Errorf("at least one queue must be configured")
 	}
@@ -207,6 +209,7 @@ func validateConfig(config *Config) error {
 			return fmt.Errorf("queue names must be non-empty and weights must be positive")
 		}
 	}
+
 	return nil
 }
 
@@ -219,6 +222,7 @@ func normalizeAuthConfig(app *AppConfig, auth *AuthConfig) error {
 	if app.CORSOrigins == "" {
 		app.CORSOrigins = "http://localhost:3000"
 	}
+
 	var err error
 	app.PublicURL, err = normalizeAbsoluteHTTPURL(app.PublicURL, "http://localhost:8080", "app public URL")
 	if err != nil {
@@ -228,6 +232,7 @@ func normalizeAuthConfig(app *AppConfig, auth *AuthConfig) error {
 	if err != nil {
 		return err
 	}
+
 	auth.Issuer = strings.TrimSpace(auth.Issuer)
 	if auth.Issuer == "" {
 		auth.Issuer = "golang-clean-architecture"
@@ -245,6 +250,7 @@ func normalizeAuthConfig(app *AppConfig, auth *AuthConfig) error {
 	if auth.RefreshTTLHours <= 0 {
 		auth.RefreshTTLHours = 168
 	}
+
 	auth.BootstrapAdminEmail = strings.ToLower(strings.TrimSpace(auth.BootstrapAdminEmail))
 	if auth.BootstrapAdminEmail != "" {
 		address, err := stdmail.ParseAddress(auth.BootstrapAdminEmail)
@@ -255,6 +261,7 @@ func normalizeAuthConfig(app *AppConfig, auth *AuthConfig) error {
 			return fmt.Errorf("invalid bootstrap admin email %q", auth.BootstrapAdminEmail)
 		}
 	}
+
 	if isProduction(app.Environment) {
 		if strings.TrimSpace(auth.JWTAccessSecret) == "" {
 			return fmt.Errorf("AUTH_JWT_ACCESS_SECRET is required in production")
@@ -268,6 +275,7 @@ func normalizeAuthConfig(app *AppConfig, auth *AuthConfig) error {
 			return fmt.Errorf("production JWT secrets must be distinct, non-placeholder values of at least 32 bytes")
 		}
 	}
+
 	return nil
 }
 

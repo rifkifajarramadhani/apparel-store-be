@@ -45,6 +45,7 @@ func (s *Service) Create(ctx context.Context, account *User) error {
 	if err := NormalizeAndValidate(account, true); err != nil {
 		return err
 	}
+
 	hashedPassword, err := s.password.Hash(account.Password)
 	if err != nil {
 		return fmt.Errorf("hash password: %w", err)
@@ -52,6 +53,7 @@ func (s *Service) Create(ctx context.Context, account *User) error {
 	account.Password = hashedPassword
 	account.Role = RoleUser
 	account.TokenVersion = 1
+
 	return s.repo.Create(ctx, account)
 }
 
@@ -75,10 +77,12 @@ func (s *Service) UpdateProfile(ctx context.Context, id int, username, email str
 	if err := account.UpdateProfile(username, email); err != nil {
 		return err
 	}
+
 	nextEmail := account.Email
 	if account.PendingEmail != "" {
 		nextEmail = account.PendingEmail
 	}
+
 	return s.repo.UpdateProfile(ctx, id, account.Username, nextEmail)
 }
 
@@ -86,6 +90,7 @@ func (s *Service) ChangePassword(ctx context.Context, id int, currentPassword, n
 	if err := ValidatePassword(newPassword); err != nil {
 		return err
 	}
+
 	account, err := s.repo.GetByID(ctx, id)
 	if err != nil {
 		return err
@@ -93,11 +98,13 @@ func (s *Service) ChangePassword(ctx context.Context, id int, currentPassword, n
 	if s.password.Compare(account.Password, currentPassword) != nil {
 		return ErrInvalidPassword
 	}
+
 	hashed, err := s.password.Hash(newPassword)
 	if err != nil {
 		return fmt.Errorf("hash password: %w", err)
 	}
 	account.ChangePasswordHash(hashed)
+
 	return s.repo.ChangePassword(ctx, id, account.Password)
 }
 
@@ -109,6 +116,7 @@ func (s *Service) ChangeRole(ctx context.Context, actorID, targetID int, role st
 	if actorID == targetID {
 		return ErrForbidden
 	}
+
 	actor, err := s.repo.GetByID(ctx, actorID)
 	if err != nil || actor == nil || !actor.IsAdmin() {
 		return ErrForbidden
@@ -120,6 +128,7 @@ func (s *Service) ChangeRole(ctx context.Context, actorID, targetID int, role st
 	if parsedRole == RoleAdmin && !target.CanPromote() {
 		return ErrForbidden
 	}
+
 	wasAdmin := target.IsAdmin()
 	if wasAdmin && parsedRole != RoleAdmin {
 		count, err := s.repo.CountAdmins(ctx)
@@ -130,9 +139,11 @@ func (s *Service) ChangeRole(ctx context.Context, actorID, targetID int, role st
 			return ErrLastAdmin
 		}
 	}
+
 	if err := target.AssignRole(parsedRole); err != nil {
 		return err
 	}
+
 	return s.repo.ChangeRole(ctx, actorID, targetID, parsedRole)
 }
 
@@ -140,6 +151,7 @@ func (s *Service) Delete(ctx context.Context, actorID, targetID int) error {
 	if actorID == targetID {
 		return ErrForbidden
 	}
+
 	actor, err := s.repo.GetByID(ctx, actorID)
 	if err != nil || actor == nil || !actor.IsAdmin() {
 		return ErrForbidden
@@ -148,6 +160,7 @@ func (s *Service) Delete(ctx context.Context, actorID, targetID int) error {
 	if err != nil {
 		return err
 	}
+
 	if target.IsAdmin() {
 		count, err := s.repo.CountAdmins(ctx)
 		if err != nil {
@@ -157,6 +170,7 @@ func (s *Service) Delete(ctx context.Context, actorID, targetID int) error {
 			return ErrLastAdmin
 		}
 	}
+
 	return s.repo.Delete(ctx, targetID)
 }
 
@@ -168,12 +182,14 @@ func (s *Service) DeleteSelf(ctx context.Context, id int, currentPassword string
 	if s.password.Compare(account.Password, currentPassword) != nil {
 		return ErrInvalidPassword
 	}
+
 	return s.repo.Delete(ctx, id)
 }
 
 func NormalizeAndValidate(account *User, requirePassword bool) error {
 	account.Username = strings.TrimSpace(account.Username)
 	account.Email = NormalizeEmail(account.Email)
+
 	if !usernamePattern.MatchString(account.Username) {
 		return fmt.Errorf("%w: username must be 3-50 letters, digits, underscores, or hyphens", ErrInvalidInput)
 	}
@@ -181,9 +197,11 @@ func NormalizeAndValidate(account *User, requirePassword bool) error {
 	if err != nil || address.Address != account.Email || !strings.Contains(account.Email, "@") {
 		return fmt.Errorf("%w: invalid email", ErrInvalidInput)
 	}
+
 	if requirePassword {
 		return ValidatePassword(account.Password)
 	}
+
 	return nil
 }
 

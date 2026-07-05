@@ -15,6 +15,7 @@ func bindJSON(c fiber.Ctx, destination any) error {
 	if !c.IsJSON() {
 		return fiber.ErrUnsupportedMediaType
 	}
+
 	decoder := json.NewDecoder(bytes.NewReader(c.Body()))
 	decoder.DisallowUnknownFields()
 	if err := decoder.Decode(destination); err != nil {
@@ -23,6 +24,7 @@ func bindJSON(c fiber.Ctx, destination any) error {
 	if err := decoder.Decode(&struct{}{}); !errors.Is(err, io.EOF) {
 		return fiber.ErrBadRequest
 	}
+
 	return nil
 }
 

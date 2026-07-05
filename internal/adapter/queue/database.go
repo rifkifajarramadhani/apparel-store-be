@@ -74,6 +74,7 @@ func (d *DatabaseDispatcher) Dispatch(ctx context.Context, job queue.Job, option
 	if err != nil {
 		return nil, fmt.Errorf("marshal job %q: %w", job.Type(), err)
 	}
+
 	queueName := options.Queue
 	if queueName == "" {
 		queueName = "default"
@@ -86,6 +87,7 @@ func (d *DatabaseDispatcher) Dispatch(ctx context.Context, job queue.Job, option
 	if maxRetry <= 0 {
 		maxRetry = defaultMaxRetry
 	}
+
 	record := databaseJob{
 		ID:             chooseJobID(options.TaskID),
 		Queue:          queueName,
@@ -123,6 +125,7 @@ func (d *DatabaseDispatcher) Dispatch(ctx context.Context, job queue.Job, option
 	if err != nil {
 		return nil, err
 	}
+
 	return &queue.JobInfo{ID: record.ID, Queue: record.Queue}, nil
 }
 
@@ -259,6 +262,7 @@ func (w *DatabaseWorker) reserve(ctx context.Context, queueName string) (*databa
 	if err == nil && !found {
 		return nil, nil
 	}
+
 	return &job, err
 }
 
@@ -433,6 +437,7 @@ func (i *DatabaseInspector) Queues(ctx context.Context) ([]string, error) {
 	for name := range i.queues {
 		names[name] = struct{}{}
 	}
+
 	var stored []string
 	if err := i.db.WithContext(ctx).Model(&databaseJob{}).Distinct().Pluck("queue", &stored).Error; err != nil {
 		return nil, err
@@ -446,11 +451,13 @@ func (i *DatabaseInspector) Queues(ctx context.Context) ([]string, error) {
 	for _, name := range stored {
 		names[name] = struct{}{}
 	}
+
 	result := make([]string, 0, len(names))
 	for name := range names {
 		result = append(result, name)
 	}
 	sort.Strings(result)
+
 	return result, nil
 }
 
@@ -474,10 +481,12 @@ func (i *DatabaseInspector) Stats(ctx context.Context, queueName string) (queue.
 	if err != nil {
 		return queue.QueueStats{}, err
 	}
+
 	var stat databaseStat
 	if err := i.db.WithContext(ctx).Where("queue = ?", queueName).First(&stat).Error; err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return queue.QueueStats{}, err
 	}
+
 	return queue.QueueStats{
 		Pending: counts.Pending, Active: counts.Active, Scheduled: counts.Scheduled,
 		Retry: counts.Retry, Failed: counts.Failed, Processed: stat.ProcessedTotal,
@@ -490,6 +499,7 @@ func (i *DatabaseInspector) Failed(ctx context.Context, queueName string, limit 
 		Order("last_failed_at DESC").Limit(limit).Find(&jobs).Error; err != nil {
 		return nil, err
 	}
+
 	result := make([]queue.FailedJob, 0, len(jobs))
 	for _, job := range jobs {
 		failedAt := time.Time{}
@@ -505,6 +515,7 @@ func (i *DatabaseInspector) Failed(ctx context.Context, queueName string, limit 
 			MaxRetry: job.MaxRetry, LastFailedAt: failedAt, LastError: lastError,
 		})
 	}
+
 	return result, nil
 }
 
@@ -527,10 +538,12 @@ func (i *DatabaseInspector) Delete(ctx context.Context, queueName, id string) (i
 		if id != "all" {
 			query = query.Where("id = ?", id)
 		}
+
 		var jobs []databaseJob
 		if err := query.Clauses(clause.Locking{Strength: "UPDATE"}).Select("id").Find(&jobs).Error; err != nil || len(jobs) == 0 {
 			return err
 		}
+
 		ids := make([]string, 0, len(jobs))
 		for _, job := range jobs {
 			ids = append(ids, job.ID)
@@ -538,6 +551,7 @@ func (i *DatabaseInspector) Delete(ctx context.Context, queueName, id string) (i
 		if err := tx.Where("job_id IN ?", ids).Delete(&databaseLock{}).Error; err != nil {
 			return err
 		}
+
 		result := tx.Where("id IN ?", ids).Delete(&databaseJob{})
 		affected = result.RowsAffected
 		return result.Error
@@ -589,12 +603,14 @@ func weightedQueueNames(queues map[string]int) []string {
 		names = append(names, name)
 	}
 	sort.Strings(names)
+
 	weighted := make([]string, 0)
 	for _, name := range names {
 		for range max(queues[name], 0) {
 			weighted = append(weighted, name)
 		}
 	}
+
 	return weighted
 }
 

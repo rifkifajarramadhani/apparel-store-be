@@ -37,18 +37,22 @@ func (h *OrderHandler) Create(c fiber.Ctx) error {
 	if !ok {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "unauthorized"})
 	}
+
 	var req createOrderRequest
 	if err := bindJSON(c, &req); err != nil {
 		return writeBindError(c, err)
 	}
+
 	lines := make([]order.Line, 0, len(req.Items))
 	for _, item := range req.Items {
 		lines = append(lines, order.Line{SkuID: item.SkuID, Qty: item.Qty})
 	}
+
 	created, err := h.orders.Create(c.Context(), account.ID, lines)
 	if err != nil {
 		return writeOrderError(c, h.logger, err)
 	}
+
 	return c.Status(fiber.StatusCreated).JSON(created)
 }
 
@@ -57,10 +61,12 @@ func (h *OrderHandler) List(c fiber.Ctx) error {
 	if !ok {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "unauthorized"})
 	}
+
 	orders, err := h.orders.ListByUser(c.Context(), account.ID)
 	if err != nil {
 		return writeOrderError(c, h.logger, err)
 	}
+
 	return c.JSON(orders)
 }
 
@@ -69,14 +75,17 @@ func (h *OrderHandler) Get(c fiber.Ctx) error {
 	if !ok {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "unauthorized"})
 	}
+
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil || id <= 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid order id"})
 	}
+
 	found, err := h.orders.GetByIDForUser(c.Context(), account.ID, id)
 	if err != nil {
 		return writeOrderError(c, h.logger, err)
 	}
+
 	return c.JSON(found)
 }
 

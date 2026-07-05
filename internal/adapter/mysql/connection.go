@@ -34,11 +34,13 @@ func Open(ctx context.Context, dsn string, logger *slog.Logger) (*gorm.DB, error
 		if err == nil {
 			return db, nil
 		}
+
 		lastErr = err
 		logger.WarnContext(ctx, "database connection failed", "attempt", attempt, "error", err)
 		if attempt == connectionAttempts {
 			break
 		}
+
 		timer := time.NewTimer(3 * time.Second)
 		select {
 		case <-ctx.Done():
@@ -47,6 +49,7 @@ func Open(ctx context.Context, dsn string, logger *slog.Logger) (*gorm.DB, error
 		case <-timer.C:
 		}
 	}
+
 	return nil, fmt.Errorf("connect to database after %d attempts: %w", connectionAttempts, lastErr)
 }
 

@@ -29,10 +29,12 @@ func RegisterHandlers(registry *queue.HandlerRegistry, maintenance *auth.Mainten
 		if err := json.Unmarshal(payload, &job); err != nil {
 			return fmt.Errorf("decode cleanup refresh tokens job: %w", err)
 		}
+
 		deleted, err := maintenance.CleanupRefreshTokens(ctx, time.Now())
 		if err != nil {
 			return err
 		}
+
 		logger.InfoContext(ctx, "deleted expired or revoked refresh tokens", "count", deleted)
 		return nil
 	}); err != nil {
@@ -44,9 +46,11 @@ func RegisterHandlers(registry *queue.HandlerRegistry, maintenance *auth.Mainten
 		if err := json.Unmarshal(payload, &job); err != nil {
 			return fmt.Errorf("decode send mail job: %w", err)
 		}
+
 		if mailTransport == nil {
 			return fmt.Errorf("mail transport is not configured")
 		}
+
 		return mailTransport.Send(ctx, job.Message)
 	})
 }

@@ -44,22 +44,26 @@ func (r *UserRepository) RegisterUser(
 		if pending > 0 {
 			return user.ErrDuplicateEmail
 		}
+
 		model := fromUser(account)
 		if err := tx.Create(&model).Error; err != nil {
 			return mapWriteError(err)
 		}
 		account.ID = model.ID
 		token.UserID = model.ID
+
 		if err := tx.Create(&emailVerificationTokenModel{
 			UserID: token.UserID, TokenHash: token.TokenHash, ExpiresAt: token.ExpiresAt,
 		}).Error; err != nil {
 			return err
 		}
+
 		if dispatch != nil {
 			if err := dispatch(); err != nil {
 				return err
 			}
 		}
+
 		return nil
 	})
 }
@@ -74,6 +78,7 @@ func (r *UserRepository) createUser(ctx context.Context, account *user.User) err
 		if pending > 0 {
 			return user.ErrDuplicateEmail
 		}
+
 		model := fromUser(account)
 		if err := tx.Create(&model).Error; err != nil {
 			return mapWriteError(err)
@@ -88,14 +93,17 @@ func (r *UserRepository) List(ctx context.Context, page, limit int) ([]*user.Use
 	if err := r.db.WithContext(ctx).Model(&userModel{}).Count(&count).Error; err != nil {
 		return nil, 0, err
 	}
+
 	var records []userModel
 	if err := r.db.WithContext(ctx).Order("id ASC").Offset((page - 1) * limit).Limit(limit).Find(&records).Error; err != nil {
 		return nil, 0, err
 	}
+
 	accounts := make([]*user.User, 0, len(records))
 	for _, record := range records {
 		accounts = append(accounts, toUser(record))
 	}
+
 	return accounts, count, nil
 }
 
@@ -139,6 +147,7 @@ func (r *UserRepository) UpdateProfile(ctx context.Context, id int, username, em
 		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).First(&record, id).Error; err != nil {
 			return mapUserNotFound(err)
 		}
+
 		updates := map[string]any{"username": username}
 		if email == record.Email {
 			updates["pending_email"] = ""
@@ -164,6 +173,7 @@ func (r *UserRepository) ChangePassword(ctx context.Context, id int, hashedPassw
 		if err := requireAffected(result); err != nil {
 			return err
 		}
+
 		return tx.Model(&refreshTokenModel{}).Where("user_id = ? AND revoked_at IS NULL", id).Update("revoked_at", time.Now()).Error
 	})
 }
@@ -181,12 +191,14 @@ func (r *UserRepository) ChangeRole(ctx context.Context, actorID, targetID int, 
 		if actor.Role != user.RoleAdmin {
 			return user.ErrForbidden
 		}
+
 		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).First(&target, targetID).Error; err != nil {
 			return mapUserNotFound(err)
 		}
 		if role == user.RoleAdmin && target.EmailVerifiedAt == nil {
 			return user.ErrForbidden
 		}
+
 		if target.Role == user.RoleAdmin && role != user.RoleAdmin {
 			var admins []userModel
 			if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("role = ?", user.RoleAdmin).Find(&admins).Error; err != nil {
@@ -196,11 +208,13 @@ func (r *UserRepository) ChangeRole(ctx context.Context, actorID, targetID int, 
 				return user.ErrLastAdmin
 			}
 		}
+
 		if err := tx.Model(&target).Updates(map[string]any{
 			"role": role, "token_version": gorm.Expr("token_version + 1"),
 		}).Error; err != nil {
 			return err
 		}
+
 		return tx.Model(&refreshTokenModel{}).Where("user_id = ? AND revoked_at IS NULL", targetID).
 			Update("revoked_at", time.Now()).Error
 	})
@@ -214,6 +228,7 @@ func (r *UserRepository) Delete(ctx context.Context, id int) error {
 		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).First(&target, id).Error; err != nil {
 			return mapUserNotFound(err)
 		}
+
 		if target.Role == user.RoleAdmin {
 			var admins []userModel
 			if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("role = ?", user.RoleAdmin).Find(&admins).Error; err != nil {
@@ -223,6 +238,7 @@ func (r *UserRepository) Delete(ctx context.Context, id int) error {
 				return user.ErrLastAdmin
 			}
 		}
+
 		return requireAffected(tx.Delete(&target))
 	})
 }
@@ -232,6 +248,7 @@ func (r *UserRepository) CreateRefreshToken(ctx context.Context, token *auth.Ref
 	if err := r.db.WithContext(ctx).Create(&record).Error; err != nil {
 		return err
 	}
+
 	token.ID = record.ID
 	return nil
 }
@@ -244,6 +261,7 @@ func (r *UserRepository) GetActiveRefreshTokenByHash(ctx context.Context, tokenH
 	if err != nil {
 		return nil, mapNotFound(err)
 	}
+
 	return &auth.RefreshToken{
 		ID: record.ID, UserID: record.UserID, TokenHash: record.TokenHash, ExpiresAt: record.ExpiresAt,
 		RevokedAt: record.RevokedAt, CreatedAt: record.CreatedAt, UpdatedAt: record.UpdatedAt,
@@ -267,12 +285,14 @@ func (r *UserRepository) RotateRefreshToken(ctx context.Context, currentHash str
 		if result.RowsAffected != 1 {
 			return auth.ErrUnauthorized
 		}
+
 		record := refreshTokenModel{
 			UserID: replacement.UserID, TokenHash: replacement.TokenHash, ExpiresAt: replacement.ExpiresAt,
 		}
 		if err := tx.Create(&record).Error; err != nil {
 			return err
 		}
+
 		replacement.ID = record.ID
 		return nil
 	})
@@ -283,6 +303,7 @@ func (r *UserRepository) ReplaceEmailVerificationToken(ctx context.Context, toke
 		if err := tx.Where("user_id = ?", token.UserID).Delete(&emailVerificationTokenModel{}).Error; err != nil {
 			return err
 		}
+
 		return tx.Create(&emailVerificationTokenModel{
 			UserID: token.UserID, TokenHash: token.TokenHash, ExpiresAt: token.ExpiresAt,
 		}).Error
@@ -312,12 +333,15 @@ func (r *UserRepository) VerifyEmail(
 			}
 			return err
 		}
+
 		var record userModel
 		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).First(&record, token.UserID).Error; err != nil {
 			return mapUserNotFound(err)
 		}
+
 		account := toUser(record)
 		firstVerification := account.VerifyEmail(now)
+
 		var admins int64
 		if err := tx.Model(&userModel{}).Where("role = ?", user.RoleAdmin).Count(&admins).Error; err != nil {
 			return err
@@ -331,6 +355,7 @@ func (r *UserRepository) VerifyEmail(
 				return err
 			}
 		}
+
 		updates := map[string]any{
 			"email": account.Email, "pending_email": account.PendingEmail, "email_verified_at": account.EmailVerifiedAt,
 			"role": account.Role, "token_version": account.TokenVersion,
@@ -338,6 +363,7 @@ func (r *UserRepository) VerifyEmail(
 		if err := mapWriteError(tx.Model(&record).Updates(updates).Error); err != nil {
 			return err
 		}
+
 		if err := tx.Where("user_id = ?", record.ID).Delete(&emailVerificationTokenModel{}).Error; err != nil {
 			return err
 		}
@@ -348,6 +374,7 @@ func (r *UserRepository) VerifyEmail(
 		if err := tx.First(&record, record.ID).Error; err != nil {
 			return err
 		}
+
 		result = &auth.EmailVerificationResult{User: toUser(record), FirstVerification: firstVerification}
 		return nil
 	})

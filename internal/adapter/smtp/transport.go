@@ -36,10 +36,12 @@ func NewTransport(cfg config.MailConfig) (*Transport, error) {
 			gomail.WithPassword(cfg.Password),
 		)
 	}
+
 	client, err := gomail.NewClient(cfg.Host, options...)
 	if err != nil {
 		return nil, fmt.Errorf("create SMTP client: %w", err)
 	}
+
 	return &Transport{client: client}, nil
 }
 
@@ -53,6 +55,7 @@ func (t *Transport) Send(ctx context.Context, message appmail.Message) error {
 			return fmt.Errorf("set recipient: %w", err)
 		}
 	}
+
 	outgoing.Subject(message.Envelope.Subject)
 	if message.Content.Text != "" {
 		outgoing.SetBodyString(gomail.TypeTextPlain, message.Content.Text)
@@ -64,6 +67,7 @@ func (t *Transport) Send(ctx context.Context, message appmail.Message) error {
 			outgoing.AddAlternativeString(gomail.TypeTextHTML, message.Content.HTML)
 		}
 	}
+
 	for _, attachment := range message.Attachments {
 		options := []gomail.FileOption{}
 		if attachment.ContentType != "" {
@@ -73,6 +77,7 @@ func (t *Transport) Send(ctx context.Context, message appmail.Message) error {
 			return fmt.Errorf("attach %q: %w", attachment.Filename, err)
 		}
 	}
+
 	return t.client.DialAndSendWithContext(ctx, outgoing)
 }
 

@@ -25,14 +25,17 @@ func (r *CatalogRepository) ListSkus(ctx context.Context, q catalog.SkuQuery) (c
 	}
 	sql += " ORDER BY s.public_id LIMIT ?"
 	args = append(args, q.Limit+1)
+
 	var rows []skuRow
 	if err := r.db.WithContext(ctx).Raw(sql, args...).Scan(&rows).Error; err != nil {
 		return catalog.CursorPage[catalog.Sku]{}, err
 	}
+
 	hasMore := len(rows) > q.Limit
 	if hasMore {
 		rows = rows[:q.Limit]
 	}
+
 	items := make([]catalog.Sku, 0, len(rows))
 	for _, row := range rows {
 		items = append(items, catalog.Sku{ID: row.ID, Code: row.Code, Barcode: row.Barcode, ProductID: row.ProductID, Colourway: catalog.Colourway{ID: row.ColourwayID, Name: row.ColourwayName, HexCode: row.HexCode}, Size: catalog.Size{ID: row.SizeID, ScaleCode: row.ScaleCode, Code: row.SizeCode, Name: row.SizeName, SortOrder: row.SortOrder}, Price: catalog.Money{Currency: q.Currency, Amount: row.Amount, CompareAtAmount: row.CompareAtAmount}, OnHand: row.OnHand, Reserved: row.Reserved, Available: row.OnHand - row.Reserved, Assets: []catalog.Asset{}})
@@ -40,10 +43,12 @@ func (r *CatalogRepository) ListSkus(ctx context.Context, q catalog.SkuQuery) (c
 	if err := r.hydrateSkuAssets(ctx, items); err != nil {
 		return catalog.CursorPage[catalog.Sku]{}, err
 	}
+
 	page := catalog.CursorPage[catalog.Sku]{Items: items}
 	if hasMore {
 		page.NextCursor = items[len(items)-1].ID
 	}
+
 	return page, nil
 }
 
@@ -55,6 +60,7 @@ func (r *CatalogRepository) SetInventory(ctx context.Context, in catalog.Invento
 	if result.RowsAffected != 0 {
 		return nil
 	}
+
 	var count int64
 	if err := r.db.WithContext(ctx).Table("skus").Where("public_id=? AND archived_at IS NULL", in.SkuID).Count(&count).Error; err != nil {
 		return err
@@ -62,6 +68,7 @@ func (r *CatalogRepository) SetInventory(ctx context.Context, in catalog.Invento
 	if count == 0 {
 		return catalog.ErrNotFound
 	}
+
 	return nil
 }
 
@@ -69,12 +76,14 @@ func (r *CatalogRepository) hydrateSkuAssets(ctx context.Context, skus []catalog
 	if len(skus) == 0 {
 		return nil
 	}
+
 	positions := make(map[string]int, len(skus))
 	ids := make([]string, len(skus))
 	for i := range skus {
 		ids[i] = skus[i].ID
 		positions[skus[i].ID] = i
 	}
+
 	var assets []skuAssetRow
 	query := "SELECT s.public_id sku_id,a.public_id,a.media_type,a.cdn_url url,COALESCE(a.alt_text,'') alt_text,a.role,a.sort_order FROM assets a JOIN skus s ON s.id=a.sku_id WHERE a.archived_at IS NULL AND s.public_id IN ? ORDER BY a.role,a.sort_order"
 	if err := r.db.WithContext(ctx).Raw(query, ids).Scan(&assets).Error; err != nil {
@@ -84,5 +93,6 @@ func (r *CatalogRepository) hydrateSkuAssets(ctx context.Context, skus []catalog
 		i := positions[row.SkuID]
 		skus[i].Assets = append(skus[i].Assets, catalog.Asset{ID: row.PublicID, MediaType: row.MediaType, URL: row.URL, AltText: row.AltText, Role: row.Role, SortOrder: row.SortOrder})
 	}
+
 	return nil
 }

@@ -35,6 +35,7 @@ func NewCatalogHandler(service CatalogService, logger *slog.Logger) *CatalogHand
 }
 
 func queryLimit(c fiber.Ctx) int { value, _ := strconv.Atoi(c.Query("limit")); return value }
+
 func (h *CatalogHandler) Products(c fiber.Ctx) error {
 	page, err := h.catalog.ListProducts(c.Context(), catalog.ProductQuery{CategorySlug: c.Query("category"), BrandSlug: c.Query("brand"), Query: c.Query("q"), Currency: c.Query("currency"), Cursor: c.Query("cursor"), Limit: queryLimit(c)})
 	if err != nil {
@@ -42,6 +43,7 @@ func (h *CatalogHandler) Products(c fiber.Ctx) error {
 	}
 	return c.JSON(page)
 }
+
 func (h *CatalogHandler) Product(c fiber.Ctx) error {
 	item, err := h.catalog.GetProduct(c.Context(), c.Params("id"), c.Query("currency"))
 	if err != nil {
@@ -49,6 +51,7 @@ func (h *CatalogHandler) Product(c fiber.Ctx) error {
 	}
 	return c.JSON(item)
 }
+
 func (h *CatalogHandler) Skus(c fiber.Ctx) error {
 	page, err := h.catalog.ListSkus(c.Context(), catalog.SkuQuery{ProductID: c.Query("productId"), ColourwayID: c.Query("colourwayId"), Currency: c.Query("currency"), Cursor: c.Query("cursor"), Limit: queryLimit(c)})
 	if err != nil {
@@ -56,6 +59,7 @@ func (h *CatalogHandler) Skus(c fiber.Ctx) error {
 	}
 	return c.JSON(page)
 }
+
 func (h *CatalogHandler) Brands(c fiber.Ctx) error {
 	items, err := h.catalog.ListBrands(c.Context())
 	if err != nil {
@@ -63,6 +67,7 @@ func (h *CatalogHandler) Brands(c fiber.Ctx) error {
 	}
 	return c.JSON(items)
 }
+
 func (h *CatalogHandler) Categories(c fiber.Ctx) error {
 	items, err := h.catalog.ListCategories(c.Context())
 	if err != nil {
@@ -70,6 +75,7 @@ func (h *CatalogHandler) Categories(c fiber.Ctx) error {
 	}
 	return c.JSON(items)
 }
+
 func (h *CatalogHandler) Collections(c fiber.Ctx) error {
 	items, err := h.catalog.ListCollections(c.Context())
 	if err != nil {
@@ -77,6 +83,7 @@ func (h *CatalogHandler) Collections(c fiber.Ctx) error {
 	}
 	return c.JSON(items)
 }
+
 func (h *CatalogHandler) Colourways(c fiber.Ctx) error {
 	items, err := h.catalog.ListColourways(c.Context())
 	if err != nil {
@@ -84,6 +91,7 @@ func (h *CatalogHandler) Colourways(c fiber.Ctx) error {
 	}
 	return c.JSON(items)
 }
+
 func (h *CatalogHandler) Sizes(c fiber.Ctx) error {
 	items, err := h.catalog.ListSizes(c.Context())
 	if err != nil {
@@ -91,14 +99,17 @@ func (h *CatalogHandler) Sizes(c fiber.Ctx) error {
 	}
 	return c.JSON(items)
 }
+
 func (h *CatalogHandler) SetInventory(c fiber.Ctx) error {
 	var input catalog.InventoryAdjustment
 	if err := bindJSON(c, &input); err != nil {
 		return writeBindError(c, err)
 	}
+
 	if err := h.catalog.SetInventory(c.Context(), input); err != nil {
 		return writeCatalogError(c, h.logger, err)
 	}
+
 	return c.SendStatus(fiber.StatusNoContent)
 }
 
@@ -161,6 +172,7 @@ func (d productAggregateDTO) toDomain() catalog.ProductAggregate {
 		Skus:       make([]catalog.SkuWrite, 0, len(d.Skus)),
 		Images:     make([]catalog.ImageWrite, 0, len(d.Images)),
 	}
+
 	for _, c := range d.Colorways {
 		agg.Colourways = append(agg.Colourways, catalog.ColourwayWrite{
 			ID: c.ID, Name: c.Name, SwatchHex: c.SwatchHex,
@@ -176,6 +188,7 @@ func (d productAggregateDTO) toDomain() catalog.ProductAggregate {
 	for _, img := range d.Images {
 		agg.Images = append(agg.Images, catalog.ImageWrite{URL: img.URL, ColourwayID: img.ColorwayID})
 	}
+
 	return agg
 }
 
@@ -184,9 +197,11 @@ func (h *CatalogHandler) CreateProduct(c fiber.Ctx) error {
 	if err := bindJSON(c, &dto); err != nil {
 		return writeBindError(c, err)
 	}
+
 	if err := h.catalog.CreateProduct(c.Context(), dto.toDomain()); err != nil {
 		return writeCatalogError(c, h.logger, err)
 	}
+
 	return c.Status(fiber.StatusCreated).JSON(dto)
 }
 
@@ -198,9 +213,11 @@ func (h *CatalogHandler) UpdateProduct(c fiber.Ctx) error {
 	if dto.Product.ID != c.Params("id") {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "product id mismatch"})
 	}
+
 	if err := h.catalog.UpdateProduct(c.Context(), dto.toDomain()); err != nil {
 		return writeCatalogError(c, h.logger, err)
 	}
+
 	return c.JSON(dto)
 }
 
