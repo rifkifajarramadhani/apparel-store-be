@@ -14,7 +14,55 @@ import (
 
 func (r *SKURepository) List(ctx context.Context, q sku.Query) (pagination.CursorPage[sku.SKU], error) {
 	now := time.Now().UTC()
-	sql := `SELECT s.public_id id,s.sku_code code,COALESCE(s.barcode,'') barcode,p.style_code product_id,c.public_id colourway_id,c.name colourway_name,c.hex_code,sz.public_id size_id,ss.code scale_code,sz.code size_code,sz.name size_name,sz.sort_order,s.on_hand,s.reserved,COALESCE((SELECT sp.amount FROM prices sp WHERE sp.sku_id=s.id AND sp.currency=? AND sp.archived_at IS NULL AND sp.valid_from<=? AND (sp.valid_to IS NULL OR sp.valid_to>?) ORDER BY sp.valid_from DESC LIMIT 1),(SELECT pp.amount FROM prices pp WHERE pp.product_id=s.product_id AND pp.currency=? AND pp.archived_at IS NULL AND pp.valid_from<=? AND (pp.valid_to IS NULL OR pp.valid_to>?) ORDER BY pp.valid_from DESC LIMIT 1),0) amount FROM skus s JOIN products p ON p.id=s.product_id AND p.archived_at IS NULL JOIN colourways c ON c.id=s.colourway_id AND c.archived_at IS NULL JOIN sizes sz ON sz.id=s.size_id AND sz.archived_at IS NULL JOIN size_scales ss ON ss.id=sz.size_scale_id WHERE s.archived_at IS NULL`
+	sql := `
+		SELECT
+			s.public_id AS id,
+			s.sku_code AS code,
+			COALESCE(s.barcode, '') AS barcode,
+			p.style_code AS product_id,
+			c.public_id AS colourway_id,
+			c.name AS colourway_name,
+			c.hex_code,
+			sz.public_id AS size_id,
+			ss.code AS scale_code,
+			sz.code AS size_code,
+			sz.name AS size_name,
+			sz.sort_order,
+			s.on_hand,
+			s.reserved,
+			COALESCE(
+				(
+					SELECT sp.amount
+					FROM prices AS sp
+					WHERE
+						sp.sku_id = s.id
+						AND sp.currency = ?
+						AND sp.archived_at IS NULL
+						AND sp.valid_from <= ?
+						AND (sp.valid_to IS NULL OR sp.valid_to > ?)
+					ORDER BY sp.valid_from DESC
+					LIMIT 1
+				),
+				(
+					SELECT pp.amount
+					FROM prices AS pp
+					WHERE
+						pp.product_id = s.product_id
+						AND pp.currency = ?
+						AND pp.archived_at IS NULL
+						AND pp.valid_from <= ?
+						AND (pp.valid_to IS NULL OR pp.valid_to > ?)
+					ORDER BY pp.valid_from DESC
+					LIMIT 1
+				),
+				0
+			) AS amount
+		FROM skus AS s
+		JOIN products AS p ON p.id = s.product_id AND p.archived_at IS NULL
+		JOIN colourways AS c ON c.id = s.colourway_id AND c.archived_at IS NULL
+		JOIN sizes AS sz ON sz.id = s.size_id AND sz.archived_at IS NULL
+		JOIN size_scales AS ss ON ss.id = sz.size_scale_id
+		WHERE s.archived_at IS NULL`
 	args := []any{q.Currency, now, now, q.Currency, now, now}
 	if q.ProductID != "" {
 		sql += " AND (p.public_id=? OR p.style_code=?)"
@@ -96,7 +144,24 @@ func (r *SKURepository) hydrateSkuAssets(ctx context.Context, skus []sku.SKU) er
 	}
 
 	var assets []skuAssetRow
-	query := "SELECT s.public_id sku_id,a.public_id,a.media_type,a.cdn_url url,COALESCE(a.alt_text,'') alt_text,a.role,a.sort_order FROM assets a JOIN skus s ON s.id=a.sku_id WHERE a.archived_at IS NULL AND s.public_id IN ? ORDER BY a.role,a.sort_order"
+	query := `
+		SELECT
+			s.public_id AS sku_id,
+			a.public_id,
+			a.media_type,
+			a.cdn_url AS url,
+			COALESCE(a.alt_text, '') AS alt_text,
+			a.role,
+			a.sort_order
+		FROM assets AS a
+		JOIN skus AS s ON s.id = a.sku_id
+		WHERE
+			a.archived_at IS NULL
+			AND s.public_id IN ?
+		ORDER BY
+			a.role,
+			a.sort_order
+	`
 	if err := r.db.WithContext(ctx).Raw(query, ids).Scan(&assets).Error; err != nil {
 		return err
 	}

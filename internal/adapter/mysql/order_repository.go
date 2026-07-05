@@ -34,13 +34,51 @@ func (r *OrderRepository) Create(ctx context.Context, userID int, lines []order.
 		for _, line := range lines {
 			var sku checkoutSKURow
 			now := time.Now().UTC()
-			err := tx.Raw(`SELECT s.id,s.public_id,p.id product_ref_id,p.public_id product_public_id,p.name product_name,sz.name size_name,
-				COALESCE((SELECT sp.amount FROM prices sp WHERE sp.sku_id=s.id AND sp.currency='IDR' AND sp.archived_at IS NULL AND sp.valid_from<=? AND (sp.valid_to IS NULL OR sp.valid_to>?) ORDER BY sp.valid_from DESC LIMIT 1),
-				(SELECT pp.amount FROM prices pp WHERE pp.product_id=s.product_id AND pp.currency='IDR' AND pp.archived_at IS NULL AND pp.valid_from<=? AND (pp.valid_to IS NULL OR pp.valid_to>?) ORDER BY pp.valid_from DESC LIMIT 1),0) amount,
-				s.on_hand,s.reserved
-				FROM skus s JOIN products p ON p.id=s.product_id AND p.archived_at IS NULL
-				JOIN sizes sz ON sz.id=s.size_id AND sz.archived_at IS NULL
-				WHERE s.public_id=? AND s.archived_at IS NULL FOR UPDATE`, now, now, now, now, line.SkuID).Take(&sku).Error
+			err := tx.Raw(`
+				SELECT
+					s.id,
+					s.public_id,
+					p.id AS product_ref_id,
+					p.public_id AS product_public_id,
+					p.name AS product_name,
+					sz.name AS size_name,
+					COALESCE(
+						(
+							SELECT sp.amount
+							FROM prices AS sp
+							WHERE
+								sp.sku_id = s.id
+								AND sp.currency = 'IDR'
+								AND sp.archived_at IS NULL
+								AND sp.valid_from <= ?
+								AND (sp.valid_to IS NULL OR sp.valid_to > ?)
+							ORDER BY sp.valid_from DESC
+							LIMIT 1
+						),
+						(
+							SELECT pp.amount
+							FROM prices AS pp
+							WHERE
+								pp.product_id = s.product_id
+								AND pp.currency = 'IDR'
+								AND pp.archived_at IS NULL
+								AND pp.valid_from <= ?
+								AND (pp.valid_to IS NULL OR pp.valid_to > ?)
+							ORDER BY pp.valid_from DESC
+							LIMIT 1
+						),
+						0
+					) AS amount,
+					s.on_hand,
+					s.reserved
+				FROM skus AS s
+				JOIN products AS p ON p.id = s.product_id AND p.archived_at IS NULL
+				JOIN sizes AS sz ON sz.id = s.size_id AND sz.archived_at IS NULL
+				WHERE
+					s.public_id = ?
+					AND s.archived_at IS NULL
+				FOR UPDATE
+			`, now, now, now, now, line.SkuID).Take(&sku).Error
 			if err != nil {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					return order.ErrNotFound

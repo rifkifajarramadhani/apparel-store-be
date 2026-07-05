@@ -102,7 +102,21 @@ func (r *ProductRepository) hydrateProducts(ctx context.Context, products []prod
 	}
 
 	var categories []categoryLinkRow
-	if err := r.db.WithContext(ctx).Raw("SELECT pc.product_id, c.public_id, c.slug, c.name, parent.public_id parent_public_id FROM product_categories pc JOIN categories c ON c.id=pc.category_id AND c.archived_at IS NULL LEFT JOIN categories parent ON parent.id=c.parent_id WHERE pc.product_id IN ? ORDER BY pc.is_primary DESC,c.name", ids).Scan(&categories).Error; err != nil {
+	if err := r.db.WithContext(ctx).Raw(`
+		SELECT
+			pc.product_id,
+			c.public_id,
+			c.slug,
+			c.name,
+			parent.public_id AS parent_public_id
+		FROM product_categories AS pc
+		JOIN categories AS c ON c.id = pc.category_id AND c.archived_at IS NULL
+		LEFT JOIN categories AS parent ON parent.id = c.parent_id
+		WHERE pc.product_id IN ?
+		ORDER BY
+			pc.is_primary DESC,
+			c.name
+	`, ids).Scan(&categories).Error; err != nil {
 		return err
 	}
 
@@ -112,7 +126,19 @@ func (r *ProductRepository) hydrateProducts(ctx context.Context, products []prod
 	}
 
 	var colours []colourLinkRow
-	if err := r.db.WithContext(ctx).Raw("SELECT DISTINCT s.product_id,c.public_id,c.name,c.hex_code FROM skus s JOIN colourways c ON c.id=s.colourway_id AND c.archived_at IS NULL WHERE s.archived_at IS NULL AND s.product_id IN ? ORDER BY c.name", ids).Scan(&colours).Error; err != nil {
+	if err := r.db.WithContext(ctx).Raw(`
+		SELECT DISTINCT
+			s.product_id,
+			c.public_id,
+			c.name,
+			c.hex_code
+		FROM skus AS s
+		JOIN colourways AS c ON c.id = s.colourway_id AND c.archived_at IS NULL
+		WHERE
+			s.archived_at IS NULL
+			AND s.product_id IN ?
+		ORDER BY c.name
+	`, ids).Scan(&colours).Error; err != nil {
 		return err
 	}
 
@@ -122,7 +148,24 @@ func (r *ProductRepository) hydrateProducts(ctx context.Context, products []prod
 	}
 
 	var sizes []sizeLinkRow
-	if err := r.db.WithContext(ctx).Raw("SELECT DISTINCT s.product_id,sz.public_id,ss.code scale_code,sz.code,sz.name,sz.sort_order FROM skus s JOIN sizes sz ON sz.id=s.size_id AND sz.archived_at IS NULL JOIN size_scales ss ON ss.id=sz.size_scale_id AND ss.archived_at IS NULL WHERE s.archived_at IS NULL AND s.product_id IN ? ORDER BY sz.sort_order,sz.name", ids).Scan(&sizes).Error; err != nil {
+	if err := r.db.WithContext(ctx).Raw(`
+		SELECT DISTINCT
+			s.product_id,
+			sz.public_id,
+			ss.code AS scale_code,
+			sz.code,
+			sz.name,
+			sz.sort_order
+		FROM skus AS s
+		JOIN sizes AS sz ON sz.id = s.size_id AND sz.archived_at IS NULL
+		JOIN size_scales AS ss ON ss.id = sz.size_scale_id AND ss.archived_at IS NULL
+		WHERE
+			s.archived_at IS NULL
+			AND s.product_id IN ?
+		ORDER BY
+			sz.sort_order,
+			sz.name
+	`, ids).Scan(&sizes).Error; err != nil {
 		return err
 	}
 
@@ -132,14 +175,27 @@ func (r *ProductRepository) hydrateProducts(ctx context.Context, products []prod
 	}
 
 	var assets []assetLinkRow
-	assetSQL := `SELECT COALESCE(a.product_id, sk.product_id) product_id, a.public_id, a.media_type, a.cdn_url url,
-		COALESCE(a.alt_text,'') alt_text, a.role, a.sort_order,
-		COALESCE(c.public_id,'') colourway_id, COALESCE(sk.public_id,'') sku_id
-	FROM assets a
-	LEFT JOIN colourways c ON c.id=a.colourway_id AND c.archived_at IS NULL
-	LEFT JOIN skus sk ON sk.id=a.sku_id AND sk.archived_at IS NULL
-	WHERE a.archived_at IS NULL AND (a.product_id IN ? OR sk.product_id IN ?)
-	ORDER BY a.role,a.sort_order`
+	assetSQL := `
+		SELECT
+			COALESCE(a.product_id, sk.product_id) AS product_id,
+			a.public_id,
+			a.media_type,
+			a.cdn_url AS url,
+			COALESCE(a.alt_text, '') AS alt_text,
+			a.role,
+			a.sort_order,
+			COALESCE(c.public_id, '') AS colourway_id,
+			COALESCE(sk.public_id, '') AS sku_id
+		FROM assets AS a
+		LEFT JOIN colourways AS c ON c.id = a.colourway_id AND c.archived_at IS NULL
+		LEFT JOIN skus AS sk ON sk.id = a.sku_id AND sk.archived_at IS NULL
+		WHERE
+			a.archived_at IS NULL
+			AND (a.product_id IN ? OR sk.product_id IN ?)
+		ORDER BY
+			a.role,
+			a.sort_order
+	`
 	if err := r.db.WithContext(ctx).Raw(assetSQL, ids, ids).Scan(&assets).Error; err != nil {
 		return err
 	}
@@ -151,7 +207,29 @@ func (r *ProductRepository) hydrateProducts(ctx context.Context, products []prod
 
 	var ranges []priceRangeRow
 	now := time.Now().UTC()
-	priceSQL := `SELECT s.product_id, MIN(COALESCE(sp.amount,pp.amount)) min_amount, MAX(COALESCE(sp.amount,pp.amount)) max_amount FROM skus s LEFT JOIN prices sp ON sp.sku_id=s.id AND sp.currency=? AND sp.archived_at IS NULL AND sp.valid_from<=? AND (sp.valid_to IS NULL OR sp.valid_to>?) LEFT JOIN prices pp ON pp.product_id=s.product_id AND pp.currency=? AND pp.archived_at IS NULL AND pp.valid_from<=? AND (pp.valid_to IS NULL OR pp.valid_to>?) WHERE s.archived_at IS NULL AND s.product_id IN ? GROUP BY s.product_id`
+	priceSQL := `
+		SELECT
+			s.product_id,
+			MIN(COALESCE(sp.amount, pp.amount)) AS min_amount,
+			MAX(COALESCE(sp.amount, pp.amount)) AS max_amount
+		FROM skus AS s
+		LEFT JOIN prices AS sp ON
+			sp.sku_id = s.id
+			AND sp.currency = ?
+			AND sp.archived_at IS NULL
+			AND sp.valid_from <= ?
+			AND (sp.valid_to IS NULL OR sp.valid_to > ?)
+		LEFT JOIN prices AS pp ON
+			pp.product_id = s.product_id
+			AND pp.currency = ?
+			AND pp.archived_at IS NULL
+			AND pp.valid_from <= ?
+			AND (pp.valid_to IS NULL OR pp.valid_to > ?)
+		WHERE
+			s.archived_at IS NULL
+			AND s.product_id IN ?
+		GROUP BY s.product_id
+	`
 	if err := r.db.WithContext(ctx).Raw(priceSQL, currency, now, now, currency, now, now, ids).Scan(&ranges).Error; err != nil {
 		return err
 	}
@@ -232,9 +310,31 @@ func saveAggregate(tx *gorm.DB, in product.Aggregate) error {
 
 	published, _ := time.Parse("2006-01-02", in.Product.PublishedAt)
 
-	if err := tx.Exec(`INSERT INTO products(public_id,style_code,slug,brand_id,name,subtitle,gender,product_type,description,published_at)
-		VALUES(?,?,?,?,?,?,?,?,?,?)
-		ON DUPLICATE KEY UPDATE slug=VALUES(slug),brand_id=VALUES(brand_id),name=VALUES(name),subtitle=VALUES(subtitle),gender=VALUES(gender),product_type=VALUES(product_type),description=VALUES(description),published_at=VALUES(published_at),archived_at=NULL`,
+	if err := tx.Exec(`
+		INSERT INTO products (
+			public_id,
+			style_code,
+			slug,
+			brand_id,
+			name,
+			subtitle,
+			gender,
+			product_type,
+			description,
+			published_at
+		)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+		ON DUPLICATE KEY UPDATE
+			slug = VALUES(slug),
+			brand_id = VALUES(brand_id),
+			name = VALUES(name),
+			subtitle = VALUES(subtitle),
+			gender = VALUES(gender),
+			product_type = VALUES(product_type),
+			description = VALUES(description),
+			published_at = VALUES(published_at),
+			archived_at = NULL
+	`,
 		seedPublicID("PR", in.Product.ID), in.Product.ID, in.Product.Slug, brandID, in.Product.Name, in.Product.Subtitle, in.Product.Gender, in.Product.ProductType, in.Product.Description, published).Error; err != nil {
 		return err
 	}
@@ -266,7 +366,19 @@ func saveAggregate(tx *gorm.DB, in product.Aggregate) error {
 
 	// Prices are fully rewritten from the payload; drop the product's own price
 	// and any of its SKUs' prices before reinserting.
-	if err := tx.Exec("DELETE FROM prices WHERE product_id=? OR sku_id IN (SELECT id FROM (SELECT id FROM skus WHERE product_id=?) t)", productID, productID).Error; err != nil {
+	if err := tx.Exec(`
+		DELETE FROM prices
+		WHERE
+			product_id = ?
+			OR sku_id IN (
+				SELECT id
+				FROM (
+					SELECT id
+					FROM skus
+					WHERE product_id = ?
+				) AS product_skus
+			)
+	`, productID, productID).Error; err != nil {
 		return err
 	}
 
@@ -281,9 +393,22 @@ func saveAggregate(tx *gorm.DB, in product.Aggregate) error {
 			return err
 		}
 
-		if err := tx.Exec(`INSERT INTO skus(public_id,sku_code,product_id,colourway_id,size_id,on_hand)
-			VALUES(?,?,?,?,?,?)
-			ON DUPLICATE KEY UPDATE product_id=VALUES(product_id),colourway_id=VALUES(colourway_id),size_id=VALUES(size_id),archived_at=NULL`,
+		if err := tx.Exec(`
+			INSERT INTO skus (
+				public_id,
+				sku_code,
+				product_id,
+				colourway_id,
+				size_id,
+				on_hand
+			)
+			VALUES (?, ?, ?, ?, ?, ?)
+			ON DUPLICATE KEY UPDATE
+				product_id = VALUES(product_id),
+				colourway_id = VALUES(colourway_id),
+				size_id = VALUES(size_id),
+				archived_at = NULL
+		`,
 			seedPublicID("SK", sku.ID), sku.ID, productID, colourIDs[sku.ColourwayID], sizeID, sku.StockQty).Error; err != nil {
 			return err
 		}
@@ -307,7 +432,19 @@ func saveAggregate(tx *gorm.DB, in product.Aggregate) error {
 		return err
 	}
 
-	if err := tx.Exec("DELETE FROM assets WHERE product_id=? OR sku_id IN (SELECT id FROM (SELECT id FROM skus WHERE product_id=?) t)", productID, productID).Error; err != nil {
+	if err := tx.Exec(`
+		DELETE FROM assets
+		WHERE
+			product_id = ?
+			OR sku_id IN (
+				SELECT id
+				FROM (
+					SELECT id
+					FROM skus
+					WHERE product_id = ?
+				) AS product_skus
+			)
+	`, productID, productID).Error; err != nil {
 		return err
 	}
 
@@ -329,7 +466,20 @@ func saveAggregate(tx *gorm.DB, in product.Aggregate) error {
 			}
 		}
 
-		if err := tx.Exec("INSERT INTO assets(public_id,product_id,colourway_id,media_type,storage_provider,cdn_url,alt_text,role,sort_order) VALUES(?,?,?,'image','external',?,?,'product_image',?)", seedPublicID("AS", image.URL), productID, colourwayID, image.URL, "", order).Error; err != nil {
+		if err := tx.Exec(`
+			INSERT INTO assets (
+				public_id,
+				product_id,
+				colourway_id,
+				media_type,
+				storage_provider,
+				cdn_url,
+				alt_text,
+				role,
+				sort_order
+			)
+			VALUES (?, ?, ?, 'image', 'external', ?, ?, 'product_image', ?)
+		`, seedPublicID("AS", image.URL), productID, colourwayID, image.URL, "", order).Error; err != nil {
 			return err
 		}
 	}
@@ -377,7 +527,14 @@ func resolveCategory(tx *gorm.DB, slug string) (uint64, error) {
 
 func resolveSize(tx *gorm.DB, scaleCode, code string) (uint64, error) {
 	var id uint64
-	if err := tx.Raw("SELECT sz.id FROM sizes sz JOIN size_scales ss ON ss.id=sz.size_scale_id WHERE ss.code=? AND sz.code=?", scaleCode, code).Scan(&id).Error; err != nil {
+	if err := tx.Raw(`
+		SELECT sz.id
+		FROM sizes AS sz
+		JOIN size_scales AS ss ON ss.id = sz.size_scale_id
+		WHERE
+			ss.code = ?
+			AND sz.code = ?
+	`, scaleCode, code).Scan(&id).Error; err != nil {
 		return 0, err
 	}
 

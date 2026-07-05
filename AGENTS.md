@@ -29,6 +29,29 @@ This guide instructs agents how to write Go code that mirrors community best pra
 - **Packages:** Export only what callers need; organize code so package names express the domain; avoid cyclic imports.
 - **Examples:** Prefer table-driven tests; show simple usage in Godoc examples.
 
+## Database Query Readability
+
+- Prefer GORM's model and query methods for straightforward CRUD operations. Raw SQL is acceptable when joins, projections, subqueries, database-specific behavior, or performance requirements make it clearer.
+- Write non-trivial raw SQL as a Go raw string literal. Put major clauses such as `SELECT`, `FROM`, `JOIN`, `WHERE`, `ORDER BY`, and `LIMIT` on separate lines; indent selected columns and complex conditions; and capitalize SQL keywords consistently.
+- Keep raw SQL on one line only when the complete statement is genuinely short and simple. Dense, single-line complex queries are prohibited.
+- Format complex queries for scanning and review, for example:
+
+  ```go
+  query := `
+      SELECT
+          s.public_id,
+          s.sku_code,
+          p.name AS product_name
+      FROM skus AS s
+      JOIN products AS p ON p.id = s.product_id
+      WHERE
+          s.archived_at IS NULL
+          AND p.archived_at IS NULL
+      ORDER BY s.public_id
+      LIMIT ?
+  `
+  ```
+
 ## Uber Go Style Highlights
 
 - Keep APIs minimal and stable; document breaking changes.
