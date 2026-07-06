@@ -136,6 +136,10 @@ services:
       - traefik.http.routers.apparel-api.tls=true
       - traefik.http.routers.apparel-api.tls.certresolver=letsencrypt
       - traefik.http.services.apparel-api.loadbalancer.server.port=8080
+      # Per-IP edge rate limit: 100 req/s average, burst 200 (complements the app-level auth limiter)
+      - traefik.http.middlewares.apparel-api-ratelimit.ratelimit.average=100
+      - traefik.http.middlewares.apparel-api-ratelimit.ratelimit.burst=200
+      - traefik.http.routers.apparel-api.middlewares=apparel-api-ratelimit
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/health/live"]
       interval: 5s
