@@ -10,6 +10,8 @@ RUN mkdir -p /out && \
     CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/scheduler ./cmd/scheduler && \
     CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/queue ./cmd/queue && \
     CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/schedule ./cmd/schedule
+# Build the migrate CLI into /out too so it ships in the production image for deploy-time migrations.
+RUN GOBIN=/out go install -tags mysql github.com/golang-migrate/migrate/v4/cmd/migrate@v4.19.1
 
 FROM build AS development
 RUN go install github.com/air-verse/air@v1.65.3 && \
@@ -25,6 +27,8 @@ RUN apk add --no-cache ca-certificates tzdata && \
 WORKDIR /app
 COPY --from=build /out/ /usr/local/bin/
 COPY --chown=app:app configs ./configs
+# Migrations ship in the image so `migrate ... -path /app/migrations up` runs at deploy time.
+COPY --chown=app:app internal/adapter/mysql/migrations ./migrations
 USER app
 EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \

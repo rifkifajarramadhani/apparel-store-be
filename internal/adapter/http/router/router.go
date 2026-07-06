@@ -13,6 +13,13 @@ import (
 )
 
 func Setup(app *fiber.App, users handler.UserService, auth handler.AuthService, merchandising handler.MerchandisingServices, orders handler.OrderService, tokens middleware.AccessTokenValidator, uploader storage.ImageUploader, logger *slog.Logger, storefrontURL ...string) {
+	// Liveness/readiness probes for the container healthcheck and zero-downtime
+	// rollouts. Registered before the logging middleware so the frequent polls
+	// don't flood the request log, and outside /api so they need no auth.
+	health := func(c fiber.Ctx) error { return c.SendStatus(fiber.StatusOK) }
+	app.Get("/health/live", health)
+	app.Get("/health/ready", health)
+
 	app.Use(func(c fiber.Ctx) error {
 		requestID := c.Get("X-Request-ID")
 		if requestID == "" {

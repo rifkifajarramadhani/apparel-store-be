@@ -11,6 +11,7 @@ networks:
 
 services:
   server:
+    profiles: [dev]
     build:
       context: .
       dockerfile: Dockerfile
@@ -51,6 +52,7 @@ services:
       - traefik.http.services.apparel-api.loadbalancer.server.port=8080
 
   worker:
+    profiles: [dev]
     build:
       context: .
       dockerfile: Dockerfile
@@ -73,6 +75,7 @@ services:
         condition: service_healthy
 
   scheduler:
+    profiles: [dev]
     build:
       context: .
       dockerfile: Dockerfile
@@ -91,6 +94,99 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+
+  # --- Production services (profile: prod) ---
+  # Run the baked binaries from the GHCR image: no bind mount, no air. These are what
+  # deploy on the VPS and get zero-downtime rollouts. db/redis are shared (never rolled);
+  # mailpit is dev-only, so prod must point at a real SMTP host via .env.
+  server-prod:
+    profiles: [prod]
+    image: ghcr.io/rifkifajarramadhani/apparel-store-be:${IMAGE_TAG:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    env_file:
+      - ${ENV_FILE:-.env}
+    environment:
+      APP_ENVIRONMENT: production
+      DATABASE_HOST: db
+      REDIS_ADDRESS: redis:6379
+      APP_PUBLIC_URL: ${APP_PUBLIC_URL:-https://apparel-store.rifkiramadhani.my.id}
+      APP_STOREFRONT_URL: ${APP_STOREFRONT_URL:-https://apparel-store.rifkiramadhani.my.id}
+      APP_CORS_ORIGINS: ${APP_CORS_ORIGINS:-https://apparel-store.rifkiramadhani.my.id}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      default:
+      # Internal network shared with the frontend (SSR calls apparel-store-backend:8080)
+      shared:
+        aliases:
+          - apparel-store-backend
+      # Public edge network: Traefik routes /api traffic here
+      edge: {}
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=edge
+      - "traefik.http.routers.apparel-api.rule=(Host(`apparel-store.rifkiramadhani.my.id`) || Host(`www.apparel-store.rifkiramadhani.my.id`)) && PathPrefix(`/api`)"
+      - traefik.http.routers.apparel-api.entrypoints=websecure
+      - traefik.http.routers.apparel-api.tls=true
+      - traefik.http.routers.apparel-api.tls.certresolver=letsencrypt
+      - traefik.http.services.apparel-api.loadbalancer.server.port=8080
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/health/live"]
+      interval: 5s
+      timeout: 3s
+      start_period: 10s
+      retries: 20
+    restart: unless-stopped
+
+  worker-prod:
+    profiles: [prod]
+    image: ghcr.io/rifkifajarramadhani/apparel-store-be:${IMAGE_TAG:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    command: ["worker"]
+    env_file:
+      - ${ENV_FILE:-.env}
+    environment:
+      APP_ENVIRONMENT: production
+      DATABASE_HOST: db
+      QUEUE_DRIVER: ${QUEUE_DRIVER:-database}
+      REDIS_ADDRESS: redis:6379
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  scheduler-prod:
+    profiles: [prod]
+    image: ghcr.io/rifkifajarramadhani/apparel-store-be:${IMAGE_TAG:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    command: ["scheduler"]
+    env_file:
+      - ${ENV_FILE:-.env}
+    environment:
+      APP_ENVIRONMENT: production
+      DATABASE_HOST: db
+      QUEUE_DRIVER: ${QUEUE_DRIVER:-database}
+      REDIS_ADDRESS: redis:6379
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
 
   db:
     image: mysql:8.4
@@ -118,6 +214,7 @@ services:
       retries: 20
 
   mailpit:
+    profiles: [dev]
     image: axllent/mailpit:v1.27.8
     # No host ports: SMTP reached internally as "mailpit:1025". Expose the UI (8025)
     # via Traefik on its own subdomain later if you need it.
